@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminSiderbar from "../../components/sidebar/sidebar";
+import dfawallpaper from "../../assets/dfa-wallpaper.png";
 const URL = import.meta.env.VITE_BACKEND_URL;
 
 const AddGround = () => {
@@ -30,7 +31,12 @@ const AddGround = () => {
   };
 
   return (
-    <div className="">
+    <div
+      style={{
+        backgroundImage: `url(${dfawallpaper})`,
+        backgroundSize: "cover",
+      }}
+    >
       <AdminSiderbar />
       <div className="flex flex-col justify-center gap-4 w-full max-sm:w-full max-md:w-2/3">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">

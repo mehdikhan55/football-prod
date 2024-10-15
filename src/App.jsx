@@ -10,6 +10,7 @@ import Home from "./home/page";
 import Login from "./auth/login";
 
 import Register from "./customer/register";
+import LoginCustomer from "./customer/customerlogin";
 import Ground from "./dashboard/ground/ground";
 import Booking from "./dashboard/booking/booking";
 import CustomerBooking from "./customer/customerBooking";
@@ -36,6 +37,7 @@ const App = () => {
           </Route>
           <Route path="customer">
             <Route path="register" element={<Register />} />
+            <Route path="login" element={<LoginCustomer />} />
             <Route path="booking" element={<CustomerBooking />} />
           </Route>
         </Route>

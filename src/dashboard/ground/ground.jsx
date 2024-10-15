@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import AddGround from "./AddGround";
+import AddGround from "./addGround";
 import RemoveGround from "./RemoveGround";
 import EditGround from "./editGround";
+import dfawallpaper from "../../assets/dfa-wallpaper.png";
 
 const Ground = () => {
   const [activeTab, setActiveTab] = useState("Add Ground"); // Initial active tab
@@ -11,7 +12,7 @@ const Ground = () => {
   };
 
   return (
-    <div className="flex flex-col max-w-[1400px] mx-auto">
+    <div className="flex flex-col max-w-[1400px] mx-auto" >
       <div role="tablist" className="tabs tabs-boxed w-1/2 mx-auto gap-4 mt-10">
         <a
           role="tab"

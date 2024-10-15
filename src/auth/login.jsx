@@ -15,6 +15,8 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     setLoading(true);
+    //take to the dashboard
+    window.location.href = "/admin/dashboard";
     e.preventDefault();
     try {
       const response = await AuthServices.login(username, password);

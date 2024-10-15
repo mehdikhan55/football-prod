@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AdminSiderbar from "../../components/sidebar/sidebar";
 import { dummyEmailData } from "./dummyEmailData";
+import { MdEmail } from "react-icons/md";
 
 const Emails = () => {
   const [emails, setEmails] = useState(dummyEmailData);
@@ -20,9 +21,18 @@ const Emails = () => {
       <AdminSiderbar />
 
       <div className="p-5 w-full">
-        <h1 className="text-5xl font-bold pb-4">Manage Emails</h1>
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
+        <div className="flex items-center justify-between mb-10">
+          <h1 className="text-xl font-bold">Emails</h1>
+          <div className="flex items-center gap-2">
+            <MdEmail className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+            <span className="text-gray-500 dark:text-gray-400">
+              Showing {indexOfFirstEmail + 1} to{" "} 
+              {indexOfLastEmail > emails.length ? emails.length : indexOfLastEmail} of {emails.length} entries
+            </span>
+          </div>
+        </div>
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-100">
             <tr>
               <th scope="col" className="px-6 py-3">
                 Email
@@ -30,16 +40,25 @@ const Emails = () => {
               <th scope="col" className="px-6 py-3">
                 Created At
               </th>
+              <th scope="col" className="px-6 py-3">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
             {currentEmails.map((email, index) => (
               <tr
                 key={index}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
+                className="bg-white border-b dark:border-gray-700 hover:bg-gray-200  hover:text-gray-700"
               >
                 <td className="px-6 py-4">{email.email}</td>
                 <td className="px-6 py-4">{email.createdAt.toDateString()}</td>
+                <td className="flex items-center px-6 py-4">
+                  <div className="flex items-center gap-2 cursor-pointer">
+                    <MdEmail className="w-6 h-6 text-secondary" />
+                    Send Email
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>

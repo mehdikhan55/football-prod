@@ -4,6 +4,8 @@ import { NavLink } from "react-router-dom";
 import { RiFootballFill } from "react-icons/ri";
 import { CiCalendar, CiUser, CiMoneyBill, CiMail } from "react-icons/ci";
 import { AiOutlineTeam } from "react-icons/ai";
+import logo from "../../assets/logo.png";
+import { BiMenu } from "react-icons/bi";
 
 const AdminSiderbar = () => {
   const [show, handleShow] = useState(false);
@@ -11,15 +13,16 @@ const AdminSiderbar = () => {
   return (
     <div className={`{show ? "overflow-hidden" : ""}`}>
       <a
-        className=" bg-transparent text-black btn-primary btn focus:ring-4 font-medium text-sm px-3 focus:outline-none dark:focus:ring-blue-800 cursor-pointer absolute top-1 left-1 rounded-br-lg rounded-bl-lg border-2"
+        className=" bg-transparent text-black btn-primary btn border-0 font-medium text-sm px-3  cursor-pointer absolute top-1 left-1"
         type="button"
         data-drawer-target="drawer-navigation"
         data-drawer-show="drawer-navigation"
         aria-controls="drawer-navigation"
         onClick={() => handleShow(!show)}
       >
-        Menu
+        <BiMenu className="w-10 h-10" />
       </a>
+      <img src={logo} alt="logo" className="w-20 h-20 rounded-full absolute top-2 right-2 cursor-pointer" onClick={() => window.location.href = "/"} />
       <div
         id="drawer-navigation"
         className="fixed z-50 top-0 left-0 w-64 h-screen p-4 overflow-y-auto transition-transform -translate-x-full shadow-2xl border-r-4 border-gray-600 bg-secondary"

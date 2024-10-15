@@ -44,8 +44,8 @@ const Register = () => {
 
   return (
     <div className="flex-col bg-gray-800" style={{ backgroundImage: `url(${registebg})`, backgroundSize: "cover" }}>
-      <div className="flex flex-col items-center justify-center h-screen gap-4 max-sm:w-full max-md:w-2/3">
-        <div className="bg-gray-700 shadow-lg p-10 rounded-3xl w-2/3 bg-opacity-40">
+      <div className="flex flex-col items-center justify-center min-h-screen gap-4 max-sm:w-full max-sm:p-4 max-md:w-2/3 overflow-auto">
+        <div className="bg-gray-700 shadow-lg p-10 rounded-3xl w-2/3 bg-opacity-40 max-sm:p-2 max-sm:w-full">
           <div className="flex justify-between items-center mb-3">
             <div>
               <h1 className="text-3xl font-extrabold text-white">
@@ -58,7 +58,7 @@ const Register = () => {
             <img src={logo} alt="logo" className="w-36 h-36" />
           </div>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div className="flex gap-2">
+            <div className="flex gap-2 max-sm:flex-col">
               <input
                 type="text"
                 value={username}
@@ -74,7 +74,7 @@ const Register = () => {
                 className="rounded-md p-3 border border-gray-300  w-full opacity-70"
               />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 max-sm:flex-col">
               <input
                 type="email"
                 value={email}
@@ -90,7 +90,7 @@ const Register = () => {
                 className="rounded-md p-3 border border-gray-300 w-full opacity-70"
               />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 max-sm:flex-col">
               <input
                 type="text"
                 value={phone}
@@ -132,7 +132,7 @@ const Register = () => {
             <div className="flex items-center justify-center">
               <p className="text-white">
                 Already have an account?{" "}
-                <a href="/login" className="text-[#EF4444]">
+                <a href="/customer/login" className="text-[#EF4444]">
                   Login
                 </a>
               </p>
