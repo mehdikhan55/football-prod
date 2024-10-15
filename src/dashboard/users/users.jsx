@@ -14,10 +14,10 @@ const Users = () => {
     };
 
     return (
-        <div className="pt-16 pb-16 h-screen ">
+        <div className="p-20 h-screen ">
             <AdminSiderbar />
 
-            <div className="max-w-7xl mx-auto relative overflow-x-auto shadow-md sm:rounded-lg">
+            <div className="p-5 w-full">
                 <h1 className='text-5xl font-bold pb-4'>Manage the users</h1>
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
