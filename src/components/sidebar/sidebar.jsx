@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import LogoBG from "../../assets/logoWhite.png";
 import { NavLink } from "react-router-dom";
 import { RiFootballFill } from "react-icons/ri";
-import { CiCalendar } from "react-icons/ci";
+import { CiCalendar, CiUser } from "react-icons/ci";
 import { CiMoneyBill } from "react-icons/ci";
 
 const AdminSiderbar = () => {
@@ -79,7 +79,7 @@ const AdminSiderbar = () => {
             <li>
               <NavLink
                 to="/admin/dashboard/booking"
-                className="flex items-center p-2 text-white hover::ext-gray-100 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className={`${selected == "Booking" ? "bg-gray-700" : ''} flex items-center p-2 text-white hover::ext-gray-100 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group`}
                 onClick={() => setSelected("Booking")}
               >
                 <CiCalendar className="w-5 h-5 text-white transition duration-75 dark:text-white group-hover::ext-gray-100 dark:group-hover:text-white" />
@@ -87,6 +87,17 @@ const AdminSiderbar = () => {
               </NavLink>
             </li>
 
+            <li>
+              <NavLink
+                to="/admin/dashboard/users"
+                className={` ${selected == "Users" ? "bg-gray-700" : ''} flex items-center p-2 text-white hover::ext-gray-100 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group`}
+                onClick={() => setSelected("Users")}
+              >
+                <CiUser className="w-5 h-5 text-white transition duration-75 dark:text-white group-hover::ext-gray-100 dark:group-hover:text-white" />
+
+                <span className="ms-3">Manage Users</span>
+              </NavLink>
+            </li>
             <li>
               <NavLink
                 to="/admin/payments"
