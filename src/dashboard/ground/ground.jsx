@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import AdminSiderbar from "../../components/sidebar/sidebar";
 const URL = import.meta.env.VITE_BACKEND_URL;
 
 const Ground = () => {
@@ -31,6 +31,7 @@ const Ground = () => {
 
   return (
     <div>
+      <AdminSiderbar />
       <div className="flex flex-col  justify-center h-screen gap-4 w-full max-sm:w-full max-md:w-2/3 p-20">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <h1 className="text-2xl font-bold">Add a new Ground</h1>
