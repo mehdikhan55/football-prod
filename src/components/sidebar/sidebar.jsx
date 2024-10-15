@@ -7,10 +7,11 @@ import { CiMoneyBill } from "react-icons/ci";
 
 const AdminSiderbar = () => {
   const [show, handleShow] = useState(false);
+  const [selected, setSelected] = useState("Grounds");
   return (
     <div className={`{show ? "overflow-hidden" : ""}`}>
       <a
-        className="text-white btn-primary btn focus:ring-4 font-medium text-sm px-5 py-2.5  focus:outline-none dark:focus:ring-blue-800 cursor-pointer absolute top-0 left-3 rounded-br-lg rounded-bl-lg border-2"
+        className=" bg-transparent text-black btn-primary btn focus:ring-4 font-medium text-sm px-3   focus:outline-none dark:focus:ring-blue-800 cursor-pointer absolute top-1 left-1 rounded-br-lg rounded-bl-lg border-2"
         type="button"
         data-drawer-target="drawer-navigation"
         data-drawer-show="drawer-navigation"
@@ -67,21 +68,12 @@ const AdminSiderbar = () => {
           <ul className="space-y-2 font-medium">
             <li>
               <NavLink
-                to="/admin"
-                className="flex items-center p-2 text-white hover::ext-gray-100 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                onClick={() => setSelected("Home")}
+                to="/admin/dashboard/ground"
+                className={`${selected == "Grounds" ? "bg-gray-700" : ''} flex items-center p-2 text-white hover::ext-gray-100 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group`}
+                onClick={() => setSelected("Grounds")}
               >
-                <svg
-                  className="w-5 h-5 text-white transition duration-75 dark:text-white group-hover::ext-gray-100 dark:group-hover:text-white"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 22 21"
-                >
-                  <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-                  <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
-                </svg>
-                <span className="ms-3">Home</span>
+                <RiFootballFill className="w-5 h-5 text-white transition duration-75 dark:text-white group-hover::ext-gray-100 dark:group-hover:text-white" />
+                <span className="flex-1 ms-3 whitespace-nowrap">Grounds</span>
               </NavLink>
             </li>
 
@@ -98,16 +90,7 @@ const AdminSiderbar = () => {
               </NavLink>
             </li>
 
-            <li>
-              <NavLink
-                to="/admin/add-ground"
-                className="flex items-center p-2 text-white hover::ext-gray-100 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                onClick={() => setSelected("Grounds")}
-              >
-                <RiFootballFill className="w-5 h-5 text-white transition duration-75 dark:text-white group-hover::ext-gray-100 dark:group-hover:text-white" />
-                <span className="flex-1 ms-3 whitespace-nowrap">Grounds</span>
-              </NavLink>
-            </li>
+
 
             <li>
               <NavLink

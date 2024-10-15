@@ -2,9 +2,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Home from "./home/page";
 import Login from "./auth/login";
-import Ground from "./dashboard/ground/ground";
+
 
 import Register from "./customer/register";
+import Ground from "./dashboard/ground/ground";
 
 const App = () => {
   return (
@@ -12,7 +13,7 @@ const App = () => {
       <Routes>
         <Route path="/">
           <Route path="" element={<Home />} />
-          <Route path="admin">
+          <Route path="admin/dashboard">
             <Route path="login" element={<Login />} />
             <Route path="ground" element={<Ground />} />
           </Route>
