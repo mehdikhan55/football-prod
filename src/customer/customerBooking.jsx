@@ -1,7 +1,22 @@
-import React, { useState } from 'react'
-import Navbar from '../components/navbar/navbar'
+import React, { useState } from "react";
+import Navbar from "../components/navbar/navbar";
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import moment from "moment";
+import { FaPlus } from "react-icons/fa";
+
+const localizer = momentLocalizer(moment);
+
+const events = [
+  {
+    title: "My event",
+    start: new Date(),
+    end: new Date(),
+  },
+];
 
 const CustomerBooking = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [customerId, setCustomerId] = useState("");
   const [bookingDate, setBookingDate] = useState("");
   const [bookingTime, setBookingTime] = useState("");
@@ -14,6 +29,10 @@ const CustomerBooking = () => {
   const [ground, setGround] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const handleDialogToggle = () => {
+    setIsDialogOpen(!isDialogOpen);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,8 +51,9 @@ const CustomerBooking = () => {
         ground,
       };
 
-      console.log('Booking added successfully', newBooking);
+      console.log("Booking added successfully", newBooking);
       resetForm();
+      handleDialogToggle();
     } catch (error) {
       setError(error.message);
     } finally {
@@ -41,7 +61,6 @@ const CustomerBooking = () => {
     }
   };
 
-  // Function to reset form fields
   const resetForm = () => {
     setCustomerId("");
     setBookingDate("");
@@ -55,141 +74,108 @@ const CustomerBooking = () => {
     setGround("");
   };
 
-
   return (
     <div>
       <Navbar />
-      <div className="p-20 pt-22  bg-gray-800 text-white flex items-center justify-center">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-3/4">
-          <h1 className="text-2xl font-bold">Add a new Booking</h1>
-
-          {/* Form inputs for booking details */}
-          <div className="flex gap-2">
-            <div className="flex flex-col gap-2 w-1/2">
-              <label className="text-gray-300">Customer ID</label>
-              <input
-                type="text"
-                value={customerId}
-                onChange={(e) => setCustomerId(e.target.value)}
-                placeholder="Enter Customer ID"
-                className="rounded-md p-3 border bg-[#111827] border-gray-300"
-                required
-              />
-            </div>
-            <div className="flex flex-col gap-2 w-1/2">
-              <label className="text-gray-300">Booking Date</label>
-              <input
-                type="date"
-                value={bookingDate}
-                onChange={(e) => setBookingDate(e.target.value)}
-                className="rounded-md bg-[#111827] p-3 border border-gray-300"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="flex gap-2">
-            <div className="flex flex-col gap-2 w-1/2">
-              <label className="text-gray-300">Booking Time</label>
-              <input
-                type="time"
-                value={bookingTime}
-                onChange={(e) => setBookingTime(e.target.value)}
-                className="rounded-md bg-[#111827] p-3 border border-gray-300"
-                required
-              />
-            </div>
-            <div className="flex flex-col gap-2 w-1/2">
-              <label className="text-gray-300">Booking Duration (hours)</label>
-              <input
-                type="number"
-                value={bookingDuration}
-                onChange={(e) => setBookingDuration(Number(e.target.value))}
-                className="rounded-md bg-[#111827] p-3 border border-gray-300"
-                min="1"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="flex gap-2">
-            <div className="flex flex-col gap-2 w-1/2">
-              <label className="text-gray-300">Booking Price</label>
-              <input
-                type="number"
-                value={bookingPrice}
-                onChange={(e) => setBookingPrice(Number(e.target.value))}
-                className="rounded-md bg-[#111827] p-3 border border-gray-300"
-                min="0"
-                required
-              />
-            </div>
-            <div className="flex flex-col gap-2 w-1/2">
-              <label className="text-gray-300">Payment Method</label>
-              <input
-                type="text"
-                value={paymentMethod}
-                onChange={(e) => setPaymentMethod(e.target.value)}
-                placeholder="Enter Payment Method"
-                className="rounded-md bg-[#111827] p-3 border border-gray-300"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="flex gap-2">
-            <div className="flex flex-col gap-2 w-1/2">
-              <label className="text-gray-300">Payment Status</label>
-              <input
-                type="text"
-                value={paymentStatus}
-                onChange={(e) => setPaymentStatus(e.target.value)}
-                placeholder="Enter Payment Status"
-                className="rounded-md bg-[#111827] p-3 border border-gray-300"
-                required
-              />
-            </div>
-            <div className="flex flex-col gap-2 w-1/2">
-              <label className="text-gray-300">Payment Date</label>
-              <input
-                type="date"
-                value={paymentDate}
-                onChange={(e) => setPaymentDate(e.target.value)}
-                className="rounded-md bg-[#111827] p-3 border border-gray-300"
-              />
-            </div>
-          </div>
-
-          <div className="flex gap-2">
-            <div className="flex flex-col gap-2 w-1/2">
-              <label className="text-gray-300">Ground</label>
-              <input
-                type="text"
-                value={ground}
-                onChange={(e) => setGround(e.target.value)}
-                placeholder="Enter Ground Name"
-                className="rounded-md bg-[#111827] p-3 border border-gray-300"
-                required
-              />
-            </div>
-          </div>
-
-          {error && <p className="text-red-500">{error}</p>}
-
+      <div className="p-20 max-sm:p-5 max-sm:pt-20 mt-10 bg-gray-800 text-white h-screen">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Customer Bookings</h1>
           <button
-            className={`btn btn-primary mt-5 w-full bg-[#EF4444] border-none hover:bg-[#a63030] hover:scale-105  text-white rounded-full ${loading ? "cursor-not-allowed" : ""
-              }`}
-            type="submit"
-            disabled={loading}
+            className="btn btn-primary flex items-center gap-2"
+            onClick={handleDialogToggle}
           >
-            {loading && <span className="loading loading-spinner"></span>}
-            {loading ? "Creating Booking..." : "Create Booking"}
+            <FaPlus className="text-white" />
+            Add Booking
           </button>
-        </form>
+        </div>
 
+        <Calendar
+          localizer={localizer}
+          events={events}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: 500, marginTop: "20px" }}
+          className="bg-white text-black w-full md:w-3/4 lg:w-full mx-auto"
+        />
+
+        {isDialogOpen && (
+          <div className="modal modal-open ">
+            <div className="modal-box bg-gray-500">
+              <h1 className="text-2xl font-bold mb-4">Add a new Booking</h1>
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-col gap-4 text-black"
+              >
+                <input
+                  type="date"
+                  value={bookingDate}
+                  onChange={(e) => setBookingDate(e.target.value)}
+                  className="input input-bordered"
+                  required
+                />
+                <input
+                  type="time"
+                  value={bookingTime}
+                  onChange={(e) => setBookingTime(e.target.value)}
+                  className="input input-bordered"
+                  required
+                />
+                <label htmlFor="bookingDuration" className="text-white">
+                  Booking Duration (minutes)
+                </label>
+                <input
+                  type="number"
+                  value={bookingDuration}
+                  onChange={(e) => setBookingDuration(Number(e.target.value))}
+                  className="input input-bordered"
+                  min="1"
+                  required
+                />
+                <label htmlFor="bookingPrice" className="text-white">
+                  Booking Price
+                </label>
+                <input
+                  type="number"
+                  value={bookingPrice}
+                  onChange={(e) => setBookingPrice(Number(e.target.value))}
+                  className="p-3 rounded-md input-bordered disabled:opacity-50 bg-white"
+                  disabled
+                  min="0"
+                  required
+                />
+                <select
+                  value={ground}
+                  onChange={(e) => setGround(e.target.value)}
+                  className="input input-bordered"
+                  required
+                >
+                  <option value="">Select Ground</option>
+                  <option value="Ground 1">Ground 1</option>
+                  <option value="Ground 2">Ground 2</option>
+                  <option value="Ground 3">Ground 3</option>
+                </select>
+                <button
+                  type="submit"
+                  className={`btn btn-primary ${loading ? "loading" : ""}`}
+                  disabled={loading}
+                >
+                  {loading ? "Creating Booking..." : "Create Booking"}
+                </button>
+              </form>
+              <div className="modal-action">
+                <button
+                  onClick={handleDialogToggle}
+                  className="btn btn-secondary"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CustomerBooking
+export default CustomerBooking;
