@@ -7,7 +7,6 @@ const AddBooking = () => {
     <div className="pt-16 pb-16">
       <AdminSiderbar />
       <div className="flex flex-col justify-center h-screen gap-4 w-full max-sm:w-full max-md:w-2/3 p-20">
-      lorem24
       <AddBookingForm/>
     </div>
     </div>
