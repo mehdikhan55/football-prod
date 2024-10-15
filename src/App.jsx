@@ -17,6 +17,7 @@ import CustomerBooking from "./customer/customerBooking";
 import Users from "./dashboard/users/users";
 import Emails from "./dashboard/emails/emails";
 import Teams from "./dashboard/teams/teams";
+import MainDashboard from "./dashboard/statistics/stats";
 
 const App = () => {
   return (
@@ -27,7 +28,7 @@ const App = () => {
           <Route path="admin">
             <Route path="login" element={<Login />} />
             <Route path="dashboard">
-              <Route path="" element={<Navigate to="ground" replace />} />
+              <Route path="" element={<MainDashboard />} />
               <Route path="ground" element={<Ground />} />
               <Route path="booking" element={<Booking />} />
               <Route path="users" element={<Users />} />
