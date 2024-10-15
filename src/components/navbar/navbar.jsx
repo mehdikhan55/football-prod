@@ -14,6 +14,7 @@ const Navbar = () => {
                 <div className="hidden md:flex gap-4">
                     <a href="/" className="text-white">Home</a>
                     <a href="/about" className="text-white">About</a>
+                    <a href="/customer/booking" className="text-white">Booking</a>
                     <a href="/contact" className="text-white">Contact</a>
                     <a href="/login" className="text-white">Login</a>
                     <a href="/register" className="text-white">Register</a>
