@@ -4,7 +4,7 @@ import AddTeams from "./addTeams";
 import EditTeams from "./editTeams";
 
 const Teams = () => {
-  const [activeTab, setActiveTab] = useState("View Teams"); // Initial active tab
+  const [activeTab, setActiveTab] = useState("View Teams");
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);

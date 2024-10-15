@@ -19,7 +19,7 @@ const EditTeams = () => {
         team.id === updatedTeam.id ? updatedTeam : team
       )
     );
-    setSelectedTeam(null); // Clear the selected team after editing
+    setSelectedTeam(null); // Clearing the selected team after editing
   };
 
   return (
@@ -43,7 +43,7 @@ const EditTeams = () => {
           <div className="flex flex-col gap-4">
             {teams.length > 0 ? (
               teams.map((team) => (
-                <TeamCard key={team.id} team={team} onEdit={handleEdit} />
+                <TeamCard key={team.id} type="edit" team={team} onEdit={handleEdit} />
               ))
             ) : (
               <p className="text-gray-500">No teams available.</p>
