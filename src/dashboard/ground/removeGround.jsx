@@ -12,7 +12,7 @@ const RemoveGround = () => {
     };
 
     return (
-        <div className="pt-16 pb-16">
+        <div className="pt-2 pb-16">
             <AdminSiderbar />
             <div className="flex flex-col  justify-start h-screen gap-4 w-full p-20 pt-10">
                 <h1 className="text-2xl font-bold mb-6">Remove Ground</h1>

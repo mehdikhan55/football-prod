@@ -76,6 +76,16 @@ const AdminSiderbar = () => {
                 <span className="flex-1 ms-3 whitespace-nowrap">Grounds</span>
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                to="/admin/dashboard/booking"
+                className="flex items-center p-2 text-white hover::ext-gray-100 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                onClick={() => setSelected("Booking")}
+              >
+                <CiCalendar className="w-5 h-5 text-white transition duration-75 dark:text-white group-hover::ext-gray-100 dark:group-hover:text-white" />
+                <span className="flex-1 ms-3 whitespace-nowrap">Booking</span>
+              </NavLink>
+            </li>
 
             <li>
               <NavLink
@@ -92,16 +102,6 @@ const AdminSiderbar = () => {
 
 
 
-            <li>
-              <NavLink
-                to="/admin/add-booking"
-                className="flex items-center p-2 text-white hover::ext-gray-100 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                onClick={() => setSelected("Booking")}
-              >
-                <CiCalendar className="w-5 h-5 text-white transition duration-75 dark:text-white group-hover::ext-gray-100 dark:group-hover:text-white" />
-                <span className="flex-1 ms-3 whitespace-nowrap">Booking</span>
-              </NavLink>
-            </li>
             <li>
               <NavLink
                 to="/admin/approval"

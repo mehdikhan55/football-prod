@@ -19,7 +19,7 @@ const EditGroundPage = () => {
     };
 
     return (
-        <div className="pt-16 pb-16">
+        <div className="pt-10 pb-16">
             <AdminSiderbar />
             <div className="pt-10 flex flex-col justify-start  gap-4 w-[90%] mx-auto relative">
                 {selectedGround && <div className="absolute top-0 left-0 border-primary border-2 rounded-md p-1 text-center bg-primary text-white cursor-pointer"

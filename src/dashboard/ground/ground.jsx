@@ -12,7 +12,7 @@ const Ground = () => {
 
     return (
         <div className='flex flex-col max-w-[1400px] mx-auto'>
-            <div role="tablist" className="tabs tabs-boxed w-3/4 mx-auto ">
+            <div role="tablist" className="tabs tabs-boxed w-1/2 mx-auto ">
                 <a 
                     role="tab" 
                     className={`tab ${activeTab === 'Edit Ground' ? 'tab-active bg-green-700 text-white' : 'bg-gray-200 text-gray-600'}`} 
