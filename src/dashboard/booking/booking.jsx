@@ -12,17 +12,17 @@ const Booking = () => {
 
     return (
         <div className='flex flex-col max-w-[1400px] mx-auto'>
-            <div role="tablist" className="tabs tabs-boxed w-1/2 mx-auto ">
+            <div role="tablist" className="tabs tabs-boxed w-1/2 mx-auto gap-4 mt-10">
                 <a
                     role="tab"
-                    className={`tab ${activeTab === 'Add Booking' ? 'tab-active bg-green-700 text-white' : 'bg-gray-200 text-gray-600'}`}
+                    className={`tab btn ${activeTab === 'Add Booking' ? 'tab-active bg-green-700 text-white' : 'bg-gray-200 text-gray-600'}`}
                     onClick={() => handleTabClick('Add Booking')}
                 >
                     Add Booking
                 </a>
                 <a
                     role="tab"
-                    className={`tab ${activeTab === 'View Bookings' ? 'tab-active bg-green-700 text-white' : 'bg-gray-200 text-gray-600'}`}
+                    className={`tab btn ${activeTab === 'View Bookings' ? 'tab-active bg-green-700 text-white' : 'bg-gray-200 text-gray-600'}`}
                     onClick={() => handleTabClick('View Bookings')}
                 >
                     View Bookings
