@@ -10,7 +10,7 @@ const AdminSiderbar = () => {
   return (
     <div className={`{show ? "overflow-hidden" : ""}`}>
       <a
-        className="text-white btn-primary btn focus:ring-4 font-medium text-sm px-5 py-2.5  focus:outline-none dark:focus:ring-blue-800 cursor-pointer absolute top-0 right-3 rounded-br-lg rounded-bl-lg border-2"
+        className="text-white btn-primary btn focus:ring-4 font-medium text-sm px-5 py-2.5  focus:outline-none dark:focus:ring-blue-800 cursor-pointer absolute top-0 left-3 rounded-br-lg rounded-bl-lg border-2"
         type="button"
         data-drawer-target="drawer-navigation"
         data-drawer-show="drawer-navigation"
