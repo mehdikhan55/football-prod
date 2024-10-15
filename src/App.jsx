@@ -14,6 +14,7 @@ import Ground from "./dashboard/ground/ground";
 import Booking from "./dashboard/booking/booking";
 import CustomerBooking from "./customer/customerBooking";
 import Users from "./dashboard/users/users";
+import Emails from "./dashboard/emails/emails";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
               <Route path="ground" element={<Ground />} />
               <Route path="booking" element={<Booking />} />
               <Route path="users" element={<Users />} />
+              <Route path="emails" element={<Emails />} />
             </Route>
           </Route>
           <Route path="customer">
