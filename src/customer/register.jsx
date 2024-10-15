@@ -1,5 +1,7 @@
 import React,{useState} from "react";
 import AuthServices from "../services/AuthServices";
+import logo from "../assets/logo.png";
+import dfa1 from "../assets/dfa1.jpg";
 //example post request
 // {
 //     "username": "customer",
