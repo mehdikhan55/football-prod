@@ -13,6 +13,7 @@ import Register from "./customer/register";
 import Ground from "./dashboard/ground/ground";
 import Booking from "./dashboard/booking/booking";
 import CustomerBooking from "./customer/customerBooking";
+import Users from "./dashboard/users/users";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
               <Route path="" element={<Navigate to="ground" replace />} />
               <Route path="ground" element={<Ground />} />
               <Route path="booking" element={<Booking />} />
+              <Route path="users" element={<Users />} />
             </Route>
           </Route>
           <Route path="customer">
