@@ -15,6 +15,7 @@ import Booking from "./dashboard/booking/booking";
 import CustomerBooking from "./customer/customerBooking";
 import Users from "./dashboard/users/users";
 import Emails from "./dashboard/emails/emails";
+import Teams from "./dashboard/teams/teams";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
               <Route path="booking" element={<Booking />} />
               <Route path="users" element={<Users />} />
               <Route path="emails" element={<Emails />} />
+              <Route path="teams" element={<Teams />} />
             </Route>
           </Route>
           <Route path="customer">
