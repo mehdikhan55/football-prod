@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AdminSiderbar from "../../components/sidebar/sidebar";
 import { dummyUserData } from "./dummyUserData";
 
@@ -22,12 +22,47 @@ const Users = () => {
     setUsers(updatedUsers);
   };
 
+  const [teamFilter, setTeamFilter] = useState("all");
+
+  const filterUsers = (team) => {
+    setTeamFilter(team);
+    if (team === "all") {
+      setUsers(dummyUserData);
+    } else {
+      setUsers(dummyUserData.filter((user) => user.team === team));
+    }
+  };
+
+  useEffect(() => {
+    filterUsers(teamFilter);
+  }, [teamFilter]);
+
   return (
     <div className="p-20 h-screen ">
       <AdminSiderbar />
 
       <div className="p-5 w-full">
-        <h1 className="text-5xl font-bold pb-4">Manage the users</h1>
+        <h1 className="text-5xl font-bold mb-10">Manage the users</h1>
+        <div className="flex justify-end items-center mb-4">
+          <div className="flex items-center space-x-4">
+            <label htmlFor="teamFilter" className="text-lg font-semibold">
+              Filter by team:
+            </label>
+            <select
+              value={teamFilter}
+              onChange={(e) => filterUsers(e.target.value)}
+              id="teamFilter"
+              className="p-2 border border-gray-300 rounded-md"
+            >
+              <option value="all">All</option>
+              <option value="Team Alpha">Team Alpha</option>
+              <option value="Team Beta">Team Beta</option>
+              <option value="Team Gamma">Team Gamma</option>
+            </select>
+          </div>
+
+        </div>
+
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
             <tr>

@@ -30,9 +30,9 @@ const AddGround = () => {
   };
 
   return (
-    <div className="pt-16 pb-16">
+    <div className="">
       <AdminSiderbar />
-      <div className="flex flex-col   justify-center h-screen gap-4 w-full max-sm:w-full max-md:w-2/3 p-20">
+      <div className="flex flex-col justify-center gap-4 w-full max-sm:w-full max-md:w-2/3">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <h1 className="text-2xl font-bold">Add a new Ground</h1>
           <div className="flex gap-2">
