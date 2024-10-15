@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AuthServices from "../services/AuthServices";
-import logo from "../assets/logos/dca-logo.png";
+import logo from "../assets/logo.png";
 import dfa1 from "../assets/dfa1.jpg";
 
 const teams = [
