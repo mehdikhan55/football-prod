@@ -45,13 +45,13 @@ const Login = () => {
             type="username"
             value={username}
             onChange={(e) => setusername(e.target.value)}
-            className="rounded-md p-3 border border-gray-300"
+            className="rounded-md p-3 border border-gray-400"
           />
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="rounded-md p-3 border border-gray-300"
+            className="rounded-md p-3 border border-gray-400"
           />
           <p className="text-gray-500 text-sm">
             Incase you don't have an account, please contact the admin.

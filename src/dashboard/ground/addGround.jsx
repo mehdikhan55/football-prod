@@ -111,7 +111,8 @@ const AddGround = () => {
             </div>
           </div>
           {prices.map((price, index) => (
-            <div key={index} className="flex gap-2 items-center">
+            <div key={index} className="flex flex-wrap gap-2 items-center">
+              <div className="">
               <label className="text-gray-500">Duration</label>
               <input
                 type="date"
@@ -124,6 +125,8 @@ const AddGround = () => {
                 placeholder="Duration"
                 className="rounded-md p-3 border border-gray-300"
               />
+              </div>
+              <div className="">
               <label className="text-gray-500">Price</label>
               <input
                 type="number"
@@ -136,6 +139,7 @@ const AddGround = () => {
                 placeholder="Price"
                 className="rounded-md p-3 border border-gray-300"
               />
+              </div>
               <button
                 type="button"
                 onClick={() => {
@@ -157,7 +161,7 @@ const AddGround = () => {
             + Add Dynamic Price
           </button>
           {reservedTimes.map((reservedTime, index) => (
-            <div key={index} className="flex gap-2">
+            <div key={index} className="flex flex-wrap gap-2">
               <input
                 type="date"
                 value={reservedTime.date}

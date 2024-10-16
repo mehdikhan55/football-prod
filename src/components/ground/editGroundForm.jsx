@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 const EditGroundForm = ({ groundData, onSubmit }) => {
   const navigate = useNavigate();
 
@@ -57,50 +56,50 @@ const EditGroundForm = ({ groundData, onSubmit }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center gap-4 w-full max-sm:w-full max-md:w-2/3 pt-0 pb-10 p-20">
+    <div className="flex flex-col justify-center gap-4 w-full px-4 py-10 mx-auto max-w-2xl">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <h1 className="text-2xl font-bold">Edit Ground</h1>
+        <h1 className="text-2xl font-bold text-center">Edit Ground</h1>
 
-        <div className="flex gap-2">
-          <div className="flex flex-col gap-2 w-1/2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-2">
             <label className="text-gray-500">Ground Name</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g Dream Football Arena"
-              className="rounded-md p-3 border border-gray-300"
+              className="rounded-md p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
           </div>
-          <div className="flex flex-col gap-2 w-1/2">
+          <div className="flex flex-col gap-2">
             <label className="text-gray-500">Ground Address</label>
             <input
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               placeholder="e.g 1234 Dream Football Arena"
-              className="rounded-md p-3 border border-gray-300"
+              className="rounded-md p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
           </div>
         </div>
 
-        <div className="flex gap-2">
-          <div className="flex flex-col gap-2 w-1/2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-2">
             <label className="text-gray-500">Ground Phone</label>
             <input
               type="text"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="e.g 123456789"
-              className="rounded-md p-3 border border-gray-300"
+              className="rounded-md p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
           </div>
-          <div className="flex flex-col gap-2 w-1/2">
+          <div className="flex flex-col gap-2">
             <label className="text-gray-500">Ground Type</label>
             <select
               value={groundType}
               onChange={(e) => setGroundType(e.target.value)}
-              className="rounded-md p-3 border border-gray-300"
+              className="rounded-md p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
             >
               <option value="">Select Ground Type</option>
               <option value="Football">Football</option>
@@ -109,54 +108,56 @@ const EditGroundForm = ({ groundData, onSubmit }) => {
           </div>
         </div>
 
-        <div className="flex gap-2">
-          <div className="flex flex-col gap-2 w-1/2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-2">
             <label className="text-gray-500">Ground Start Time</label>
             <input
               type="time"
               value={startTime}
               onChange={(e) => setStartTime(e.target.value)}
-              placeholder="Start Time"
-              className="rounded-md p-3 border border-gray-300"
+              className="rounded-md p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
           </div>
-          <div className="flex flex-col gap-2 w-1/2">
+          <div className="flex flex-col gap-2">
             <label className="text-gray-500">Ground End Time</label>
             <input
               type="time"
               value={endTime}
               onChange={(e) => setEndTime(e.target.value)}
-              placeholder="End Time"
-              className="rounded-md p-3 border border-gray-300"
+              className="rounded-md p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
           </div>
         </div>
 
         {/* Handle prices */}
         {prices.map((price, index) => (
-          <div key={index} className="flex gap-2 items-center">
-            <label className="text-gray-500">Duration</label>
-            <input
-              type="number"
-              value={price.duration}
-              onChange={(e) => {
-                const newPrices = [...prices];
-                newPrices[index].duration = e.target.value;
-                setPrices(newPrices);
-              }}
-              className="rounded-md p-3 border border-gray-300"
-            />
-            <label className="text-gray-500">Price</label>
-            <input
-              type="number"
-              value={price.price}
-              onChange={(e) => {
-                const newPrices = [...prices];
-                newPrices[index].price = e.target.value;
-                setPrices(newPrices);
-              }}
-              className="rounded-md p-3 border border-gray-300"
-            />
+          <div key={index} className="flex flex-wrap gap-2 items-center">
+            <div className="">
+              <label className="text-gray-500">Duration</label>
+              <input
+                type="number"
+                value={price.duration}
+                onChange={(e) => {
+                  const newPrices = [...prices];
+                  newPrices[index].duration = e.target.value;
+                  setPrices(newPrices);
+                }}
+                className="rounded-md p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              />
+            </div>
+            <div className="">
+              <label className="text-gray-500">Price</label>
+              <input
+                type="number"
+                value={price.price}
+                onChange={(e) => {
+                  const newPrices = [...prices];
+                  newPrices[index].price = e.target.value;
+                  setPrices(newPrices);
+                }}
+                className="rounded-md p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              />
+            </div>
             <button
               type="button"
               onClick={() => {
@@ -180,7 +181,7 @@ const EditGroundForm = ({ groundData, onSubmit }) => {
 
         {/* Handle reserved times */}
         {reservedTimes.map((reservedTime, index) => (
-          <div key={index} className="flex gap-2">
+          <div key={index} className="flex flex-wrap gap-2">
             <input
               type="date"
               value={reservedTime.date}
@@ -189,8 +190,7 @@ const EditGroundForm = ({ groundData, onSubmit }) => {
                 newReservedTimes[index].date = e.target.value;
                 setReservedTimes(newReservedTimes);
               }}
-              placeholder="Date"
-              className="rounded-md p-3 border border-gray-300"
+              className="rounded-md p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
             <input
               type="text"
@@ -201,7 +201,7 @@ const EditGroundForm = ({ groundData, onSubmit }) => {
                 setReservedTimes(newReservedTimes);
               }}
               placeholder="Times"
-              className="rounded-md p-3 border border-gray-300"
+              className="rounded-md p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
             <button
               type="button"
@@ -230,7 +230,9 @@ const EditGroundForm = ({ groundData, onSubmit }) => {
           className={`btn btn-primary mt-5 w-full max-sm:w-full text-white rounded-full ${loading ? "cursor-not-allowed" : ""
             }`}
           type="submit"
-        >
+        >s
+
+
           {loading && <span className="loading loading-spinner"></span>}
           {loading ? "Processing..." : "Update Ground"}
         </button>

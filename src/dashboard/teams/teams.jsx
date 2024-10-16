@@ -12,7 +12,7 @@ const Teams = () => {
 
   return (
     <div className="flex flex-col max-w-[1400px] mx-auto">
-      <div role="tablist" className="tabs tabs-boxed w-1/2 mx-auto gap-4 mt-10">
+      <div role="tablist" className="tabs sm:w-1/2 pt-4 w-full leading-tight tabs-boxed relative mx-auto gap-4 sm:mt-10 mt-20">
         <a
           role="tab"
           className={`tab btn ${

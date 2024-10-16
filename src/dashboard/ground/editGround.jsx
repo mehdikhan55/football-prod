@@ -21,7 +21,7 @@ const EditGroundPage = () => {
     return (
         <div className="">
             <AdminSiderbar />
-            <div className=" flex flex-col justify-start  gap-4 mt-5">
+            <div className=" flex flex-col justify-start relative  gap-4 mt-5">
                 {selectedGround && <div className="absolute top-0 left-0 border-primary border-2 rounded-md p-1 text-center bg-primary text-white cursor-pointer"
                     onClick={() => setSelectedGround(null)}
                 >

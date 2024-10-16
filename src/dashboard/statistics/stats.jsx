@@ -60,7 +60,7 @@ const MainDashboard = () => {
   const [totalCricketTeams, setTotalCricketTeams] = useState(2);
 
   return (
-    <div className="p-5 h-screen lg:p-20">
+    <div className="p-5 pt-14 h-screen lg:p-20">
       <AdminSiderbar />
 
       <div className="p-5 w-full">
