@@ -46,7 +46,7 @@ const AdminSiderbar = () => {
           onClick={() => handleShow(!show)}
           type="button"
           aria-controls="drawer-navigation"
-          className="text-white bg-transparent hover:bg-gray-200 hover:text-gray-100 rounded-lg text-sm p-1.5 absolute top-2.5 end-2.5 inline-flex items-center"
+          className="text-white bg-transparent hover:bg-gray-200  hover:text-gray-500 rounded-lg text-sm p-1.5 absolute top-2.5 end-2.5 inline-flex items-center"
         >
           <svg
             aria-hidden="true"

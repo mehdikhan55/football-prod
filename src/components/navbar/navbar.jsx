@@ -6,7 +6,7 @@ const Navbar = () => {
     const [showMenu, setShowMenu] = useState(false);
 
     return (
-        <div className="bg-gray-900 fixed top-0 w-full">
+        <div className="bg-gray-900 fixed top-0 w-full z-50">
             <div className="flex justify-between items-center p-4">
                 <div>
                     <img src={logoWhite} alt="logo" className="w-10 h-10" />
@@ -16,8 +16,8 @@ const Navbar = () => {
                     <a href="/about" className="text-white">About</a>
                     <a href="/customer/booking" className="text-white">Booking</a>
                     <a href="/contact" className="text-white">Contact</a>
-                    <a href="/login" className="text-white">Login</a>
-                    <a href="/register" className="text-white">Register</a>
+                    <a href="/customer/login" className="text-white">Login</a>
+                    <a href="/customer/register" className="text-white">Register</a>
                 </div>
                 <div className="md:hidden">
                     <button onClick={() => setShowMenu(!showMenu)} className="text-white">
