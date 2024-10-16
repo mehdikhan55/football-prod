@@ -8,19 +8,29 @@ import dfaacademy from "../assets/logos/dfa-academy.jpg";
 import dfa from "../assets/logos/dfa.png";
 import totalfootball from "../assets/logos/totalfootball.png";
 import totalpremier from "../assets/logos/totalpremier.jpeg";
+
+import wallpaperfb from "../assets/wallpaperfb.jpg";
+
+import GeneralBooking from "./calendar";
+import LeaveReview from "./leavereview";
+import Newsletter from "./newsletter";
+import Footer from "./footer";
 const Home = () => {
   return (
-    <div>
+    <div className="bg-gray-800 text-white min-h-screen">
       <Navbar />
-      <div className="p-20 flex items-center h-screen bg-gray-800 text-white">
-        <div className="w-1/2 ">
+      <div
+        className="p-20 flex items-end text-white min-h-screen bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${wallpaperfb})` }}
+      >
+        <div className="w-1/2 mt-10">
           <div className="flex items-end gap-1">
             <IoIosFootball className="text-lg text-red-500" />
             <IoIosFootball className="text-xl text-red-500" />
             <IoIosFootball className="text-2xl text-red-500" />
           </div>
-          <h1 className="text-4xl font-bold uppercase">
-            Welcome to the <span className="text-red-500"> Dream Arena</span>
+          <h1 className="text-4xl font-extrabold uppercase">
+            Welcome to the <span className="text-red-700"> Dream Arena</span>
           </h1>
           <p className="text-md mt-2">
             Dream Arena by Dream Enterprises is an unparalleled sports complex
@@ -30,10 +40,10 @@ const Home = () => {
             levels.
           </p>
           <div className="mt-4 flex">
-            <button className="bg-red-500 px-4 py-2 rounded-md btn">
+            <button className="bg-red-500 px-4 py-2 rounded-md btn border-0">
               Book Now
             </button>
-            <button className="bg-gray-500 px-4 py-2 rounded-md btn ml-4">
+            <button className="bg-gray-500 px-4 py-2 rounded-md btn ml-4 border-0">
               Learn More
             </button>
           </div>
@@ -45,8 +55,26 @@ const Home = () => {
             <img src={totalpremier} alt="dca" className="h-16" />
           </div>
         </div>
-        <div className="w-1/2 h-screen"></div>
       </div>
+      <div className="p-20 bg-gray-900">
+        <p className="text-3xl font-bold text-center flex items-center justify-center gap-3">
+          <IoIosFootball className="text-red-500 text-4xl" />
+          Booking a slot has never been easier!
+        </p>
+        <p className="text-center mt-2 text-md">
+          Book a slot at Dream Arena with a few simple clicks Register now to
+          get started.
+        </p>
+        <div className="flex justify-center mt-4">
+          <button className="bg-red-500 px-4 py-2 rounded-md btn hover:bg-red-700 border-none w-96">
+            Book Now
+          </button>
+        </div>
+      </div>
+      <GeneralBooking />
+      <Newsletter />
+      <LeaveReview />
+      <Footer />
     </div>
   );
 };
