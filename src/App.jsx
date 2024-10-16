@@ -20,6 +20,7 @@ import Teams from "./dashboard/teams/teams";
 import MainDashboard from "./dashboard/statistics/stats";
 import LeaveReview from "./home/leavereview";
 import Challenges from "./dashboard/challenges/challenges";
+import ContactUs from "./home/contact-us/ContactUs";
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
       <Routes>
         <Route path="/">
           <Route path="" element={<Home />} />
+          <Route path="/contact" element={<ContactUs />} />
           <Route path="admin">
             <Route path="" element={<Navigate to="/admin/dashboard" />} />
             <Route path="login" element={<Login />} />
