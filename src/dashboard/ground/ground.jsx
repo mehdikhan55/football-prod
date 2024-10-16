@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AddGround from "./addGround";
-import RemoveGround from "./RemoveGround";
+import RemoveGround from "./removeGround";
 import EditGround from "./editGround";
 import dfawallpaper from "../../assets/dfa-wallpaper.png";
 

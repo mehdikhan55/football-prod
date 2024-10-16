@@ -18,6 +18,7 @@ import Users from "./dashboard/users/users";
 import Emails from "./dashboard/emails/emails";
 import Teams from "./dashboard/teams/teams";
 import MainDashboard from "./dashboard/statistics/stats";
+import LeaveReview from "./home/leavereview";
 
 const App = () => {
   return (

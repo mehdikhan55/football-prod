@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TeamCard from "../../components/teams/teamCard"; 
 import { dummyTeamsData } from "./dummyTeamsData"; 
-import EditTeamForm from "../../components/teams/EditTeamForm"; 
+import EditTeamForm from "../../components/teams/editTeamForm";
 import AdminSiderbar from "../../components/sidebar/sidebar";
 
 const EditTeams = () => {
