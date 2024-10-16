@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import TeamCard from "../../components/teams/teamCard"; 
-import { dummyTeamsData } from "./dummyTeamsData"; 
+import TeamCard from "../../components/teams/teamCard";
+import { dummyTeamsData } from "./dummyTeamsData";
 import EditTeamForm from "../../components/teams/editTeamForm";
 import AdminSiderbar from "../../components/sidebar/sidebar";
 
 const EditTeams = () => {
   const [teams, setTeams] = useState(dummyTeamsData);
-  const [selectedTeam, setSelectedTeam] = useState(null); 
+  const [selectedTeam, setSelectedTeam] = useState(null);
 
   const handleEdit = (team) => {
     console.log("Editing team:", team);
@@ -15,9 +15,7 @@ const EditTeams = () => {
 
   const handleSubmit = (updatedTeam) => {
     setTeams((prevTeams) =>
-      prevTeams.map((team) =>
-        team.id === updatedTeam.id ? updatedTeam : team
-      )
+      prevTeams.map((team) => (team.id === updatedTeam.id ? updatedTeam : team))
     );
     setSelectedTeam(null); // Clearing the selected team after editing
   };
@@ -35,15 +33,17 @@ const EditTeams = () => {
           </div>
         )}
         {selectedTeam ? (
-          <EditTeamForm
-            teamData={selectedTeam}
-            onSubmit={handleSubmit}
-          />
+          <EditTeamForm teamData={selectedTeam} onSubmit={handleSubmit} />
         ) : (
           <div className="flex flex-col gap-4">
             {teams.length > 0 ? (
               teams.map((team) => (
-                <TeamCard key={team.id} type="edit" team={team} onEdit={handleEdit} />
+                <TeamCard
+                  key={team.id}
+                  type="edit"
+                  team={team}
+                  onEdit={handleEdit}
+                />
               ))
             ) : (
               <p className="text-gray-500">No teams available.</p>
