@@ -28,7 +28,7 @@ const GeneralBooking = () => {
           startAccessor="start"
           endAccessor="end"
           style={{ height: 500, marginTop: "20px" }}
-          className="bg-gray-100 text-black w-full md:w-3/4 lg:w-full mx-auto p-10 rounded-xl shadow-lg"
+          className="bg-gray-100 text-black w-full md:w-3/4 lg:w-full mx-auto p-10 max-sm:p-0 rounded-xl shadow-lg"
         />
       </div>
     </div>

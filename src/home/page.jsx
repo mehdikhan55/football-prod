@@ -57,8 +57,8 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="p-20 bg-gray-900">
-        <p className="text-3xl font-bold text-center flex items-center justify-center gap-3">
+      <div className="p-20 bg-gray-900 max-sm:p-10">
+        <p className="text-3xl font-bold text-center flex items-center justify-center gap-3 max-sm:flex-col">
           <IoIosFootball className="text-red-500 text-4xl" />
           Booking a slot has never been easier!
         </p>
@@ -67,7 +67,7 @@ const Home = () => {
           get started.
         </p>
         <div className="flex justify-center mt-4">
-          <button className="bg-red-500 px-4 py-2 rounded-md btn hover:bg-red-700 border-none w-96">
+          <button className="bg-red-500 px-4 py-2 rounded-md btn hover:bg-red-700 border-none w-96 max-sm:w-1/2">
           <Link to="/customer/booking">Book Now</Link>
           </button>
         </div>

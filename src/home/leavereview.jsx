@@ -5,11 +5,11 @@ const LeaveReview = () => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   return (
-    <div className="flex flex-col md:flex-row items-center p-10">
-      <div className="w-1/3 flex justify-center">
+    <div className="flex flex-col md:flex-row items-center p-10 max-sm:p-5">
+      <div className="w-1/3 flex justify-center max-sm:w-full">
         <img src={review} alt="review" />
       </div>
-      <div className="container w-2/3">
+      <div className="container w-2/3 max-sm:w-full">
         <h1 className="text-md">
           Leave a Review for your experience with Dream Arena
         </h1>
