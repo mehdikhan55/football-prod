@@ -85,7 +85,7 @@ const LoginCustomer = () => {
         
             <div className="flex items-center justify-center">
               <button
-                className={`btn btn-primary bg-[#EF4444] border-none hover:bg-[#a63030] hover:scale-105 mt-5 w-96 w-full text-white rounded-full ${
+                className={`btn btn-primary bg-[#EF4444] border-none hover:bg-[#a63030] hover:scale-105 mt-5  w-full text-white rounded-full ${
                   loading ? "cursor-not-allowed" : ""
                 }`}
                 type="submit"
