@@ -5,7 +5,7 @@ const LeaveReview = () => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   return (
-    <div className="flex items-center p-10">
+    <div className="flex flex-col md:flex-row items-center p-10">
       <div className="w-1/3 flex justify-center">
         <img src={review} alt="review" />
       </div>
@@ -34,7 +34,7 @@ const LeaveReview = () => {
         </div>
         <textarea
           placeholder="Leave a review"
-          className="w-full opacity-45 p-10 rounded-xl text-black"
+          className="w-full opacity-45 p-10 rounded-xl text-black"      
         ></textarea>
         <button className="btn bg-red-500 border-0 w-full hover:bg-red-700">
           Submit

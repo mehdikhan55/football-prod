@@ -15,15 +15,16 @@ import GeneralBooking from "./calendar";
 import LeaveReview from "./leavereview";
 import Newsletter from "./newsletter";
 import Footer from "./footer";
+import { Link } from "react-router-dom";
 const Home = () => {
   return (
-    <div className="bg-gray-800 text-white min-h-screen">
+    <div className="bg-gray-800 text-white min-h-screen overflow-hidden">
       <Navbar />
       <div
         className="p-20 flex items-end text-white min-h-screen bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${wallpaperfb})` }}
       >
-        <div className="w-1/2 mt-10">
+        <div className="w-full sm:w-1/2 mt-10">
           <div className="flex items-end gap-1">
             <IoIosFootball className="text-lg text-red-500" />
             <IoIosFootball className="text-xl text-red-500" />
@@ -41,13 +42,13 @@ const Home = () => {
           </p>
           <div className="mt-4 flex">
             <button className="bg-red-500 px-4 py-2 rounded-md btn border-0">
-              Book Now
+              <Link to="/customer/booking">Book Now</Link>
             </button>
             <button className="bg-gray-500 px-4 py-2 rounded-md btn ml-4 border-0">
               Learn More
             </button>
           </div>
-          <div className="flex gap-4 mt-4">
+          <div className="flex flex-wrap gap-4 mt-4">
             <img src={dcalogo} alt="dca" className="h-16" />
             <img src={dca} alt="dca" className="h-16" />
             <img src={dfa} alt="dca" className="h-16" />
@@ -67,7 +68,7 @@ const Home = () => {
         </p>
         <div className="flex justify-center mt-4">
           <button className="bg-red-500 px-4 py-2 rounded-md btn hover:bg-red-700 border-none w-96">
-            Book Now
+          <Link to="/customer/booking">Book Now</Link>
           </button>
         </div>
       </div>

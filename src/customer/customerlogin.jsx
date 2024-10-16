@@ -54,7 +54,7 @@ const LoginCustomer = () => {
     <div className="flex-col bg-gray-800" style={{ backgroundImage: `url(${registebg})`, backgroundSize: "cover" }}>
       <div className="flex flex-col items-center justify-center h-screen gap-4 max-sm:w-full max-md:w-2/3">
         <div className="bg-gray-700 shadow-lg p-10 rounded-3xl w-1/3 bg-opacity-40 max-sm:w-full max-md:w-full">
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex justify-between items-center mb-3 max-sm:text-center">
             <div>
               <h1 className="text-3xl font-extrabold text-white">
                 DREAM <span className="text-[#EF4444]">ARENA</span>
@@ -85,7 +85,7 @@ const LoginCustomer = () => {
         
             <div className="flex items-center justify-center">
               <button
-                className={`btn btn-primary bg-[#EF4444] border-none hover:bg-[#a63030] hover:scale-105 mt-5 w-96 max-sm:w-full text-white rounded-full ${
+                className={`btn btn-primary bg-[#EF4444] border-none hover:bg-[#a63030] hover:scale-105 mt-5 w-96 w-full text-white rounded-full ${
                   loading ? "cursor-not-allowed" : ""
                 }`}
                 type="submit"

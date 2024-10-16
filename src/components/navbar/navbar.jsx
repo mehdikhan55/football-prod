@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 
 import logoWhite from "../../assets/logoWhite.png";
 
@@ -31,9 +31,10 @@ const Navbar = () => {
                 <div className="flex flex-col gap-4 p-4">
                     <a href="/" className="text-white">Home</a>
                     <a href="/about" className="text-white">About</a>
+                    <a href="/customer/booking" className="text-white">Booking</a>
                     <a href="/contact" className="text-white">Contact</a>
-                    <a href="/login" className="text-white">Login</a>
-                    <a href="/register" className="text-white">Register</a>
+                    <a href="/customer/login" className="text-white">Login</a>
+                    <a href="/customer/register" className="text-white">Register</a>
                 </div>
             )}
         </div>
