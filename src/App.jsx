@@ -19,6 +19,7 @@ import Emails from "./dashboard/emails/emails";
 import Teams from "./dashboard/teams/teams";
 import MainDashboard from "./dashboard/statistics/stats";
 import LeaveReview from "./home/leavereview";
+import Challenges from "./dashboard/challenges/challenges";
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
               <Route path="users" element={<Users />} />
               <Route path="emails" element={<Emails />} />
               <Route path="teams" element={<Teams />} />
+              <Route path="challenges" element={<Challenges />} />
             </Route>
           </Route>
           <Route path="customer">
