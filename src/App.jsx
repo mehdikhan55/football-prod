@@ -21,6 +21,7 @@ import MainDashboard from "./dashboard/statistics/stats";
 import LeaveReview from "./home/leavereview";
 import Challenges from "./dashboard/challenges/challenges";
 import ContactUs from "./home/contact-us/ContactUs";
+import AdminLeagues from "./dashboard/leagues/adminLeagues";
 
 const App = () => {
   return (
@@ -40,6 +41,7 @@ const App = () => {
               <Route path="emails" element={<Emails />} />
               <Route path="teams" element={<Teams />} />
               <Route path="challenges" element={<Challenges />} />
+              <Route path="leagues" element={<AdminLeagues />} />
             </Route>
           </Route>
           <Route path="customer">
