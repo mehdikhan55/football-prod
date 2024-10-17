@@ -16,6 +16,7 @@ import LeaveReview from "./leavereview";
 import Newsletter from "./newsletter";
 import Footer from "./footer";
 import { Link } from "react-router-dom";
+import ProfileSection from "./profileSection";
 const Home = () => {
   return (
     <div className="bg-gray-800 text-white min-h-screen overflow-hidden">
@@ -72,9 +73,11 @@ const Home = () => {
           </button>
         </div>
       </div>
+      <ProfileSection/>
       <GeneralBooking />
       <Newsletter />
       <LeaveReview />
+     
       <Footer />
     </div>
   );
