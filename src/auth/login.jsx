@@ -43,12 +43,14 @@ const Login = () => {
           <h1 className="text-2xl font-bold text-center">DREAM FOOTBALL ARENA</h1>
           <input
             type="username"
+            placeholder="Username"
             value={username}
             onChange={(e) => setusername(e.target.value)}
             className="rounded-md p-3 border border-gray-400"
           />
           <input
             type="password"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="rounded-md p-3 border border-gray-400"

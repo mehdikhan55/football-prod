@@ -18,6 +18,9 @@ const Navbar = () => {
           <a href="/customer/booking" className="text-white">
             Booking
           </a>
+          <a href="/customer/leagues" className="text-white">
+            Leagues
+          </a>
           <a href="/contact" className="text-white">
             Contact
           </a>
@@ -62,6 +65,9 @@ const Navbar = () => {
           </a>
           <a href="/customer/booking" className="text-white">
             Booking
+          </a>
+          <a href="/customer/leagues" className="text-white">
+            Leagues
           </a>
           <a href="/contact" className="text-white">
             Contact
