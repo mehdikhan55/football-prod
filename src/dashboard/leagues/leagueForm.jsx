@@ -13,7 +13,14 @@ const LeagueForm = ({ onSubmit }) => {
         e.preventDefault();
         setLoading(true);
         try {
-            onSubmit({ leagueName, startDate, endDate, teams: selectedTeams });
+            // Ensure the team IDs are in the correct format
+            const leagueData = {
+                leagueName,
+                startDate,
+                endDate,
+                teams: selectedTeams.map(teamId => ({ id: teamId })), // Change this line
+            };
+            onSubmit(leagueData);
             resetForm();
         } catch (error) {
             setError(error.message);
@@ -21,6 +28,7 @@ const LeagueForm = ({ onSubmit }) => {
             setLoading(false);
         }
     };
+    
 
     // Function to reset form fields
     const resetForm = () => {
