@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import LeagueCard from './LeagueCard';
+import LeagueCard from './leagueCard';
 import { dummyLeaguesData } from './dummyLeaguesData';
 import EditLeagueForm from './editLeagueForm'
 import dfawallpaper from "../../assets/dfa-wallpaper.png";
