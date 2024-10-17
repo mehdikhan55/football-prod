@@ -17,10 +17,10 @@ const Emails = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="p-20 h-screen">
+    <div className="p-20 max-sm:px-0 h-screen">
       <AdminSiderbar />
 
-      <div className="p-5 w-full">
+      <div className="p-5 overflow-auto w-full">
         <div className="flex items-center justify-between mb-10">
           <h1 className="text-xl font-bold">Emails</h1>
           <div className="flex items-center gap-2">

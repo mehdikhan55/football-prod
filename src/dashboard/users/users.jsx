@@ -58,10 +58,10 @@ const Users = () => {
   }, [nameSearch]);
 
   return (
-    <div className="p-20 h-screen ">
+    <div className="p-20 max-sm:px-0 h-screen ">
       <AdminSiderbar />
 
-      <div className="p-5 w-full">
+      <div className="p-5 w-full overflow-auto">
         <div className="flex items-center gap-2 mb-4">
           <BiUser className="w-8 h-8 text-gray-500 dark:text-gray-400" />
           <h1 >Manage the users</h1>
