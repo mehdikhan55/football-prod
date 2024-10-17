@@ -29,7 +29,7 @@ const EditTeams = () => {
             className="absolute top-0 left-0 border-primary border-2 rounded-md p-1 text-center bg-primary text-white cursor-pointer"
             onClick={() => setSelectedTeam(null)}
           >
-            {"<Back"}
+            {"Back"}
           </div>
         )}
         {selectedTeam ? (

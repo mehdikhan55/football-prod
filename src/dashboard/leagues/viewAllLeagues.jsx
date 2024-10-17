@@ -41,13 +41,14 @@ const ViewAllLeagues = () => {
             className="flex flex-col gap-4"
         >
             <AdminSiderbar />
-            <div className="relative">
+            <div className="relative w-3/4 mx-auto pb-1">
+                
                 {selectedLeague && (
                     <div
                         className="absolute top-0 left-0 border-primary border-2 rounded-md p-1 text-center bg-primary text-white cursor-pointer"
                         onClick={() => setSelectedLeague(null)}
                     >
-                        {"<Back"}
+                        {"Back"}
                     </div>
                 )}
             </div>

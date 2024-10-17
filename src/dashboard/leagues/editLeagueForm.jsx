@@ -1,22 +1,34 @@
 import React, { useState, useEffect } from "react";
 import AdminSiderbar from "../../components/sidebar/sidebar";
 import dfawallpaper from "../../assets/dfa-wallpaper.png";
+import { dummyTeamsData } from '../teams/dummyTeamsData';
 
 const EditLeagueForm = ({ leagueData, onSubmit }) => {
     const [leagueName, setLeagueName] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-    const [teams, setTeams] = useState([]);
+    const [selectedTeams, setSelectedTeams] = useState([]);
     const [matches, setMatches] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [availablePlayers, setAvailablePlayers] = useState([]);
 
     useEffect(() => {
         if (leagueData) {
             setLeagueName(leagueData.leagueName);
             setStartDate(leagueData.startDate);
             setEndDate(leagueData.endDate);
-            setTeams(leagueData.teams);
+            setSelectedTeams(leagueData.teams);
             setMatches(leagueData.matches);
+            setAvailablePlayers(() => {
+                const players = [];
+                leagueData.teams.forEach(teamId => {
+                    const teamPlayers = dummyTeamsData.find(team => team.id === teamId).players;
+                    teamPlayers.forEach(player => {
+                        players.push({ teamId, playerName: player });
+                    });
+                });
+                return players;
+            })
         }
     }, [leagueData]);
 
@@ -27,7 +39,7 @@ const EditLeagueForm = ({ leagueData, onSubmit }) => {
             leagueName,
             startDate,
             endDate,
-            teams,
+            teams: selectedTeams,
             matches,
         };
         console.log(updatedLeague);
@@ -45,6 +57,19 @@ const EditLeagueForm = ({ leagueData, onSubmit }) => {
         setMatches(newMatches);
     };
 
+    const handleTeamChange = (teamId) => {
+        setSelectedTeams(prev =>
+            prev.includes(teamId)
+                ? prev.filter(id => id !== teamId)
+                : [...prev, teamId]
+        );
+    };
+
+    const getTeamById = (teamId) => {
+        const team = dummyTeamsData.find(team => team.id === teamId);
+        return team ? team.teamName : 'Unknown Team';
+    }
+
     return (
         <div
             style={{
@@ -56,6 +81,7 @@ const EditLeagueForm = ({ leagueData, onSubmit }) => {
             <div className="flex flex-col justify-center gap-4 w-full max-sm:w-full max-md:w-2/3 max-sm:mt-10">
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-3/4 mx-auto">
                     <h1 className="text-2xl font-bold">Edit League</h1>
+
                     <label className="text-gray-500">League Name</label>
                     <input
                         type="text"
@@ -83,22 +109,28 @@ const EditLeagueForm = ({ leagueData, onSubmit }) => {
                         required
                     />
 
-                    <label className="text-gray-500">Teams (Comma Separated)</label>
-                    <input
-                        type="text"
-                        value={teams.join(', ')}
-                        onChange={(e) => setTeams(e.target.value.split(',').map(team => team.trim()))}
-                        className="rounded-md p-3 border border-gray-300"
-                    />
+                    <div className="flex flex-col gap-4">
+                        <label className="text-gray-500">Teams</label>
+                        {dummyTeamsData.map((team) => (
+                            <div key={team.id} className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    checked={selectedTeams.includes(team.id)}
+                                    onChange={() => handleTeamChange(team.id)}
+                                    className="rounded"
+                                />
+                                <span>{team.teamName}</span>
+                            </div>
+                        ))}
+                    </div>
 
                     {matches.map((match, index) => (
                         <div key={index} className="flex flex-col gap-4 border p-4 rounded-md border-gray-300">
                             <label className="text-gray-500">Match {index + 1}</label>
                             <div className="flex gap-4">
                                 <div className="flex flex-col w-1/2">
-                                    <label className="text-gray-500">Team A (ID)</label>
-                                    <input
-                                        type="text"
+                                    <label className="text-gray-500">Team A</label>
+                                    <select
                                         value={match.teamA}
                                         onChange={(e) => {
                                             const newMatches = [...matches];
@@ -106,12 +138,18 @@ const EditLeagueForm = ({ leagueData, onSubmit }) => {
                                             setMatches(newMatches);
                                         }}
                                         className="rounded-md p-3 border border-gray-300"
-                                    />
+                                    >
+                                        <option value="">Select Team A</option>
+                                        {selectedTeams.map((teamId) => (
+                                            <option key={teamId} value={teamId}>
+                                                {getTeamById(teamId)}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                                 <div className="flex flex-col w-1/2">
-                                    <label className="text-gray-500">Team B (ID)</label>
-                                    <input
-                                        type="text"
+                                    <label className="text-gray-500">Team B</label>
+                                    <select
                                         value={match.teamB}
                                         onChange={(e) => {
                                             const newMatches = [...matches];
@@ -119,7 +157,14 @@ const EditLeagueForm = ({ leagueData, onSubmit }) => {
                                             setMatches(newMatches);
                                         }}
                                         className="rounded-md p-3 border border-gray-300"
-                                    />
+                                    >
+                                        <option value="">Select Team B</option>
+                                        {selectedTeams.map((teamId) => (
+                                            <option key={teamId} value={teamId}>
+                                                {getTeamById(teamId)}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                             </div>
                             <div className="flex flex-col gap-4">
@@ -137,30 +182,38 @@ const EditLeagueForm = ({ leagueData, onSubmit }) => {
                                         className="rounded-md p-3 border border-gray-300"
                                     />
                                 </div>
+
+
                                 <div className="flex flex-col w-1/2">
                                     <label className="text-gray-500">Scorers</label>
                                     {match.scorers.map((scorer, scorerIndex) => (
                                         <div key={scorerIndex} className="flex gap-2">
-                                            <input
+                                            <select
                                                 type="text"
                                                 placeholder="Player Name"
                                                 value={scorer.player}
                                                 onChange={(e) => {
+                                                    const selectedPlayer = e.target.value;
+                                                    const team = availablePlayers.find(player => player.playerName === selectedPlayer)?.teamId || ''; // Get the team ID based on the selected player
                                                     const newMatches = [...matches];
-                                                    newMatches[index].scorers[scorerIndex].player = e.target.value;
+                                                    newMatches[index].scorers[scorerIndex].player = selectedPlayer;
+                                                    newMatches[index].scorers[scorerIndex].team = team; // Automatically set the team based on selected player
                                                     setMatches(newMatches);
                                                 }}
                                                 className="rounded-md p-3 border border-gray-300 w-2/3"
-                                            />
+                                            >
+                                                <option value="">Select Player</option>
+                                                {availablePlayers.map(player => (
+                                                    <option key={player.playerName} value={player.playerName} selected={player.playerName === scorer.player}>
+                                                        {player.playerName}
+                                                    </option>
+                                                ))}
+                                            </select>
                                             <input
                                                 type="text"
                                                 placeholder="Team ID"
                                                 value={scorer.team}
-                                                onChange={(e) => {
-                                                    const newMatches = [...matches];
-                                                    newMatches[index].scorers[scorerIndex].team = e.target.value;
-                                                    setMatches(newMatches);
-                                                }}
+                                                readOnly
                                                 className="rounded-md p-3 border border-gray-300 w-1/3"
                                             />
                                         </div>
@@ -193,11 +246,15 @@ const EditLeagueForm = ({ leagueData, onSubmit }) => {
                         onClick={addMatch}
                         className="mt-4 bg-secondary text-white rounded-md py-2"
                     >
-                        + Add More Matches
+                        + Add Match
                     </button>
 
-                    <button type="submit" className="mt-5 bg-primary text-white rounded-md py-2">
-                        {loading ? 'Updating League...' : 'Update League'}
+                    <button
+                        type="submit"
+                        className="mt-4 bg-primary text-white rounded-md py-2"
+                        disabled={loading}
+                    >
+                        {loading ? 'Updating...' : 'Update League'}
                     </button>
                 </form>
             </div>
