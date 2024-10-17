@@ -34,6 +34,16 @@ export const dummyLeaguesData = [
           ],
           date: "2024-04-25",
         },
+        {
+          teamA: 2,
+          teamB: 1,
+          score: { teamA: 1, teamB: 2 },
+          scorers: [
+            { player: "Moh has", team: 1 },
+            { player: "Jophia oung", team: 2 },
+          ],
+          date: "2024-05-25",
+        },
       ],
     },
   ];
