@@ -14,7 +14,7 @@ const TeamCard = ({ team, onEdit, onRemove, type = "edit" }) => {
         </ul>
       </div>
       <button
-        onClick={() => (type === "remove" ? onRemove(team.id) : onEdit(team))}
+        onClick={() => (type === "remove" ? onRemove(team._id) : onEdit(team))}
         className={`btn text-white flex items-center ${type === "remove" ? "bg-red-500 hover:bg-red-700" : "bg-primary hover:bg-secondary"}`}
       >
         {type === "remove" ? (

@@ -50,7 +50,7 @@ const Teams = () => {
 
       <div className=" p-4">
         {/* Render tab content based on the active tab */}
-        {activeTab === "Add Teams" && <AddTeams/>}
+        {activeTab === "Add Teams" && <AddTeams setIsActiveTab={setActiveTab}/>}
         {activeTab === "Edit Teams" && <EditTeams/>}
         {activeTab === "View Teams" && <ViewTeams/>}
       </div>

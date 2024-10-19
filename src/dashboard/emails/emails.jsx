@@ -30,7 +30,7 @@ const Emails = () => {
       setEmails(data);
     } catch (error) {
       console.log('error in fetchEmails', error);
-      setError(error);
+      setError(error.response.data.message);
     } finally {
       setLoading(false);
     }
