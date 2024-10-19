@@ -13,7 +13,7 @@ const GroundCard = ({ ground, onRemove, onEdit, type = "remove" }) => {
         <p className="text-gray-600">End Time: {ground.endTime}</p>
       </div>
       <button
-        onClick={() => (type === "remove" ? onRemove(ground.id) : onEdit(ground))}
+        onClick={() => (type === "remove" ? onRemove(ground._id) : onEdit(ground))}
         className={`btn text-white flex items-center ${type === "remove" ? "bg-red-500 hover:bg-red-700" : "bg-primary hover:bg-secondary"}`}
       >
         {type === "remove" ? (

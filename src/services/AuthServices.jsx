@@ -23,6 +23,7 @@ const AuthServices = {
       });
       //set token
       localStorage.setItem("token", response.data.token);
+      window.location.href = "/admin/dashboard";
       return handleResponse(response);
     } catch (error) {
       return { error };

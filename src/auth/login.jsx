@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AuthServices from "../services/AuthServices";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import dfa1 from "../assets/dfa1.jpg";
 

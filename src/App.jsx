@@ -22,10 +22,13 @@ import ContactUs from "./home/contact-us/ContactUs";
 import AdminLeagues from "./dashboard/leagues/adminLeagues";
 import CustomerLeagues from "./customer/leagues/customerLeagues";
 import LeagueDetails from "./customer/leagues/leagueDetails";
+import { Toaster } from "react-hot-toast";
 
 
 const App = () => {
   return (
+    <>
+    <Toaster />
     <Router>
       <Routes>
         {/* Main Routes */}
@@ -55,6 +58,7 @@ const App = () => {
         <Route path="customer/leagues/:id" element={<LeagueDetails />} /> 
       </Routes>
     </Router>
+    </>
   );
 };
 

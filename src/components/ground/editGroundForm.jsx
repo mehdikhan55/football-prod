@@ -11,8 +11,8 @@ const EditGroundForm = ({ groundData, onSubmit }) => {
   const [prices, setPrices] = useState(groundData?.prices || [{ duration: 1, price: 0 }]);
   const [groundType, setGroundType] = useState(groundData?.groundType || "");
   const [reservedTimes, setReservedTimes] = useState(groundData?.reserved_times || [{ date: "", times: [""] }]);
-  const [startTime, setStartTime] = useState(groundData?.startTime || "");
-  const [endTime, setEndTime] = useState(groundData?.endTime || "");
+  const [startTime, setStartTime] = useState(groundData?.startTime || "10:00");
+  const [endTime, setEndTime] = useState(groundData?.endTime || "11:00");  
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -56,7 +56,7 @@ const EditGroundForm = ({ groundData, onSubmit }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center gap-4 w-full px-4 py-10 mx-auto max-w-2xl">
+    <div className="flex flex-col justify-center gap-4 w-full  px-4 py-10 mx-auto max-w-2xl">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <h1 className="text-2xl font-bold text-center">Edit Ground</h1>
 

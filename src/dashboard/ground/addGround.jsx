@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminSiderbar from "../../components/sidebar/sidebar";
 import dfawallpaper from "../../assets/dfa-wallpaper.png";
+import toast from "react-hot-toast";
 const URL = import.meta.env.VITE_BACKEND_URL;
 
-const AddGround = () => {
+const AddGround = ({setActiveTab}) => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -22,8 +23,46 @@ const AddGround = () => {
   const handleSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
+    setError(null);
+    if (
+      name === "" ||
+      address === "" ||
+      phone === "" ||
+      groundType === "" ||
+      startTime === "" ||
+      endTime === ""
+    ) {
+      setError("Please fill in all fields");
+      setLoading(false);
+      return;
+    }
     try {
+      const response = await fetch(`${URL}/grounds`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          //jwt from locals storage
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          name,
+          address,
+          phone,
+          groundType,
+          prices,
+          reservedTimes,
+          startTime,
+          endTime,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      toast.success("Ground created successfully");
+      setActiveTab("Remove Ground");
     } catch (error) {
+      console.log('error ha', error)
       setError(error);
     } finally {
       setLoading(false);
@@ -41,6 +80,14 @@ const AddGround = () => {
       <div className="flex flex-col justify-center gap-4 w-full max-sm:w-full max-md:w-2/3">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <h1 className="text-2xl font-bold">Add a new Ground</h1>
+          {error && (
+                <div role="alert" className="alert alert-error leading-tight flex justify-between  py-1">
+                  <span>{`${error}`}</span>
+                  <div>
+                    <button className="btn btn-sm border-none " onClick={() => setError(null)}>x</button>
+                  </div>
+                </div>
+              )}
           <div className="flex gap-2">
             <div className="flex flex-col gap-2 w-1/2">
               <label className="text-gray-500">Ground Name</label>

@@ -51,7 +51,7 @@ const Ground = () => {
 
       <div className=" p-4">
         {/* Render tab content based on the active tab */}
-        {activeTab === "Add Ground" && <AddGround />}
+        {activeTab === "Add Ground" && <AddGround setActiveTab={setActiveTab} />}
         {activeTab === "Edit Ground" && <EditGround />}
         {activeTab === "Remove Ground" && <RemoveGround />}
       </div>
