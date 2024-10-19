@@ -14,14 +14,18 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    setLoading(true);
-    //take to the dashboard
-    window.location.href = "/admin/dashboard";
     e.preventDefault();
+    setLoading(true);
+    setError(null);
+    if (username === "" || password === "") {
+      setError("Please fill in all fields");
+      setLoading(false);
+      return;
+    }
     try {
       const response = await AuthServices.login(username, password);
       if (response.error) {
-        setError(response.error);
+        setError(response.error.response.data.message);
       } else {
         setError(null);
       }
@@ -41,6 +45,14 @@ const Login = () => {
         <img src={logo} alt="logo" className="w-36 h-36" />
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <h1 className="text-2xl font-bold text-center">DREAM FOOTBALL ARENA</h1>
+          {error && (
+                <div role="alert" className="alert alert-error leading-tight flex justify-between  py-1">
+                  <span>{error}</span>
+                  <div>
+                    <button className="btn btn-sm border-none " onClick={() => setError(null)}>x</button>
+                  </div>
+                </div>
+              )}
           <input
             type="username"
             placeholder="Username"

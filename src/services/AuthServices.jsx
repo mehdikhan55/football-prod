@@ -28,8 +28,22 @@ const AuthServices = {
       return { error };
     }
   },
+  customerLogin: async ({email, password}) => {
+    try {
+      const response = await axios.post(`${URL}/auth/customer/login`, {
+        email,
+        password,
+      });
+      //set token
+      localStorage.setItem("token", response.data.token);
+      return handleResponse(response);
+    } catch (error) {
+      return { error };
+    }
+  },
   registerCustomer: async (data) => {
     try {
+      const { username, password, email, address, phone, dob, team } = data;
       const response = await axios.post(`${URL}/auth/customer/register`, 
         {
           username,

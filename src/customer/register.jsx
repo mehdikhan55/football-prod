@@ -19,7 +19,14 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     setLoading(true);
+    setError(null);
     e.preventDefault();
+    console.log('registering')
+    if (username === "" || password === "" || email === "" || address === "" || phone === "" || dob === "" || team === "") {
+      setError("Please fill in all fields");
+      setLoading(false);
+      return;
+    }
     try {
       const response = await AuthServices.registerCustomer({
         username,
@@ -31,8 +38,9 @@ const Register = () => {
         team,
       });
       if (response.error) {
-        setError(response.error);
+        setError(response.error.response.data.message);
       } else {
+        console.log('registered successfully')
         setError(null);
       }
     } catch (error) {
@@ -58,6 +66,14 @@ const Register = () => {
             <img src={logo} alt="logo" className="w-36 h-36" />
           </div>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            {error && (
+              <div role="alert" className="alert alert-error leading-tight flex justify-between  py-1">
+                <span>{error}</span>
+                <div>
+                  <button className="btn btn-sm border-none " onClick={() => setError(null)}>x</button>
+                </div>
+              </div>
+            )}
             <div className="flex gap-2 max-sm:flex-col">
               <input
                 type="text"
@@ -120,9 +136,8 @@ const Register = () => {
             </select>
             <div className="flex items-center justify-center">
               <button
-                className={`btn btn-primary bg-[#EF4444] border-none hover:bg-[#a63030] hover:scale-105 mt-5 w-96 max-md:w-full max-sm:w-full text-white rounded-full ${
-                  loading ? "cursor-not-allowed" : ""
-                }`}
+                className={`btn btn-primary bg-[#EF4444] border-none hover:bg-[#a63030] hover:scale-105 mt-5 w-96 max-md:w-full max-sm:w-full text-white rounded-full ${loading ? "cursor-not-allowed" : ""
+                  }`}
                 type="submit"
               >
                 {loading && <span className="loading loading-spinner"></span>}

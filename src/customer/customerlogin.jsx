@@ -11,43 +11,36 @@ const teams = ["Arsenal", "Aston Villa", "Brentford"];
 const LoginCustomer = () => {
 
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
-  const [phone, setPhone] = useState("");
-  const [dob, setDob] = useState("");
-  const [team, setTeam] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     setLoading(true);
+    setError(null);
     e.preventDefault();
-   window.location.href = "/customer/booking";
-    setLoading(false);
-    // try {
-    //   const response = await AuthServices.registerCustomer({
-    //     username,
-    //     password,
-    //     email,
-    //     address,
-    //     phone,
-    //     dob,
-    //     team,
-    //   });
-    //   if (response.error) {
-    //     setError(response.error);
-    //   } else {
-    //     setError(null);
-    //   }
-    // } catch (error) {
-    //   setError(error);
-    // } finally {
-    //   //take to the dashboard
-    
-    //   setLoading(false);
-    // }
+    if (email === "" || password === "") {
+      setError("Please fill in all fields");
+      setLoading(false);
+      return;
+    }
+    try {
+      const response = await AuthServices.customerLogin({
+        email,
+        password,
+      });
+      if (response.error) {
+        setError(response.error.response.data.message);
+      } else {
+        setError(null);
+      }
+    } catch (error) {
+      console.log('error occured', error)
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -67,11 +60,19 @@ const LoginCustomer = () => {
           </div>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
+              {error && (
+                <div role="alert" className="alert alert-error leading-tight flex justify-between  py-1">
+                  <span>{error}</span>
+                  <div>
+                    <button className="btn btn-sm border-none " onClick={() => setError(null)}>x</button>
+                  </div>
+                </div>
+              )}
               <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="username"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="email"
                 className="rounded-md p-3 border border-gray-300 w-full opacity-70"
               />
               <input
@@ -82,12 +83,11 @@ const LoginCustomer = () => {
                 className="rounded-md p-3 border border-gray-300  w-full opacity-70"
               />
             </div>
-        
+
             <div className="flex items-center justify-center">
               <button
-                className={`btn btn-primary bg-[#EF4444] border-none hover:bg-[#a63030] hover:scale-105 mt-5  w-full text-white rounded-full ${
-                  loading ? "cursor-not-allowed" : ""
-                }`}
+                className={`btn btn-primary bg-[#EF4444] border-none hover:bg-[#a63030] hover:scale-105 mt-5  w-full text-white rounded-full ${loading ? "cursor-not-allowed" : ""
+                  }`}
                 type="submit"
               >
                 {loading && <span className="loading loading-spinner"></span>}
