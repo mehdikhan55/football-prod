@@ -7,7 +7,7 @@ const LeagueCard = ({ league, onEdit, onDelete }) => {
     };
 
     const handleDeleteClick = () => {
-        onDelete(league.leagueName);
+        onDelete(league._id);
     };
 
     return (
@@ -26,7 +26,16 @@ const LeagueCard = ({ league, onEdit, onDelete }) => {
                 </div>
                 <div className="flex justify-between">
                     <strong>Teams:</strong>
-                    <span>{league.teams.join(', ')}</span>
+                    <div className="flex flex-wrap">
+                        {league.teams.map((team, index) => (
+                            <span key={team._id}>
+                                {team.teamName}
+                                {index < league.teams.length - 1 && ", "}
+                            </span>
+                        ))}
+
+                    </div>
+
                 </div>
             </div>
 

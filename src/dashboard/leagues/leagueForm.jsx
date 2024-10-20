@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { dummyTeamsData } from '../teams/dummyTeamsData';
 
-const LeagueForm = ({ onSubmit }) => {
+const LeagueForm = ({ onSubmit, teamsData }) => {
     const [leagueName, setLeagueName] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -18,7 +17,7 @@ const LeagueForm = ({ onSubmit }) => {
                 leagueName,
                 startDate,
                 endDate,
-                teams: selectedTeams.map(teamId => ({ id: teamId })), // Change this line
+                teams: selectedTeams, 
             };
             onSubmit(leagueData);
             resetForm();
@@ -41,11 +40,11 @@ const LeagueForm = ({ onSubmit }) => {
 
     // Function to handle checkbox changes
     const handleCheckboxChange = (teamId) => {
-        setSelectedTeams((prevSelected) =>
-            prevSelected.includes(teamId)
-                ? prevSelected.filter((id) => id !== teamId) // Remove if already selected
-                : [...prevSelected, teamId] // Add if not selected
-        );
+        if (selectedTeams.includes(teamId)) {
+            setSelectedTeams(selectedTeams.filter((id) => id !== teamId));
+        } else {
+            setSelectedTeams([...selectedTeams, teamId]);
+        }
     };
 
     return (
@@ -89,14 +88,14 @@ const LeagueForm = ({ onSubmit }) => {
             <div className="flex flex-col gap-2">
                 <label className="text-gray-500">Select Teams</label>
                 <div className="flex flex-col gap-2">
-                    {dummyTeamsData.map((team) => (
-                        <div key={team.id} className="flex items-center">
+                    {teamsData.map((team) => (
+                        <div key={team._id} className="flex items-center">
                             <input
                                 type="checkbox"
-                                id={team.id}
-                                value={team.id}
-                                checked={selectedTeams.includes(team.id)}
-                                onChange={() => handleCheckboxChange(team.id)}
+                                id={team._id}
+                                value={team._id}
+                                checked={selectedTeams.includes(team._id)}
+                                onChange={() => handleCheckboxChange(team._id)}
                                 className="mr-2"
                             />
                             <label htmlFor={team.id} className="text-gray-700">

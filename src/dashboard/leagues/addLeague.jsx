@@ -1,27 +1,69 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LeagueForm from './leagueForm';
 import AdminSiderbar from '../../components/sidebar/sidebar';
 import dfawallpaper from "../../assets/dfa-wallpaper.png";
-import {dummyLeaguesData} from './dummyLeaguesData';
+import { dummyLeaguesData } from './dummyLeaguesData';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
+const URL = import.meta.env.VITE_BACKEND_URL;
 
-const AddLeague = ({setActiveTab}) => {
-    const [leagues, setLeagues] = useState(dummyLeaguesData);
+const AddLeague = ({ setActiveTab }) => {
+    // const [leagues, setLeagues] = useState(dummyLeaguesData);
+    const [leagues, setLeagues] = useState([]);
+    const [teams, setTeams] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-
-    const handleAddLeague = (newLeague) => {
-        console.log("Adding new league:", newLeague);
-    
-        const leagueWithId = {
-            ...newLeague,
-            id: leagues.length + 1, 
-        };
-    
-        setLeagues([...leagues, leagueWithId]);
-        console.log("Leagues after adding new league:", leagues);
-        setActiveTab("View Leagues");
+    const handleAddLeague = async (newLeague) => {
+        try{
+            setLoading(true);
+            setError(null);
+            const response = await axios.post(`${URL}/leagues`, newLeague, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `${localStorage.getItem('token')}`
+                }
+            });
+            const data = response.data;
+            if (response.status >= 400) {
+                throw new Error(data.message);
+            }
+            toast.success('League added successfully');
+            setActiveTab('View Leagues');
+        }catch(error){
+            setError(error.response.data.message);
+        }finally{
+            setLoading(false);
+        }
     };
-    
+
+    useEffect(() => {
+        fetchTeams();
+    }, []);
+
+    const fetchTeams = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const response = await axios.get(`${URL}/teams`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `${localStorage.getItem('token')}`
+                }
+            });
+            const data = response.data;
+            if (response.status >= 400) {
+                throw new Error(data.message);
+            }
+            setTeams(data.teams);
+        } catch (error) {
+            setError(error.response.data.message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
         <div
             style={{
@@ -30,10 +72,27 @@ const AddLeague = ({setActiveTab}) => {
             }}
         >
             <AdminSiderbar />
-            
-            {/* <h2 className="text-2xl font-semibold">Add New League</h2> */}
-            <LeagueForm onSubmit={handleAddLeague} />
+            {loading ? (
+                <div className="flex justify-center items-center h-96">
+                    <div className="animate-spin rounded-full h-24 w-24 border-t-2 border-b-2 border-gray-900"></div>
+                </div>
+
+            ) : (
+                <>
+                {error && (
+                            <div role="alert" className="alert alert-error leading-tight flex justify-between  py-1 w-3/4 mx-auto">
+                                <span>{error}</span>
+                                <div>
+                                    <button className="btn btn-sm border-none " onClick={() => setError(null)}>x</button>
+                                </div>
+                            </div>
+                        )}
+                    {/* <h2 className="text-2xl font-semibold">Add New League</h2> */}
+                    <LeagueForm teamsData={teams} onSubmit={handleAddLeague} />
+                </>
+            )}
         </div>
+
     );
 };
 

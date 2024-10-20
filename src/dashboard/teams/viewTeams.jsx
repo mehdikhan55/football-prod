@@ -29,7 +29,6 @@ const ViewTeams = () => {
             }
             setTeams(data.teams);
         } catch (error) {
-            console.log('error', error);
             setError(error.response.data.message);
         } finally {
             setLoading(false);
@@ -56,7 +55,6 @@ const ViewTeams = () => {
             }
             await fetchTeams();
         } catch (error) {
-            console.log('error', error);
             setError(error.response.data.message);
         }
         finally {
