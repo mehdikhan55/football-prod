@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { inputDateFormat } from '../../utils/inputDateFormat';
 
-const EditBookingForm = ({ bookingData, onSubmit }) => {
-  const [customerId, setCustomerId] = useState(bookingData.customer || "");
+const EditBookingForm = ({ bookingData, onSubmit, customersData , groundsData}) => {
+  const [customer, setCustomer] = useState(bookingData.customer._id || "");
   const [bookingDate, setBookingDate] = useState(bookingData.bookingDate || "");
   const [bookingTime, setBookingTime] = useState(bookingData.bookingTime || "");
   const [bookingDuration, setBookingDuration] = useState(bookingData.bookingDuration || 1);
@@ -10,14 +11,14 @@ const EditBookingForm = ({ bookingData, onSubmit }) => {
   const [paymentMethod, setPaymentMethod] = useState(bookingData.paymentMethod || "");
   const [paymentStatus, setPaymentStatus] = useState(bookingData.paymentStatus || "pending");
   const [paymentDate, setPaymentDate] = useState(bookingData.paymentDate || "");
-  const [ground, setGround] = useState(bookingData.ground || "");
+  const [ground, setGround] = useState(bookingData.ground._id || "");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
- 
+
   useEffect(() => {
     if (bookingData) {
-      setCustomerId(bookingData.customer);
+      setCustomer(bookingData.customer._id);
       setBookingDate(bookingData.bookingDate);
       setBookingTime(bookingData.bookingTime);
       setBookingDuration(bookingData.bookingDuration);
@@ -26,17 +27,30 @@ const EditBookingForm = ({ bookingData, onSubmit }) => {
       setPaymentMethod(bookingData.paymentMethod);
       setPaymentStatus(bookingData.paymentStatus);
       setPaymentDate(bookingData.paymentDate);
-      setGround(bookingData.ground);
+      setGround(bookingData.ground._id);
     }
   }, [bookingData]);
+
+
+  const findCustomerNameById = (customerId) => {
+    const customer = customersData.find((customer) => customer._id === customerId);
+    return customer ? customer.username : "Unknown";
+  }
+
+  const findGroundNameById = (groundId) => {
+    const ground = groundsData.find((ground) => ground._id === groundId);
+    return ground ? ground.name : "Unknown";
+  }
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const updatedBooking = {
-        id: bookingData.id,
-        customer: customerId,
+        _id: bookingData._id,
+        customer: customer,
         bookingDate: new Date(bookingDate),
         bookingTime,
         bookingDuration,
@@ -49,7 +63,7 @@ const EditBookingForm = ({ bookingData, onSubmit }) => {
       };
 
       console.log('Booking updated successfully', updatedBooking);
-      onSubmit(updatedBooking); 
+      onSubmit(updatedBooking);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -64,21 +78,30 @@ const EditBookingForm = ({ bookingData, onSubmit }) => {
       {/* Form inputs for booking details */}
       <div className="flex gap-2">
         <div className="flex flex-col gap-2 w-1/2">
-          <label className="text-gray-500">Customer ID</label>
-          <input
-            type="text"
-            value={customerId}
-            onChange={(e) => setCustomerId(e.target.value)}
-            placeholder="Enter Customer ID"
+          <label className="text-gray-500">Customer</label>
+          <select
+            value={customer}
+            onChange={(e) => setCustomer(e.target.value)}
             className="rounded-md p-3 border border-gray-300"
             required
-          />
+          >
+            <option value="">Select Customer</option>
+            {customersData.map((cust) => (
+              <option
+                key={cust._id}
+                value={cust._id}
+                selected={cust._id === customer}
+              >
+                {cust.username}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="flex flex-col gap-2 w-1/2">
           <label className="text-gray-500">Booking Date</label>
           <input
             type="date"
-            value={bookingDate}
+            value={inputDateFormat(bookingDate)}
             onChange={(e) => setBookingDate(e.target.value)}
             className="rounded-md p-3 border border-gray-300"
             required
@@ -151,7 +174,7 @@ const EditBookingForm = ({ bookingData, onSubmit }) => {
           <label className="text-gray-500">Payment Date</label>
           <input
             type="date"
-            value={paymentDate}
+            value={inputDateFormat(paymentDate)}
             onChange={(e) => setPaymentDate(e.target.value)}
             className="rounded-md p-3 border border-gray-300"
           />
@@ -161,14 +184,19 @@ const EditBookingForm = ({ bookingData, onSubmit }) => {
       <div className="flex gap-2">
         <div className="flex flex-col gap-2 w-1/2">
           <label className="text-gray-500">Ground</label>
-          <input
-            type="text"
-            value={ground}
-            onChange={(e) => setGround(e.target.value)}
-            placeholder="Enter Ground Name"
-            className="rounded-md p-3 border border-gray-300"
-            required
-          />
+         <select 
+          value={ground}
+          onChange={(e) => setGround(e.target.value)}
+          className="rounded-md p-3 border border-gray-300"
+          required
+          >
+          <option value="">Select Ground</option>
+          {groundsData.map((groundInc) => (
+            <option key={groundInc._id} value={groundInc._id}>
+              {groundInc.name}
+            </option>
+          ))}
+        </select>
         </div>
       </div>
 

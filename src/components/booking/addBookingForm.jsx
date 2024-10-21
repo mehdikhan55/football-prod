@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { dummyBookingData } from '../../dashboard/booking/dummyBookingData'; 
 
-const AddBookingForm = () => {
-  const [bookings, setBookings] = useState(dummyBookingData);
-  const [customerId, setCustomerId] = useState("");
+const AddBookingForm = ({ onSubmit, customersData, groundsData }) => {
+  const [customer, setCustomer] = useState("");
   const [bookingDate, setBookingDate] = useState("");
   const [bookingTime, setBookingTime] = useState("");
   const [bookingDuration, setBookingDuration] = useState(1);
@@ -15,13 +13,13 @@ const AddBookingForm = () => {
   const [ground, setGround] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const newBooking = {
-        customer: customerId,
+        customer: customer,
         bookingDate: new Date(bookingDate),
         bookingTime,
         bookingDuration,
@@ -33,8 +31,8 @@ const AddBookingForm = () => {
         ground,
       };
 
-      console.log('Booking added successfully', newBooking);
-      setBookings([...bookings, newBooking]); // Update bookings state
+      await onSubmit(newBooking);
+
       resetForm();
     } catch (error) {
       setError(error.message);
@@ -45,7 +43,7 @@ const AddBookingForm = () => {
 
   // Function to reset form fields
   const resetForm = () => {
-    setCustomerId("");
+    setCustomer("");
     setBookingDate("");
     setBookingTime("");
     setBookingDuration(1);
@@ -64,15 +62,20 @@ const AddBookingForm = () => {
       {/* Form inputs for booking details */}
       <div className="flex gap-2">
         <div className="flex flex-col gap-2 w-1/2">
-          <label className="text-gray-500">Customer ID</label>
-          <input
-            type="text"
-            value={customerId}
-            onChange={(e) => setCustomerId(e.target.value)}
-            placeholder="Enter Customer ID"
+          <label className="text-gray-500">Customer</label>
+          <select
+            value={customer}
+            onChange={(e) => setCustomer(e.target.value)}
             className="rounded-md p-3 border border-gray-300"
             required
-          />
+          >
+            <option value="">Select Customer</option>
+            {customersData.map((customer) => (
+              <option key={customer._id} value={customer._id}>
+                {customer.username}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="flex flex-col gap-2 w-1/2">
           <label className="text-gray-500">Booking Date</label>
@@ -138,14 +141,16 @@ const AddBookingForm = () => {
       <div className="flex gap-2">
         <div className="flex flex-col gap-2 w-1/2">
           <label className="text-gray-500">Payment Status</label>
-          <input
-            type="text"
+          <select
             value={paymentStatus}
             onChange={(e) => setPaymentStatus(e.target.value)}
-            placeholder="Enter Payment Status"
             className="rounded-md p-3 border border-gray-300"
             required
-          />
+          >
+            <option value="pending">Pending</option>
+            <option value="completed">Completed</option>
+            <option value="failed">Failed</option>
+          </select>
         </div>
         <div className="flex flex-col gap-2 w-1/2">
           <label className="text-gray-500">Payment Date</label>
@@ -161,23 +166,27 @@ const AddBookingForm = () => {
       <div className="flex gap-2">
         <div className="flex flex-col gap-2 w-1/2">
           <label className="text-gray-500">Ground</label>
-          <input
-            type="text"
+          <select
             value={ground}
             onChange={(e) => setGround(e.target.value)}
-            placeholder="Enter Ground Name"
             className="rounded-md p-3 border border-gray-300"
             required
-          />
+          >
+            <option value="">Select Ground</option>
+            {groundsData.map((ground) => (
+              <option key={ground._id} value={ground._id}>
+                {ground.name}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
       {error && <p className="text-red-500">{error}</p>}
 
       <button
-        className={`btn btn-primary mt-5 w-full text-white rounded-full ${
-          loading ? "cursor-not-allowed" : ""
-        }`}
+        className={`btn btn-primary mt-5 w-full text-white rounded-full ${loading ? "cursor-not-allowed" : ""
+          }`}
         type="submit"
         disabled={loading}
       >

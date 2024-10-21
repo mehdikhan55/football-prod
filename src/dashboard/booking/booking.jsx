@@ -30,7 +30,7 @@ const Booking = () => {
             </div>
 
             <div className=" p-4">
-                {activeTab === 'Add Booking' && <AddBooking />}
+                {activeTab === 'Add Booking' && <AddBooking setActiveTab={setActiveTab} />}
                 {activeTab === 'View Bookings' && <ViewAllBooking />}
             </div>
         </div>

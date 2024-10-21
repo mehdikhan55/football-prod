@@ -10,7 +10,7 @@ export const dummyBookingData = [
         paymentMethod: "credit_card",
         paymentStatus: "completed",
         paymentDate: "2024-10-01", // Format for input type="date"
-        ground: "Stadium A",
+        ground: "Stadium A", // id of ground model goes here
     },
     {
         id: 2, // Added an ID for easy reference

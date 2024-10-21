@@ -1,18 +1,42 @@
 import React from "react";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 
-const BookingCard = ({ booking, onEdit, onCancel }) => {
-  const handleEditClick = () => {
-    onEdit(booking);
+const BookingCard = ({ booking, onEdit, onCancel, onConfirm, onPending }) => {
+  const handleEditClick = async () => {
+    await onEdit(booking);
   };
 
-  const handleCancelClick = () => {
-    onCancel(booking.id);
+  const handleCancelClick = async () => {
+    await onCancel(booking._id);
   };
+
+  const handleConfirmClick = async () => {
+    await onConfirm(booking._id);
+  }
+
+  const handlePendingClick = async () => {
+    await onPending(booking._id);
+  }
 
   return (
-    <div className="border border-gray-300 rounded-lg p-6 bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
-      <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+    <div className="border border-gray-300 rounded-lg p-6 bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 relative">
+
+      <div className="absolute top-1 left-1">
+        <span className={`
+          ${booking.bookingStatus === "pending" && "bg-blue-500"
+          }
+          ${booking.bookingStatus === "confirmed" && "bg-green-500"
+          }
+          ${booking.bookingStatus === "cancelled" && "bg-red-500"
+          }
+          text-white rounded-md px-2 py-1`}>
+          {booking.bookingStatus === "pending" && "Pending"}
+          {booking.bookingStatus === "confirmed" && "Confirmed"}
+          {booking.bookingStatus === "cancelled" && "Cancelled"}
+        </span>
+      </div>
+
+      <h3 className="text-2xl mt-3 font-semibold text-gray-800 mb-4">
         Booking Details
       </h3>
 
@@ -20,7 +44,7 @@ const BookingCard = ({ booking, onEdit, onCancel }) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 text-gray-600">
         <div className="flex justify-between">
           <strong>Customer:</strong>
-          <span>{booking.customer}</span>
+          <span>{booking.customer.username}</span>
         </div>
 
         <div className="flex justify-between">
@@ -69,7 +93,7 @@ const BookingCard = ({ booking, onEdit, onCancel }) => {
 
         <div className="flex justify-between">
           <strong>Ground:</strong>
-          <span>{booking.ground}</span>
+          <span>{booking.ground.name}</span>
         </div>
       </div>
 
@@ -81,13 +105,61 @@ const BookingCard = ({ booking, onEdit, onCancel }) => {
           <AiFillEdit className="mr-2" />
           <p>Edit</p>
         </button>
-        <button
-          className="mt-4 bg-red-500 text-white rounded-md py-2 px-5 focus:outline-none focus:ring-2 transition duration-200 flex items-center justify-center"
-          onClick={handleCancelClick}
-        >
-          <AiFillDelete className="mr-2" />
-          <p>Cancel</p>
-        </button>
+        {booking.bookingStatus === "pending" && (
+          <>
+            <button
+              className="mt-4 bg-green-500 text-white rounded-md py-2 px-5 focus:outline-none focus:ring-2 transition duration-200 flex items-center justify-center"
+              onClick={handleConfirmClick}
+            >
+              <AiFillDelete className="mr-2" />
+              <p>Confirm</p>
+            </button>
+            <button
+              className="mt-4 bg-red-500 text-white rounded-md py-2 px-5 focus:outline-none focus:ring-2 transition duration-200 flex items-center justify-center"
+              onClick={handleCancelClick}
+            >
+              <AiFillDelete className="mr-2" />
+              <p>Cancel</p>
+            </button>
+          </>
+        )}
+        {booking.bookingStatus === "confirmed" && (
+          <>
+            <button
+              className="mt-4 bg-red-500 text-white rounded-md py-2 px-5 focus:outline-none focus:ring-2 transition duration-200 flex items-center justify-center"
+              onClick={handleCancelClick}
+            >
+              <AiFillDelete className="mr-2" />
+              <p>Cancel</p>
+            </button>
+            <button
+              className="mt-4 bg-blue-500 text-white rounded-md py-2 px-5 focus:outline-none focus:ring-2 transition duration-200 flex items-center justify-center"
+              onClick={handlePendingClick}
+            >
+              <AiFillDelete className="mr-2" />
+              <p>Set to Pending</p>
+            </button>
+          </>
+        )}
+        {booking.bookingStatus === "cancelled" && (
+          <>
+            <button
+              className="mt-4 bg-green-500 text-white rounded-md py-2 px-5 focus:outline-none focus:ring-2 transition duration-200 flex items-center justify-center"
+              onClick={handleConfirmClick}
+            >
+              <AiFillDelete className="mr-2" />
+              <p>Confirm</p>
+            </button>
+            <button
+              className="mt-4 bg-blue-500 text-white rounded-md py-2 px-5 focus:outline-none focus:ring-2 transition duration-200 flex items-center justify-center"
+              onClick={handlePendingClick}
+            >
+              <AiFillDelete className="mr-2" />
+              <p>Set to Pending</p>
+            </button>
+
+          </>
+        )}
       </div>
     </div>
   );
