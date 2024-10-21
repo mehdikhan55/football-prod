@@ -4,7 +4,7 @@ import ViewAllLeagues from './viewAllLeagues';
 
 
 const AdminLeagues = () => {
-    const [activeTab, setActiveTab] = useState('Add League');
+    const [activeTab, setActiveTab] = useState('View Leagues');
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);

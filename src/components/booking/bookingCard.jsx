@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 
 const BookingCard = ({ booking, onEdit, onCancel, onConfirm, onPending }) => {
+
   const handleEditClick = async () => {
     await onEdit(booking);
   };
@@ -93,7 +94,7 @@ const BookingCard = ({ booking, onEdit, onCancel, onConfirm, onPending }) => {
 
         <div className="flex justify-between">
           <strong>Ground:</strong>
-          <span>{booking.ground.name}</span>
+          <span>{booking.ground?.name}</span>
         </div>
       </div>
 
@@ -143,13 +144,13 @@ const BookingCard = ({ booking, onEdit, onCancel, onConfirm, onPending }) => {
         )}
         {booking.bookingStatus === "cancelled" && (
           <>
-            <button
+            {/* <button
               className="mt-4 bg-green-500 text-white rounded-md py-2 px-5 focus:outline-none focus:ring-2 transition duration-200 flex items-center justify-center"
               onClick={handleConfirmClick}
             >
               <AiFillDelete className="mr-2" />
               <p>Confirm</p>
-            </button>
+            </button> */}
             <button
               className="mt-4 bg-blue-500 text-white rounded-md py-2 px-5 focus:outline-none focus:ring-2 transition duration-200 flex items-center justify-center"
               onClick={handlePendingClick}

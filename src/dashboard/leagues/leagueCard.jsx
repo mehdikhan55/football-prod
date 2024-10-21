@@ -1,5 +1,6 @@
 import React from 'react';
-import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
+import { AiFillDelete, AiFillEdit, AiFillEye } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 
 const LeagueCard = ({ league, onEdit, onDelete }) => {
     const handleEditClick = () => {
@@ -54,6 +55,14 @@ const LeagueCard = ({ league, onEdit, onDelete }) => {
                     <AiFillDelete className="mr-2" />
                     <p>Delete</p>
                 </button>
+                <Link to={`/admin/dashboard/leagues/${league._id}`} >
+                <button
+                    className="mt-4 bg-blue-500 text-white rounded-md py-2 px-5 focus:outline-none focus:ring-2 transition duration-200 flex items-center justify-center"
+                >
+                    <AiFillEye className="mr-2" />
+                    <p>View Details</p>
+                </button>
+                </Link>
             </div>
         </div>
     );

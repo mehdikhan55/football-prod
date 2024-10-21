@@ -86,6 +86,7 @@ const ViewAllBooking = () => {
 
     useEffect(() => {
         fetchBookings();
+        console.log('bookings', bookings);
     }, []);
 
     useEffect(() => {

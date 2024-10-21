@@ -11,7 +11,7 @@ const EditBookingForm = ({ bookingData, onSubmit, customersData , groundsData}) 
   const [paymentMethod, setPaymentMethod] = useState(bookingData.paymentMethod || "");
   const [paymentStatus, setPaymentStatus] = useState(bookingData.paymentStatus || "pending");
   const [paymentDate, setPaymentDate] = useState(bookingData.paymentDate || "");
-  const [ground, setGround] = useState(bookingData.ground._id || "");
+  const [ground, setGround] = useState(bookingData.ground?._id || "");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -27,7 +27,7 @@ const EditBookingForm = ({ bookingData, onSubmit, customersData , groundsData}) 
       setPaymentMethod(bookingData.paymentMethod);
       setPaymentStatus(bookingData.paymentStatus);
       setPaymentDate(bookingData.paymentDate);
-      setGround(bookingData.ground._id);
+      setGround(bookingData.ground?._id);
     }
   }, [bookingData]);
 
@@ -192,7 +192,7 @@ const EditBookingForm = ({ bookingData, onSubmit, customersData , groundsData}) 
           >
           <option value="">Select Ground</option>
           {groundsData.map((groundInc) => (
-            <option key={groundInc._id} value={groundInc._id}>
+            <option key={groundInc?._id} value={groundInc?._id}>
               {groundInc.name}
             </option>
           ))}

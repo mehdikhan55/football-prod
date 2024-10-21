@@ -8,16 +8,19 @@ const EditLeagueForm = ({ leagueData, onSubmit , teamsData}) => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [selectedTeams, setSelectedTeams] = useState([]);
+    const [selectedTeamsData, setSelectedTeamsData] = useState([]);
     const [matches, setMatches] = useState([]);
     const [loading, setLoading] = useState(false);
     const [availablePlayers, setAvailablePlayers] = useState([]);
 
     useEffect(() => {
+        console.log('leagueData', leagueData);
         if (leagueData) {
             setLeagueName(leagueData.leagueName);
             setStartDate(inputDateFormat(leagueData.startDate));
             setEndDate(inputDateFormat(leagueData.endDate));
-            setSelectedTeams(leagueData.teams);
+            setSelectedTeams(leagueData.teams.map(team => team._id));
+            setSelectedTeamsData(leagueData.teams);
             setMatches(leagueData.matches);
             setAvailablePlayers(() => {
                 const players = [];
@@ -32,15 +35,26 @@ const EditLeagueForm = ({ leagueData, onSubmit , teamsData}) => {
         }
     }, [leagueData]);
 
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
+
+        const updatedMatches = matches.map((match) => ({
+            _id: match._id || undefined, // Include _id for existing matches, omit for new ones
+            teamA: match.teamA,
+            teamB: match.teamB,
+            score: match.score,
+            scorers: match.scorers,
+            date: match.date,
+        }));
+
         const updatedLeague = {
             leagueName,
             startDate,
             endDate,
             teams: selectedTeams,
-            matches,
+            matches: updatedMatches,
         };
         console.log(updatedLeague);
         onSubmit(updatedLeague);
@@ -50,6 +64,12 @@ const EditLeagueForm = ({ leagueData, onSubmit , teamsData}) => {
     const addMatch = () => {
         setMatches([...matches, { teamA: '', teamB: '', score: { teamA: 0, teamB: 0 }, scorers: [], date: '' }]);
     };
+
+    const removeMatch = (index) => {
+        const newMatches = matches.filter((_, i) => i !== index);
+        setMatches(newMatches);
+    };
+
 
     const addScorer = (matchIndex) => {
         const newMatches = [...matches];
@@ -63,6 +83,18 @@ const EditLeagueForm = ({ leagueData, onSubmit , teamsData}) => {
                 ? prev.filter(id => id !== teamId)
                 : [...prev, teamId]
         );
+        setSelectedTeamsData(prev =>
+            prev.find(team => team._id === teamId)
+                ? prev.filter(team => team._id !== teamId)
+                : [...prev, teamsData.find(team => team._id === teamId)]
+        );
+        setAvailablePlayers(prev => {
+            const teamPlayers = teamsData.find(team => team._id === teamId).players;
+            const players = teamPlayers.map(player => ({ teamId, playerName: player }));
+            return [...prev, ...players];
+        }
+        );
+
     };
 
     const getTeamById = (teamId) => {
@@ -115,7 +147,7 @@ const EditLeagueForm = ({ leagueData, onSubmit , teamsData}) => {
                             <div key={team._id} className="flex items-center gap-2">
                                 <input
                                     type="checkbox"
-                                    checked={selectedTeams.map((team)=> team._id).includes(team._id)}
+                                    checked={selectedTeams.includes(team._id)}
                                     onChange={() => handleTeamChange(team._id)}
                                     className="rounded"
                                 />
@@ -131,7 +163,7 @@ const EditLeagueForm = ({ leagueData, onSubmit , teamsData}) => {
                                 <div className="flex flex-col w-1/2">
                                     <label className="text-gray-500">Team A</label>
                                     <select
-                                        value={match.teamA}
+                                        value={match.teamA._id}
                                         onChange={(e) => {
                                             const newMatches = [...matches];
                                             newMatches[index].teamA = e.target.value;
@@ -140,7 +172,7 @@ const EditLeagueForm = ({ leagueData, onSubmit , teamsData}) => {
                                         className="rounded-md p-3 border border-gray-300"
                                     >
                                         <option value="">Select Team A</option>
-                                        {selectedTeams.map((team) => (
+                                        {selectedTeamsData.map((team) => (
                                             <option key={team._id} value={team._id}>
                                                 {team.teamName}
                                             </option>
@@ -150,7 +182,7 @@ const EditLeagueForm = ({ leagueData, onSubmit , teamsData}) => {
                                 <div className="flex flex-col w-1/2">
                                     <label className="text-gray-500">Team B</label>
                                     <select
-                                        value={match.teamB}
+                                        value={match.teamB._id}
                                         onChange={(e) => {
                                             const newMatches = [...matches];
                                             newMatches[index].teamB = e.target.value;
@@ -159,7 +191,7 @@ const EditLeagueForm = ({ leagueData, onSubmit , teamsData}) => {
                                         className="rounded-md p-3 border border-gray-300"
                                     >
                                         <option value="">Select Team B</option>
-                                        {selectedTeams.map((team) => (
+                                        {selectedTeamsData.map((team) => (
                                             <option key={team._id} value={team._id}>
                                                 {team.teamName}
                                             </option>
@@ -194,10 +226,14 @@ const EditLeagueForm = ({ leagueData, onSubmit , teamsData}) => {
                                                 value={scorer.player}
                                                 onChange={(e) => {
                                                     const selectedPlayer = e.target.value;
-                                                    const team = availablePlayers.find(player => player.playerName === selectedPlayer)?.teamId || ''; 
+                                    
+                                                    // Find the corresponding teamId based on the selected player
+                                                    const foundPlayer = availablePlayers.find(player => player.playerName === selectedPlayer);
+                                                    const teamId = foundPlayer ? foundPlayer.teamId : ''; // Get the teamId or an empty string
+                                    
                                                     const newMatches = [...matches];
                                                     newMatches[index].scorers[scorerIndex].player = selectedPlayer;
-                                                    newMatches[index].scorers[scorerIndex].team = getTeamById(team); // Automatically set the team based on selected player
+                                                    newMatches[index].scorers[scorerIndex].team = teamId; // Set the teamId
                                                     setMatches(newMatches);
                                                 }}
                                                 className="rounded-md p-3 border border-gray-300 w-2/3"
@@ -212,9 +248,21 @@ const EditLeagueForm = ({ leagueData, onSubmit , teamsData}) => {
                                             <input
                                                 type="text"
                                                 placeholder="Team Name"
-                                                value={scorer.team}
+                                                value={scorer.team ? getTeamById(scorer.team) : ''}
                                                 readOnly
                                                 className="rounded-md p-3 border border-gray-300 w-1/3"
+                                            />
+                                            <input
+                                                type="number"
+                                                placeholder="Score"
+                                                value={scorer?.score || 0}
+                                                className="rounded-md p-3 border border-gray-300 w-1/3"
+                                                onChange={(e) => {
+                                                    const newMatches = [...matches];
+                                                    newMatches[index].scorers[scorerIndex].score = e.target.value;
+                                                    setMatches(newMatches);
+                                                }
+                                                }
                                             />
                                         </div>
                                     ))}
@@ -238,6 +286,13 @@ const EditLeagueForm = ({ leagueData, onSubmit , teamsData}) => {
                                 }}
                                 className="rounded-md p-3 border border-gray-300"
                             />
+                            <button
+                                type="button"
+                                onClick={() => removeMatch(index)}
+                                className="btn btn-secondary"
+                            >
+                                Remove Match
+                            </button>
                         </div>
                     ))}
 

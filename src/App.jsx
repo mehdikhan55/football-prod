@@ -23,6 +23,7 @@ import AdminLeagues from "./dashboard/leagues/adminLeagues";
 import CustomerLeagues from "./customer/leagues/customerLeagues";
 import LeagueDetails from "./customer/leagues/leagueDetails";
 import { Toaster } from "react-hot-toast";
+import AdminLeagueDetails from "./dashboard/leagues/AdminLeagueDetails";
 
 
 const App = () => {
@@ -46,6 +47,7 @@ const App = () => {
         <Route path="admin/dashboard/teams" element={<Teams />} />
         <Route path="admin/dashboard/challenges" element={<Challenges />} />
         <Route path="admin/dashboard/leagues" element={<AdminLeagues />} />
+        <Route path="admin/dashboard/leagues/:id" element={<AdminLeagueDetails />} />
 
         {/* Customer Routes */}
         <Route path="customer" element={<Navigate to="/" />} />

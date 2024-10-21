@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import AdminSiderbar from "../../components/sidebar/sidebar";
 import { dummyTeamsData } from "./dummyTeamsData";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const URL = import.meta.env.VITE_BACKEND_URL;
 
-const AddTeams = ({setIsActiveTab}) => {
+const AddTeams = ({setActiveTab}) => {
     const [teamName, setTeamName] = useState("");
     const [players, setPlayers] = useState([""]);
     const [loading, setLoading] = useState(false);
@@ -36,11 +37,12 @@ const AddTeams = ({setIsActiveTab}) => {
             );
             console.log('response', response)
             const data = response.data;
-            if (!response.ok) {
+            if (response.status >= 400) {
                 throw new Error(data.message);
             }
+            console.log('done')
             toast.success("Team created successfully");
-            setIsActiveTab("View Teams");
+            setActiveTab("View Teams");
         } catch (error) {
             setError(error?.response?.data?.message);
         } finally {
