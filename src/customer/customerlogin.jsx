@@ -34,6 +34,9 @@ const LoginCustomer = () => {
         setError(response.error.response.data.message);
       } else {
         setError(null);
+        setEmail("");
+        setPassword("");
+        window.location.href = "/";
       }
     } catch (error) {
       console.log('error occured', error)
