@@ -50,6 +50,7 @@ const AdminLeagueDetails = () => {
                 </div>
             ) : (
                 <div className="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-lg mt-10">
+                    
                     {error && (
                         <div role="alert" className="alert alert-error flex justify-between items-center py-2 mb-4 bg-red-100 border border-red-400 rounded-md">
                             <span className="text-red-600">{error}</span>
