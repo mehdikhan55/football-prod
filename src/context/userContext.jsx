@@ -30,7 +30,7 @@ export const UserProvider = ({ children }) => {
             if(response.status > 400){
                 throw new Error(response.data.message || "An error occurred");
             }
-            setCustomer(response.data); 
+            setCustomer(response.data.customer); 
         } catch (error) {
             console.log('Error is:', error.response?.data?.message || error.message);
             setErrorFetchingCustomer(error.response?.data?.message || "An error occurred");

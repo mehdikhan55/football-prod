@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState,  useEffect } from "react";
 import Navbar from "../components/navbar/navbar";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import { FaPlus } from "react-icons/fa";
 import { BiHistory } from "react-icons/bi";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useUser } from "../context/userContext";
+
+const URL = import.meta.env.VITE_BACKEND_URL
 
 const localizer = momentLocalizer(moment);
 
@@ -69,7 +74,6 @@ const BookingHistory = [
 
 const CustomerBooking = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [customerId, setCustomerId] = useState("");
   const [bookingDate, setBookingDate] = useState("");
   const [bookingTime, setBookingTime] = useState("");
   const [bookingDuration, setBookingDuration] = useState(1);
@@ -82,16 +86,25 @@ const CustomerBooking = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const { customer } = useUser();
+
+  const [grounds, setGrounds] = useState([]);
+
   const handleDialogToggle = () => {
     setIsDialogOpen(!isDialogOpen);
   };
 
-  const handleSubmit = (e) => {
+
+  useEffect(() => {
+    console.log('customer:', customer);
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const newBooking = {
-        customer: customerId,
+        customer: customer._id,
         bookingDate: new Date(bookingDate),
         bookingTime,
         bookingDuration,
@@ -102,19 +115,31 @@ const CustomerBooking = () => {
         paymentDate: paymentDate ? new Date(paymentDate) : null,
         ground,
       };
+      console.log('new booking:', newBooking);
 
-      console.log("Booking added successfully", newBooking);
+      const response = await axios.post(`${URL}/customer/bookings`, newBooking, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${localStorage.getItem('token')}`
+        }
+      });
+      const data = response.data;
+      console.log("response", response);
+      if (response.status >= 400) {
+        throw new Error(data.message);
+      }
+      toast.success('Booking added successfully');
       resetForm();
       handleDialogToggle();
     } catch (error) {
-      setError(error.message);
+      setError(error.response.data.message || "Error creating booking");
+      toast.error(error.response.data.message || "Error creating booking");
     } finally {
       setLoading(false);
     }
   };
 
   const resetForm = () => {
-    setCustomerId("");
     setBookingDate("");
     setBookingTime("");
     setBookingDuration(1);
@@ -125,6 +150,33 @@ const CustomerBooking = () => {
     setPaymentDate("");
     setGround("");
   };
+
+  const fetchGrounds = async () => {
+    try {
+        setLoading(true);
+        setError(null);
+        const response = await axios.get(`${URL}/customer/grounds`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `${localStorage.getItem('token')}`,
+            },
+        });
+        const data = response.data;
+        console.log('response of fetchGrounds:', response);
+        if (response.status >= 400) {
+            throw new Error(data.message);
+        }
+        setGrounds(data.grounds);
+    } catch (error) {
+        setError(error);
+    } finally {
+        setLoading(false);
+    }
+};
+
+useEffect(() => {
+    fetchGrounds();
+}, []);
 
   return (
     <div>
@@ -173,7 +225,7 @@ const CustomerBooking = () => {
                   <span className="font-bold">Duration:</span>{" "}
                   {booking.bookingDuration} minutes
                 </p>
-               
+
                 <p>
                   <span className="font-bold">Payment Method:</span>{" "}
                   {booking.paymentMethod}
@@ -186,13 +238,12 @@ const CustomerBooking = () => {
                   <p>PKR {booking.bookingPrice}/-</p>
                 </div>
                 <p
-                  className={`rounded-full px-4 text-black font-bold text-sm mt-3 text-center py-2 ${
-                    booking.bookingStatus === "pending"
+                  className={`rounded-full px-4 text-black font-bold text-sm mt-3 text-center py-2 ${booking.bookingStatus === "pending"
                       ? "bg-yellow-500"
                       : booking.bookingStatus === "approved"
-                      ? "bg-green-500"
-                      : "bg-red-500"
-                  }`}
+                        ? "bg-green-500"
+                        : "bg-red-500"
+                    }`}
                 >
                   {booking.bookingStatus}
                 </p>
@@ -246,6 +297,18 @@ const CustomerBooking = () => {
                   min="0"
                   required
                 />
+                <label htmlFor="bookingPaymentMethod" className="text-white">
+                  Payment Method
+                </label>
+                <input
+                  type="text"
+                  placeholder="Payment Method"
+                  value={paymentMethod}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                  className="p-3 rounded-md input-bordered disabled:opacity-50 bg-white"
+                  min="0"
+                  required
+                />
                 <select
                   value={ground}
                   onChange={(e) => setGround(e.target.value)}
@@ -253,9 +316,11 @@ const CustomerBooking = () => {
                   required
                 >
                   <option value="">Select Ground</option>
-                  <option value="Ground 1">Ground 1</option>
-                  <option value="Ground 2">Ground 2</option>
-                  <option value="Ground 3">Ground 3</option>
+                  {grounds.map((ground) => (
+                    <option key={ground._id} value={ground._id}>
+                      {ground.name}
+                    </option>
+                  ))}
                 </select>
                 <button
                   type="submit"
