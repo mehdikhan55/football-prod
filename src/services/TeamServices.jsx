@@ -50,6 +50,19 @@ const TeamServices = {
       return { error };
     }
   },
+  fetchTeamsForCustomers: async () => {
+    try {
+      const response = await axios.get(`${URL}/customer/teams`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      });
+      return handleResponse(response);
+    } catch (error) {
+      return { error };
+    }
+  },
   removeTeam: async (teamId) => {
     try {
       const response = await axios.delete(`${URL}/teams/${teamId}`, {
@@ -58,6 +71,47 @@ const TeamServices = {
           Authorization: `${localStorage.getItem("token")}`,
         },
       });
+      return handleResponse(response);
+    } catch (error) {
+      return { error };
+    }
+  },
+
+  // team auth
+  loginTeam: async (email, password) => {
+    try {
+      const response = await axios.post(
+        `${URL}/customer/teams/login`,
+        { email, password },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      return handleResponse(response);
+    } catch (error) {
+      return { error };
+    }
+  },
+  registerTeam: async (teamName, players, password, email) => {
+    try {
+      const response = await axios.post(
+        `${URL}/customer/teams/register`,
+        {
+          teamName,
+          players,
+          password,
+          email,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization : `${localStorage.getItem("token")}`,
+          }
+        }
+      );
       return handleResponse(response);
     } catch (error) {
       return { error };
