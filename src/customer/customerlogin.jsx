@@ -33,10 +33,12 @@ const LoginCustomer = () => {
       if (response.error) {
         setError(response.error.response.data.message);
       } else {
+        console.log('logged in successfully')
+        localStorage.setItem("token", response.data.token);
         setError(null);
         setEmail("");
         setPassword("");
-        window.location.href = "/";
+        // window.location.href = "/";
       }
     } catch (error) {
       console.log('error occured', error)
@@ -48,8 +50,8 @@ const LoginCustomer = () => {
 
   return (
     <div className="flex-col bg-gray-800" style={{ backgroundImage: `url(${registebg})`, backgroundSize: "cover" }}>
-      <div className="flex flex-col items-center justify-center h-screen gap-4 max-sm:w-full max-md:w-2/3">
-        <div className="bg-gray-700 shadow-lg p-10 rounded-3xl w-1/3 bg-opacity-40 max-sm:w-full max-md:w-full">
+      <div className="flex flex-col items-center justify-center h-screen gap-4 max-sm:w-full max-md:w-2/3 max-sm:p-4">
+        <div className="bg-gray-700 shadow-lg p-10 rounded-3xl w-1/3 bg-opacity-40 max-sm:w-full max-md:w-full max-sm:p-3">
           <div className="flex justify-between items-center mb-3 max-sm:text-center">
             <div>
               <h1 className="text-3xl font-extrabold text-white">

@@ -41,6 +41,7 @@ const Register = () => {
         setError(response.error.response.data.message);
       } else {
         console.log('registered successfully')
+        window.location.href = "/customer/login";
         setError(null);
       }
     } catch (error) {
@@ -127,7 +128,8 @@ const Register = () => {
               onChange={(e) => setTeam(e.target.value)}
               className="rounded-md p-3 border border-gray-300 text-black w-full opacity-70"
             >
-              <option value="">None</option>
+              <option value="">Select Team</option>
+              <option value="No Team">No Team</option>
               {teams.map((team, index) => (
                 <option className="text-black" key={index} value={team}>
                   {team}

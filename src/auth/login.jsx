@@ -41,7 +41,7 @@ const Login = () => {
       <div className="w-1/2 h-screen max-sm:w-0 max-md:w-1/3">
         <img src={dfa1} alt="dfa1" className="w-full h-full object-cover" />
       </div>
-      <div className="flex flex-col items-center justify-center h-screen gap-4 w-1/2 max-sm:w-full max-md:w-2/3">
+      <div className="flex flex-col items-center justify-center h-screen gap-4 w-1/2 max-sm:w-full max-md:w-2/3 max-sm:p-5">
         <img src={logo} alt="logo" className="w-36 h-36" />
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <h1 className="text-2xl font-bold text-center">DREAM FOOTBALL ARENA</h1>
@@ -67,8 +67,8 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             className="rounded-md p-3 border border-gray-400"
           />
-          <p className="text-gray-500 text-sm">
-            Incase you don't have an account, please contact the admin.
+          <p className="text-gray-500 text-sm text-center">
+            Incase you don't have an account, please contact the technical team.
           </p>
           <button
             className={`btn btn-primary mt-5 w-96 max-sm:w-full text-white rounded-full ${

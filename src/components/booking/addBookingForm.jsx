@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const AddBookingForm = ({ onSubmit, customersData, groundsData }) => {
   const [customer, setCustomer] = useState("");
   const [bookingDate, setBookingDate] = useState("");
-  const [bookingTime, setBookingTime] = useState("");
+  const [bookingStartTime, setbookingStartTime] = useState("");
+  const [bookingEndTime, setbookingEndTime] = useState("");
   const [bookingDuration, setBookingDuration] = useState(1);
   const [bookingPrice, setBookingPrice] = useState(0);
   const [bookingStatus, setBookingStatus] = useState("pending");
@@ -21,7 +22,8 @@ const AddBookingForm = ({ onSubmit, customersData, groundsData }) => {
       const newBooking = {
         customer: customer,
         bookingDate: new Date(bookingDate),
-        bookingTime,
+        bookingStartTime,
+        bookingEndTime,
         bookingDuration,
         bookingPrice,
         bookingStatus,
@@ -45,7 +47,8 @@ const AddBookingForm = ({ onSubmit, customersData, groundsData }) => {
   const resetForm = () => {
     setCustomer("");
     setBookingDate("");
-    setBookingTime("");
+    setbookingStartTime("");
+    setbookingEndTime("");
     setBookingDuration(1);
     setBookingPrice(0);
     setBookingStatus("pending");
@@ -91,23 +94,23 @@ const AddBookingForm = ({ onSubmit, customersData, groundsData }) => {
 
       <div className="flex gap-2">
         <div className="flex flex-col gap-2 w-1/2">
-          <label className="text-gray-500">Booking Time</label>
+          <label className="text-gray-500">Booking Start Time</label>
           <input
             type="time"
-            value={bookingTime}
-            onChange={(e) => setBookingTime(e.target.value)}
+            value={bookingStartTime}
+            onChange={(e) => setbookingStartTime(e.target.value)}
             className="rounded-md p-3 border border-gray-300"
             required
           />
         </div>
+
         <div className="flex flex-col gap-2 w-1/2">
-          <label className="text-gray-500">Booking Duration (hours)</label>
+          <label className="text-gray-500">Booking End Time</label>
           <input
-            type="number"
-            value={bookingDuration}
-            onChange={(e) => setBookingDuration(Number(e.target.value))}
+            type="time"
+            value={bookingEndTime}
+            onChange={(e) => setbookingEndTime(e.target.value)}
             className="rounded-md p-3 border border-gray-300"
-            min="1"
             required
           />
         </div>
@@ -185,8 +188,9 @@ const AddBookingForm = ({ onSubmit, customersData, groundsData }) => {
       {error && <p className="text-red-500">{error}</p>}
 
       <button
-        className={`btn btn-primary mt-5 w-full text-white rounded-full ${loading ? "cursor-not-allowed" : ""
-          }`}
+        className={`btn btn-primary mt-5 w-full text-white rounded-full ${
+          loading ? "cursor-not-allowed" : ""
+        }`}
         type="submit"
         disabled={loading}
       >
