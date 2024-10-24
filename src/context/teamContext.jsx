@@ -21,17 +21,17 @@ export const TeamProvider = ({ children }) => {
     const fetchTeam = async () => {
         setIsFetchingTeam(true);
         setTeamFetchingError(null);
-        try{
-            const response = await axios.get(`${URL}/customer/teams/team-profile`,{
+        try {
+            const response = await axios.get(`${URL}/customer/teams/team-profile`, {
                 headers: {
                     Authorization: `${localStorage.getItem('teamToken')}`,
                 },
             });
             console.log('response is:', response);
-            if(response.status > 400){
+            if (response.status > 400) {
                 throw new Error(response.data.message || "An error occurred");
             }
-            setCurrTeam(response.data.team); 
+            setCurrTeam(response.data.team);
         } catch (error) {
             console.log('Error is:', error.response?.data?.message || error.message);
             setTeamFetchingError(error.response?.data?.message || "An error occurred");
@@ -46,7 +46,13 @@ export const TeamProvider = ({ children }) => {
 
     return (
         <TeamContext.Provider value={{ currTeam, isFetchingTeam, teamFetchingError }}>
-            {children}
+            {isFetchingTeam ? (
+                <div className="flex justify-center items-center h-96">
+                    <div className="animate-spin rounded-full h-24 w-24 border-t-2 border-b-2 border-gray-200"></div>
+                </div>
+            ) : (
+                children
+            )}
         </TeamContext.Provider>
     );
 };

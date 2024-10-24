@@ -1,22 +1,51 @@
 import React, { useState } from 'react';
 import Navbar from '../../components/navbar/navbar';
 import registebg from "../../assets/register.png";
+import axios from 'axios';
+
+const URL = import.meta.env.VITE_BACKEND_URL;
 
 const ContactUs = () => {
     const [email, setEmail] = useState('');
     const [subject, setSubject] = useState('');
     const [message, setMessage] = useState('');
     const [success, setSuccess] = useState(false);
-    const [error, setError] = useState('');
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (email && subject && message) {
-            console.log("Form submitted", { email, subject, message });
-            setSuccess(true);
-            setError('');
-            resetForm();
+            try {
+                setLoading(true);
+                setError(null);
+                const response = await axios.post(`${URL}/contact`, {
+                    email,
+                    subject,
+                    message
+                },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `${localStorage.getItem('token')}`
+                        }
+                    }
+                );
+                const data = response.data;
+                if (response.status >= 400) {
+                    throw new Error(data.message);
+                }
+                setSuccess(true);
+                resetForm();
+                setTimeout(() => {
+                    setSuccess(false);
+                }, 3000);
+            } catch (error) {
+                setError(error.response?.data?.message || error.message);
+            } finally {
+                setLoading(false);
+            }
         } else {
             setError('Please fill in all fields.');
         }
@@ -81,8 +110,9 @@ const ContactUs = () => {
                             <button
                                 type="submit"
                                 className="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-red-700 w-full sm:w-auto hover:bg-red-600 transition duration-200 ease-in-out transform hover:scale-105 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                                disabled={loading}
                             >
-                                Send Message
+                                {loading ? 'Sending...' : 'Send Message'}
                             </button>
                         </form>
                     </div>

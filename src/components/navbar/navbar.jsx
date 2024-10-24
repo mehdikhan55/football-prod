@@ -20,22 +20,17 @@ const Navbar = () => {
             Home
           </a>
 
-          {customer ? (
-            <div className="flex gap-4">
-              <div className="flex gap-4">
-                <a href="/customer/booking" className="text-white">
-                  Booking
-                </a>
-                <a href="/customer/leagues" className="text-white">
-                  Leagues
-                </a>
-                <a href="/teams" className="text-white">
-                  Teams
-                </a>
-                <a href="/contact" className="text-white">
-                  Contact
-                </a>
-              </div>
+          {customer && !currTeam && (
+            <>
+              <a href="/customer/booking" className="text-white">
+                Booking
+              </a>
+              <a href="/teams" className="text-white">
+                Teams
+              </a>
+              <a href="/contact" className="text-white">
+                Contact
+              </a>
               <div
                 onClick={() => {
                   localStorage.removeItem("token");
@@ -45,27 +40,23 @@ const Navbar = () => {
               >
                 Logout
               </div>
-            </div>
-          ) : (
-            <></>
+            </>
           )}
 
-          {currTeam ? (
-            <div className="flex gap-4">
-              <div className="flex gap-4">
-                <a href="/customer/booking" className="text-white">
-                  Booking
-                </a>
-                <a href="/customer/leagues" className="text-white">
-                  Leagues
-                </a>
-                <a href="/teams" className="text-white">
-                  Teams
-                </a>
-                <a href="/contact" className="text-white">
-                  Contact
-                </a>
-              </div>
+          {currTeam && customer && (
+            <>
+              <a href="/customer/booking" className="text-white">
+                Booking
+              </a>
+              <a href="/teams" className="text-white">
+                Teams
+              </a>
+              <a href="/customer/leagues" className="text-white">
+                Leagues
+              </a>
+              <a href="/contact" className="text-white">
+                Contact
+              </a>
               <div
                 onClick={() => {
                   localStorage.removeItem("teamToken");
@@ -73,22 +64,61 @@ const Navbar = () => {
                 }}
                 className="text-white cursor-pointer"
               >
-                Logout
+                Logout Team
               </div>
-            </div>
-          ) : (
-            <></>
+              <div
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  window.location.href = "/";
+                }}
+                className="text-white cursor-pointer"
+              >
+                Logout User
+              </div>
+            </>
           )}
 
-          {!customer && !currTeam && (
-            <div className="flex gap-4">
+          {currTeam && !customer && (
+            <>
+              <a href="/customer/booking" className="text-white">
+                Booking
+              </a>
+              <a href="/teams" className="text-white">
+                Teams
+              </a>
+              <a href="/customer/leagues" className="text-white">
+                Leagues
+              </a>
+              <a href="/contact" className="text-white">
+                Contact
+              </a>
+              <div
+                onClick={() => {
+                  localStorage.removeItem("teamToken");
+                  window.location.href = "/teams";
+                }}
+                className="text-white cursor-pointer"
+              >
+                Logout Team
+              </div>
               <a href="/customer/login" className="text-white">
                 Login
               </a>
               <a href="/customer/register" className="text-white">
                 Register
               </a>
-            </div>
+            </>
+          )}
+
+          {!customer && !currTeam && (
+            <>
+              <a href="/customer/login" className="text-white">
+                Login
+              </a>
+              <a href="/customer/register" className="text-white">
+                Register
+              </a>
+            </>
           )}
 
           <button
@@ -100,6 +130,7 @@ const Navbar = () => {
             Portal Login
           </button>
         </div>
+
         <div className="md:hidden">
           <button onClick={() => setShowMenu(!showMenu)} className="text-white">
             <svg
@@ -119,31 +150,103 @@ const Navbar = () => {
           </button>
         </div>
       </div>
+
       {showMenu && (
         <div className="flex flex-col gap-4 p-4">
           <a href="/" className="text-white">
             Home
           </a>
-          <a href="/customer/booking" className="text-white">
-            Booking
-          </a>
-          <a href="/customer/leagues" className="text-white">
-            Leagues
-          </a>
-          <a href="/contact" className="text-white">
-            Contact
-          </a>
-          {customer ? (
-            <div
-              onClick={() => {
-                localStorage.removeItem("token");
-                window.location.href = "/";
-              }}
-              className="text-white cursor-pointer"
-            >
-              Logout
-            </div>
-          ) : (
+          {customer && !currTeam && (
+            <>
+              <a href="/customer/booking" className="text-white">
+                Booking
+              </a>
+              <a href="/teams" className="text-white">
+                Teams
+              </a>
+              <a href="/contact" className="text-white">
+                Contact
+              </a>
+              <div
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  window.location.href = "/";
+                }}
+                className="text-white cursor-pointer"
+              >
+                Logout
+              </div>
+            </>
+          )}
+
+          {currTeam && customer && (
+            <>
+              <a href="/customer/booking" className="text-white">
+                Booking
+              </a>
+              <a href="/teams" className="text-white">
+                Teams
+              </a>
+              <a href="/customer/leagues" className="text-white">
+                Leagues
+              </a>
+              <a href="/contact" className="text-white">
+                Contact
+              </a>
+              <div
+                onClick={() => {
+                  localStorage.removeItem("teamToken");
+                  window.location.href = "/teams";
+                }}
+                className="text-white cursor-pointer"
+              >
+                Logout Team
+              </div>
+              <div
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  window.location.href = "/";
+                }}
+                className="text-white cursor-pointer"
+              >
+                Logout User
+              </div>
+            </>
+          )}
+
+          {currTeam && !customer && (
+            <>
+              <a href="/customer/booking" className="text-white">
+                Booking
+              </a>
+              <a href="/teams" className="text-white">
+                Teams
+              </a>
+              <a href="/customer/leagues" className="text-white">
+                Leagues
+              </a>
+              <a href="/contact" className="text-white">
+                Contact
+              </a>
+              <div
+                onClick={() => {
+                  localStorage.removeItem("teamToken");
+                  window.location.href = "/teams";
+                }}
+                className="text-white cursor-pointer"
+              >
+                Logout Team
+              </div>
+              <a href="/customer/login" className="text-white">
+                Login
+              </a>
+              <a href="/customer/register" className="text-white">
+                Register
+              </a>
+            </>
+          )}
+
+          {!customer && !currTeam && (
             <>
               <a href="/customer/login" className="text-white">
                 Login

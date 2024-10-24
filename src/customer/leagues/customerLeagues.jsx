@@ -17,7 +17,7 @@ const CustomerLeagues = () => {
         try {
             setLoading(true);
             setError(null);
-            const response = await axios.get(`${URL}/customer/leagues`, {
+            const response = await axios.get(`${URL}/teams/leagues`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `${localStorage.getItem("token")}`,
@@ -27,8 +27,11 @@ const CustomerLeagues = () => {
             if (response.status >= 400) {
                 throw new Error(data.message);
             }
+            console.log('currTeam', currTeam)
+            console.log('response data leagues', data.leagues)
             const specificLeagues = data.leagues.filter(league => league.teams.map((team) => team._id).includes(currTeam._id));
             setLeagues(specificLeagues);
+            console.log('specificLeagues', specificLeagues)
         } catch (error) {
             console.log('error occured', error)
             setError(error.response?.data?.message || "Some Error Occurred");

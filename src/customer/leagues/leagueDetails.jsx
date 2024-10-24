@@ -24,7 +24,7 @@ const LeagueDetails = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await axios.get(`${URL}/customer/leagues/${id}`, {
+      const response = await axios.get(`${URL}/teams/leagues/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `${localStorage.getItem("token")}`,
