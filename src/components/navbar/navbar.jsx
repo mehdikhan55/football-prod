@@ -2,10 +2,12 @@ import React, { useState } from "react";
 
 import logoWhite from "../../assets/logoWhite.png";
 import { useUser } from "../../context/userContext";
+import { useTeam } from "../../context/teamContext";
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
   const { customer } = useUser();
+  const { currTeam } = useTeam();
 
   return (
     <div className="bg-gray-900 fixed top-0 w-full z-50">
@@ -17,39 +19,77 @@ const Navbar = () => {
           <a href="/" className="text-white">
             Home
           </a>
-          <a href="/customer/booking" className="text-white">
-            Booking
-          </a>
-          <a href="/customer/leagues" className="text-white">
-            Leagues
-          </a>
-          <a href="/teams" className="text-white">
-            Teams
-          </a>
-          <a href="/contact" className="text-white">
-            Contact
-          </a>
 
           {customer ? (
-            <div onClick={
-              () => {
-                localStorage.removeItem("token");
-                window.location.href = "/";
-              }
-            } className="text-white cursor-pointer">
-              Logout
+            <div className="flex gap-4">
+              <div className="flex gap-4">
+                <a href="/customer/booking" className="text-white">
+                  Booking
+                </a>
+                <a href="/customer/leagues" className="text-white">
+                  Leagues
+                </a>
+                <a href="/teams" className="text-white">
+                  Teams
+                </a>
+                <a href="/contact" className="text-white">
+                  Contact
+                </a>
+              </div>
+              <div
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  window.location.href = "/";
+                }}
+                className="text-white cursor-pointer"
+              >
+                Logout
+              </div>
             </div>
           ) : (
-            <>
+            <></>
+          )}
+
+          {currTeam ? (
+            <div className="flex gap-4">
+              <div className="flex gap-4">
+                <a href="/customer/booking" className="text-white">
+                  Booking
+                </a>
+                <a href="/customer/leagues" className="text-white">
+                  Leagues
+                </a>
+                <a href="/teams" className="text-white">
+                  Teams
+                </a>
+                <a href="/contact" className="text-white">
+                  Contact
+                </a>
+              </div>
+              <div
+                onClick={() => {
+                  localStorage.removeItem("teamToken");
+                  window.location.href = "/teams";
+                }}
+                className="text-white cursor-pointer"
+              >
+                Logout
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
+
+          {!customer && !currTeam && (
+            <div className="flex gap-4">
               <a href="/customer/login" className="text-white">
                 Login
               </a>
               <a href="/customer/register" className="text-white">
                 Register
               </a>
-            </>
-          )
-          }
+            </div>
+          )}
 
           <button
             className="btn-primary btn"
@@ -94,12 +134,13 @@ const Navbar = () => {
             Contact
           </a>
           {customer ? (
-            <div onClick={
-              () => {
+            <div
+              onClick={() => {
                 localStorage.removeItem("token");
                 window.location.href = "/";
-              }
-            } className="text-white cursor-pointer">
+              }}
+              className="text-white cursor-pointer"
+            >
               Logout
             </div>
           ) : (
@@ -111,8 +152,7 @@ const Navbar = () => {
                 Register
               </a>
             </>
-          )
-          }
+          )}
 
           <button
             className="btn-primary btn"

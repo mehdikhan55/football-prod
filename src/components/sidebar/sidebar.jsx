@@ -7,9 +7,15 @@ import { AiOutlineTeam } from "react-icons/ai";
 import logo from "../../assets/logo.png";
 import { BiMenu } from "react-icons/bi";
 import { FaFutbol } from "react-icons/fa";
+import { GrDashboard } from "react-icons/gr";
+import { BiLogOut } from "react-icons/bi";
 
 const AdminSiderbar = () => {
   const [show, handleShow] = useState(false);
+
+  const onClickLogout = () => {
+    localStorage.removeItem("token");
+  };
 
   return (
     <div className={`{show ? "overflow-hidden" : ""}`}>
@@ -23,7 +29,12 @@ const AdminSiderbar = () => {
       >
         <BiMenu className="w-10 h-10" />
       </a>
-      <img src={logo} alt="logo" className="w-20 h-20 rounded-full absolute top-2 right-2 cursor-pointer" onClick={() => window.location.href = "/"} />
+      <img
+        src={logo}
+        alt="logo"
+        className="w-20 h-20 rounded-full absolute top-2 right-2 cursor-pointer"
+        onClick={() => (window.location.href = "/")}
+      />
       <div
         id="drawer-navigation"
         className="fixed z-50 top-0 left-0 w-64 h-screen p-4 overflow-y-auto transition-transform -translate-x-full shadow-2xl border-r-4 border-gray-600 bg-secondary"
@@ -66,6 +77,19 @@ const AdminSiderbar = () => {
         </button>
         <div className="py-4 overflow-y-auto">
           <ul className="space-y-2 font-medium">
+            <li>
+              <NavLink
+                to="/admin/dashboard/"
+                className={({ isActive }) =>
+                  isActive
+                    ? "flex items-center p-2 bg-gray-700 text-white rounded-lg dark:text-white group"
+                    : "flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                }
+              >
+                <GrDashboard className="w-5 h-5 transition duration-75" />
+                <span className="flex-1 ms-3 whitespace-nowrap">Dashboard</span>
+              </NavLink>
+            </li>
             <li>
               <NavLink
                 to="/admin/dashboard/ground"
@@ -142,6 +166,20 @@ const AdminSiderbar = () => {
               >
                 <FaFutbol className="w-5 h-5 transition duration-75" />
                 <span className="ms-3">Leagues</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/admin/login"
+                onClick={onClickLogout}
+                className={({ isActive }) =>
+                  isActive
+                    ? "flex items-center p-2 bg-gray-700 text-white rounded-lg dark:text-white group"
+                    : "flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                }
+              >
+                <BiLogOut className="w-5 h-5 transition duration-75" />
+                <span className="ms-3">Logout</span>
               </NavLink>
             </li>
           </ul>
