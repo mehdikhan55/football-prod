@@ -25,12 +25,13 @@ const Login = () => {
     try {
       const response = await AuthServices.login(username, password);
       if (response.error) {
-        setError(response.error.response.data.message);
+        setError(response.error.response.data.message || 'An error occurred');  
       } else {
         setError(null);
       }
     } catch (error) {
-      setError(error);
+      console.log('error', error)
+      setError(error.response.data.message || 'An error occurred');
     } finally {
       setLoading(false);
     }

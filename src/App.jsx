@@ -28,6 +28,8 @@ import { useUser } from "./context/userContext";
 import CustomerTeams from "./customer/teams/customerTeams";
 import TeamLogin from "./customer/teams/teamAuth/teamLogin";
 import TeamRegister from "./customer/teams/teamAuth/teamRegister";
+import TeamsBooking from "./customer/teams/teamBooking";
+import CustomerMatchRequests from "./customer/matchRequests/customerMatchRequests";
 
 const App = () => {
   const { fetchingCustomer, errorFetchingCustomer } = useUser();
@@ -74,9 +76,14 @@ const App = () => {
           <Route path="/teams/register" element={<TeamRegister />} />
 
 
+          <Route path="teams/booking" element={<TeamsBooking />} />
+
           {/* League Routes */}
           <Route path="customer/leagues" element={<CustomerLeagues />} />
           <Route path="customer/leagues/:id" element={<LeagueDetails />} />
+
+          {/* Match Request Routes */}
+          <Route path="customer/match-requests" element={<CustomerMatchRequests/>} />
         </Routes>
       </Router>
     </>

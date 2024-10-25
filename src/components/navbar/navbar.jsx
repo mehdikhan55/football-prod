@@ -25,6 +25,9 @@ const Navbar = () => {
               <a href="/customer/booking" className="text-white">
                 Booking
               </a>
+              <a href="/customer/match-requests" className="text-white">
+                Match Requests
+              </a>
               <a href="/teams" className="text-white">
                 Teams
               </a>
@@ -46,7 +49,10 @@ const Navbar = () => {
           {currTeam && customer && (
             <>
               <a href="/customer/booking" className="text-white">
-                Booking
+                {`Booking for Customer`}
+              </a>
+              <a href="/teams/booking" className="text-white">
+                {`Booking for Teams`}
               </a>
               <a href="/teams" className="text-white">
                 Teams
@@ -80,7 +86,7 @@ const Navbar = () => {
 
           {currTeam && !customer && (
             <>
-              <a href="/customer/booking" className="text-white">
+              <a href="/teams/booking" className="text-white">
                 Booking
               </a>
               <a href="/teams" className="text-white">
@@ -160,6 +166,9 @@ const Navbar = () => {
             <>
               <a href="/customer/booking" className="text-white">
                 Booking
+              </a>
+              <a href="/customer/match-requests" className="text-white">
+                Match Requests
               </a>
               <a href="/teams" className="text-white">
                 Teams

@@ -27,6 +27,7 @@ export const UserProvider = ({ children }) => {
                     Authorization: `${localStorage.getItem('token')}`, // Ensure you send the token
                 },
             });
+            console.log('Response of user context is:', response.data);
             if(response.status > 400){
                 throw new Error(response.data.message || "An error occurred");
             }

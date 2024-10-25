@@ -5,6 +5,7 @@ import logo from "../assets/logoWhite.png";
 import registebg from "../assets/register.png";
 import { BsGoogle } from "react-icons/bs";
 import { Navigate } from "react-router-dom";
+import { useUser } from "../context/userContext";
 
 const LoginCustomer = () => {
   const [role, setRole] = useState("customer");
@@ -17,6 +18,8 @@ const LoginCustomer = () => {
   const [teamEmail, setTeamEmail] = useState("");
   const [teamPassword, setTeamPassword] = useState("");
   const [teamError, setTeamError] = useState(null);
+
+  const {customer} = useUser();
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -79,7 +82,7 @@ const LoginCustomer = () => {
     }
   };
 
-  if (localStorage.getItem("token")) {
+  if (customer) {
     return <Navigate to="/" />;
   }
 

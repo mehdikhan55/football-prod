@@ -86,6 +86,10 @@ const CustomerBooking = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const [playersRequired, setPlayersRequired] = useState(0);
+
+  const [bookingHistoryData, setBookingHistoryData] = useState([]);
+
   const { customer } = useUser();
 
   const [grounds, setGrounds] = useState([]);
@@ -97,6 +101,7 @@ const CustomerBooking = () => {
 
   useEffect(() => {
     console.log('customer:', customer);
+    fetchBookings();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -105,6 +110,7 @@ const CustomerBooking = () => {
     try {
       const newBooking = {
         customer: customer._id,
+        team: null,
         bookingDate: new Date(bookingDate),
         bookingTime,
         bookingDuration,
@@ -114,6 +120,7 @@ const CustomerBooking = () => {
         paymentStatus,
         paymentDate: paymentDate ? new Date(paymentDate) : null,
         ground,
+        playersRequired,
       };
       console.log('new booking:', newBooking);
 
@@ -149,6 +156,7 @@ const CustomerBooking = () => {
     setPaymentStatus("pending");
     setPaymentDate("");
     setGround("");
+    setPlayersRequired(0);
   };
 
   const fetchGrounds = async () => {
@@ -166,7 +174,38 @@ const CustomerBooking = () => {
         if (response.status >= 400) {
             throw new Error(data.message);
         }
+
         setGrounds(data.grounds);
+    } catch (error) {
+        setError(error);
+    } finally {
+        setLoading(false);
+    }
+};
+
+
+
+  const fetchBookings = async () => {
+    try {
+        setLoading(true);
+        setError(null);
+        const response = await axios.get(`${URL}/customer/bookings`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `${localStorage.getItem('token')}`,
+            },
+        });
+        const data = response.data;
+        console.log('response of fetchBookings:', response);
+        if (response.status >= 400) {
+            throw new Error(data.message);
+        }
+        const specificBookings = data.bookings.filter(booking => {
+          return booking.customer != null;
+      }).filter(booking => booking.customer._id === customer._id);
+      setBookingHistoryData(specificBookings);
+      console.log('specific bookings:', specificBookings);
+        setBookingHistoryData(specificBookings);
     } catch (error) {
         setError(error);
     } finally {
@@ -205,14 +244,14 @@ useEffect(() => {
         <div className="mt-10">
           <h1 className="text-2xl font-bold">Booking History</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
-            {BookingHistory.map((booking) => (
+            {bookingHistoryData.map((booking) => (
               <div
                 key={booking.id}
                 className="bg-gray-700 p-5 rounded-lg shadow-md"
               >
                 <div className="flex justify-between items-center">
                   <h1 className="text-xl font-bold">
-                    Booking ID: {booking.id}
+                    Booking ID: {booking._id}
                   </h1>
                   <BiHistory className="text-white text-3xl" />
                 </div>
@@ -232,7 +271,7 @@ useEffect(() => {
                 </p>
 
                 <p>
-                  <span className="font-bold">Ground:</span> {booking.ground}
+                  <span className="font-bold">Ground:</span> {booking.ground.name}
                 </p>
                 <div className="flex justify-between items-center">
                   <p>PKR {booking.bookingPrice}/-</p>
@@ -284,6 +323,16 @@ useEffect(() => {
                   className="input input-bordered"
                   min="1"
                   required
+                />
+                <label htmlFor="playersRequired" className="text-white">
+                  No of Players Still Required
+                </label>
+                <input
+                  type="number"
+                  value={playersRequired}
+                  onChange={(e) => setPlayersRequired(Number(e.target.value))}
+                  className="p-3 rounded-md input-bordered disabled:opacity-50 bg-white"
+                  min="0"
                 />
                 <label htmlFor="bookingPrice" className="text-white">
                   Booking Price
