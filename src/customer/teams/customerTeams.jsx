@@ -34,11 +34,11 @@ const CustomerTeams = () => {
                 </button>
               </Link>
 
-              <Link to={"/teams/register"}>
+              {/* <Link to={"/teams/register"}>
                 <button className="btn btn-secondary py-0 mt-1 hover:bg-primary hover:text-black">
                   Register Team
                 </button>
-              </Link>
+              </Link> */}
             </div>
           </div>
         )}

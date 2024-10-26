@@ -205,7 +205,7 @@ const Navbar = () => {
               <div
                 onClick={() => {
                   localStorage.removeItem("teamToken");
-                  window.location.href = "/teams";
+                  window.location.href = "/";
                 }}
                 className="text-white cursor-pointer"
               >
