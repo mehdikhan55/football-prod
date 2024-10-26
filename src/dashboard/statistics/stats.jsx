@@ -1,38 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminSiderbar from "../../components/sidebar/sidebar";
-import { BiUser } from "react-icons/bi";
+import { BiStar, BiUser } from "react-icons/bi";
 import { AiOutlineTeam } from "react-icons/ai";
-import { RiFootballFill } from "react-icons/ri";
-import { CiCalendar } from "react-icons/ci";
 import { MdEmail } from "react-icons/md";
-import { MdStadium } from "react-icons/md";
-import { FaUserFriends } from "react-icons/fa";
-import { BiCricketBall } from "react-icons/bi";
+import { AiOutlineCheck } from "react-icons/ai";
+import { FaRegClipboard } from "react-icons/fa";
+import { FaFlagCheckered } from "react-icons/fa";
+import { GiAmericanFootballBall } from "react-icons/gi";
+import axios from "axios";
 
-// <div
-// className="relative flex w-1/3 p-5 rounded-lg shadow-md items-center gap-5 h-36 justify-between card"
-// style={{ background: "#208ce4" }}
-// >
-// <div
-//   className="absolute w-20 h-20 rounded-full bg-white text-white opacity-20"
-//   style={{ bottom: "-30%", right: "-5%" }}
-// ></div>
-
-// <div>
-//   <p className="text-white text-xl">Number of Products</p>
-//   <p className="text-3xl font-semibold text-white">
-//     {products.length}
-//   </p>
-// </div>
-// <div>
-//   <FiShoppingBag size={50} className="w-10 rounded-full text-white" />
-// </div>
-// </div>
+const URL = import.meta.env.VITE_BACKEND_URL;
 
 const Card = ({ icon, title, value, color }) => {
   return (
     <div
-      className="relative flex w-full p-5 rounded-lg shadow-md  gap-5 h-36 justify-between card"
+      className="relative flex w-full p-5 rounded-lg shadow-md gap-5 h-36 justify-between card"
       style={{ background: color }}
     >
       <div
@@ -50,133 +32,132 @@ const Card = ({ icon, title, value, color }) => {
 };
 
 const MainDashboard = () => {
-  const [totalNumberOfUsers, setTotalNumberOfUsers] = useState(15);
-  const [totalNumberOfTeams, setTotalNumberOfTeams] = useState(3);
-  const [totalNumberOfMatches, setTotalNumberOfMatches] = useState(5);
-  const [totalNumberOfEmails, setTotalNumberOfEmails] = useState(15);
-  const [totalCancelledMatches, setTotalCancelledMatches] = useState(2);
-  const [totalCricketMatches, setTotalCricketMatches] = useState(2);
-  const [totalFootballMatches, setTotalFootballMatches] = useState(3);
-  const [totalCricketTeams, setTotalCricketTeams] = useState(2);
+  const [statistics, setStatistics] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const fetchStatistics = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await axios.get(`${URL}/admin/statistics`,{
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      });
+      if (response.status >= 400) {
+        throw new Error(response.data.message);
+      }
+      setStatistics(response.data);
+    } catch (error) {
+      setError(error.response ? error.response.data.message : error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStatistics();
+  }, []);
 
   return (
     <div className="p-5 pt-14 h-screen lg:p-20">
       <AdminSiderbar />
-
-      <div className="p-5 w-full">
-        <h1 className="text-2xl font-bold mb-2">
-          Welcome to the{" "}
-          <span className="text-secondary">Dream Arena Dashboard!</span>
-        </h1>
-        <p className="text-md mb-5">
-          Following are the statistics of the Dream Arena
-        </p>
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
-          <Card
-            icon={<BiUser size={50} className="w-10 rounded-full text-white" />}
-            title="Number of Users"
-            value={totalNumberOfUsers}
-            color="#208ce4"
-          />
-
-          <Card
-            icon={
-              <CiCalendar size={50} className="w-10 rounded-full text-white" />
-            }
-            title="Number of Emails"
-            value={totalNumberOfEmails}
-            color="#5b5b5b"
-          />
-          <Card
-            icon={
-              <RiFootballFill
-                size={50}
-                className="w-10 rounded-full text-white"
-              />
-            }
-            title="Number of Matches"
-            value={totalNumberOfMatches}
-            color="#f55252"
-          />
-          <Card
-            icon={
-              <MdEmail size={50} className="w-10 rounded-full text-white" />
-            }
-            title="Cancelled Matches"
-            value={totalCancelledMatches}
-            color="#b5b5b5"
-          />
-          <Card
-            icon={
-              <BiCricketBall
-                size={50}
-                className="w-10 rounded-full text-white"
-              />
-            }
-            title="Cricket Matches"
-            value={totalCricketMatches}
-            color="#f55252"
-          />
-          <Card
-            icon={
-              <RiFootballFill
-                size={50}
-                className="w-10 rounded-full text-white"
-              />
-            }
-            title="Football Matches"
-            value={totalFootballMatches}
-            color="#f55252"
-          />
-          <Card
-            icon={
-              <AiOutlineTeam
-                size={50}
-                className="w-10 rounded-full text-white"
-              />
-            }
-            title="Cricket Teams"
-            value={totalCricketTeams}
-            color="#f7c744"
-          />
-          <Card
-            icon={
-              <FaUserFriends
-                size={50}
-                className="w-10 rounded-full text-white"
-              />
-            }
-            title="Football Teams"
-            value={totalNumberOfTeams}
-            color="#f7c744"
-          />
+      {loading ? (
+        <div className="flex justify-center items-center h-96">
+          <div className="animate-spin rounded-full h-24 w-24 border-t-2 border-b-2 border-gray-900"></div>
         </div>
-      </div>
-      <div className="p-5 w-full">
-        <h1 className="text-2xl font-bold mb-2">Analysis</h1>
-        <p className="text-md mb-5">
-          Following are the analysis of the Dream Arena
-        </p>
+      ) : (
+        <>
+          <div className="p-5 w-full">
+          {error && (
+            <div
+              role="alert"
+              className="alert alert-error leading-tight flex justify-between  py-1 w-full mx-auto"
+            >
+              <span>{error}</span>
+              <div>
+                <button
+                  className="btn btn-sm border-none "
+                  onClick={() => setError(null)}
+                >
+                  x
+                </button>
+              </div>
+            </div>
+          )}
+            <h1 className="text-2xl font-bold mb-2">
+              Welcome to the{" "}
+              <span className="text-secondary">Dream Arena Dashboard!</span>
+            </h1>
+            <p className="text-md mb-5">Following are the statistics of the Dream Arena</p>
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+              <Card
+                icon={<BiUser size={50} className="w-10 rounded-full text-white" />}
+                title="Number of Users"
+                value={statistics.totalNumberOfUsers || 0}
+                color="#208ce4"
+              />
+              <Card
+                icon={<MdEmail size={50} className="w-10 rounded-full text-white" />}
+                title="Number of Emails"
+                value={statistics.totalNumberOfEmails || 0}
+                color="#5b5b5b"
+              />
+              <Card
+                icon={<AiOutlineTeam size={50} className="w-10 rounded-full text-white" />}
+                title="Number of Teams"
+                value={statistics.totalNumberOfTeams || 0}
+                color="#f55252"
+              />
+              <Card
+                icon={<GiAmericanFootballBall size={50} className="w-10 rounded-full text-white" />}
+                title="Number of Grounds"
+                value={statistics.totalNumberOfGrounds || 0}
+                color="#b5b5b5"
+              />
+              <Card
+                icon={<AiOutlineCheck size={50} className="w-10 rounded-full text-white" />}
+                title="Confirmed Bookings"
+                value={statistics.totalNumberOfConfirmedBookings || 0}
+                color="#f7c744"
+              />
+              <Card
+                icon={<FaRegClipboard size={50} className="w-10 rounded-full text-white" />}
+                title="Completed Bookings"
+                value={statistics.totalNumberOfCompletedBookings || 0}
+                color="#f7c744"
+              />
+              <Card
+                icon={<FaFlagCheckered size={50} className="w-10 rounded-full text-white" />}
+                title="Number of Leagues"
+                value={statistics.totalNumberOfLeagues || 0}
+                color="#f55252"
+              />
+              <Card
+                icon={<BiStar size={50} className="w-10 rounded-full text-white" />}
+                title="Rating"
+                value={statistics.averageRating || 0}
+                color="#f7c744"
+              />
+            </div>
+            {loading && <p>Loading...</p>}
+            {error && <p className="text-red-500">{error}</p>}
+          </div>
 
-        <p className="text-md mb-5 text-gray-700 p-5 border-2 rounded-2xl shadow">
-          In the last 30 days, the number of users has increased by 10%. The
-          number of matches has increased by 5%. The number of emails has
-          increased by 10%. The number of cricket matches has increased by 10%.
-          The number of football matches has increased by 5%. The number of
-          cricket teams has increased by 10%. The number of football teams has
-          increased by 5%.
-
-          <br />
-          <br />
-
-          The total number of users is 15. The total number of teams is 3. The
-          total number of matches is 5. The total number of emails is 15. The
-          total number of cancelled matches is 2. The total number of cricket
-          matches is 2. The total number of football matches is 3. The total
-          number of cricket teams is 2. The total number of football teams is 3.
-        </p>
-      </div>
+          <div className="p-5 w-full">
+            <h1 className="text-2xl font-bold mb-2">Analysis</h1>
+            <p className="text-md mb-5">Following is the analysis of the Dream Arena</p>
+            <p className="text-md mb-5 text-gray-700 p-5 border-2 rounded-2xl shadow">
+              In the last 30 days, the number of users has increased by 10%. The
+              number of bookings has increased by 5%. The number of grounds has
+              increased by 10%. The number of leagues has increased by 5%.
+            </p>
+          </div>
+        </>
+      )}
     </div>
+
   );
 };
 

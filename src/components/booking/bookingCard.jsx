@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import { AiFillCheckSquare, AiFillDelete, AiFillEdit } from "react-icons/ai";
 
-const BookingCard = ({ booking, onEdit, onCancel, onConfirm, onPending }) => {
+const BookingCard = ({ booking, onEdit, onCancel, onConfirm, onPending, onCompleted }) => {
 
   const handleEditClick = async () => {
     await onEdit(booking);
@@ -17,6 +17,10 @@ const BookingCard = ({ booking, onEdit, onCancel, onConfirm, onPending }) => {
 
   const handlePendingClick = async () => {
     await onPending(booking._id);
+  }
+
+  const handleCompletedClick = async () => {
+    await onCompleted(booking._id);
   }
 
   return (
@@ -43,10 +47,15 @@ const BookingCard = ({ booking, onEdit, onCancel, onConfirm, onPending }) => {
 
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 text-gray-600">
-        <div className="flex justify-between">
+        {booking.customer && <div className="flex justify-between">
           <strong>Customer:</strong>
           <span>{booking.customer.username}</span>
-        </div>
+        </div>}
+
+        {booking.team && <div className="flex justify-between">
+          <strong>Team:</strong>
+          <span>{booking.team.teamName}</span>
+        </div>}
 
         <div className="flex justify-between">
           <strong>Date:</strong>
@@ -140,6 +149,13 @@ const BookingCard = ({ booking, onEdit, onCancel, onConfirm, onPending }) => {
               <AiFillDelete className="mr-2" />
               <p>Set to Pending</p>
             </button>
+            <button
+              className="mt-4 bg-green-500 text-white rounded-md py-2 px-5 focus:outline-none focus:ring-2 transition duration-200 flex items-center justify-center"
+              onClick={handleCompletedClick}
+            >
+              <AiFillCheckSquare className="mr-2" />
+              <p>Set to Completed</p>
+            </button> 
           </>
         )}
         {booking.bookingStatus === "cancelled" && (
@@ -159,6 +175,16 @@ const BookingCard = ({ booking, onEdit, onCancel, onConfirm, onPending }) => {
               <p>Set to Pending</p>
             </button>
 
+          </>
+        )}
+        {booking.bookingStatus === "completed" && (
+          <>
+            <button
+              className="mt-4 bg-green-600 text-white rounded-md py-2 px-5 focus:outline-none focus:ring-2 transition duration-200 flex items-center justify-center" disabled
+            >
+              <AiFillCheckSquare className="mr-2" />
+              <p>Completed</p>
+            </button>
           </>
         )}
       </div>

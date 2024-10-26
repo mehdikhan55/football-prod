@@ -155,6 +155,34 @@ const ViewAllBooking = () => {
       setLoading(false);
     }
   };
+  const handleCompletedBooking = async (bookingId) => {
+    try {
+      setLoading(true);
+      setError(null);
+      //patch request to /bookings/status/:bookingId with body {bookingStatus: "confirmed"}
+      const response = await axios.patch(
+        `${URL}/bookings/status/${bookingId}`,
+        {
+          bookingStatus: "completed",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const data = response.data;
+      if (response.status >= 400) {
+        throw new Error(data.message);
+      }
+      await fetchBookings();
+    } catch (error) {
+      setError(error.response.data.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handlePendingBooking = async (bookingId) => {
     try {
@@ -267,6 +295,7 @@ const ViewAllBooking = () => {
                     onConfirm={handleConfirmBooking}
                     onPending={handlePendingBooking}
                     onCancel={handleCancelBooking}
+                    onCompleted={handleCompletedBooking}
                     type="edit"
                   />
                 ))

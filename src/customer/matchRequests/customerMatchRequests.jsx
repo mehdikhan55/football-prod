@@ -11,14 +11,14 @@ const CustomerMatchRequests = () => {
   const [activeTab, setActiveTab] = useState('available');
 
   return (
-    <div className='bg-gray-900 text-white h-screen'>
+    <div className='bg-gray-900 text-white min-h-screen flex flex-col'>
       <Navbar />
-      <div className="pt-20">
+      <div className="flex-grow pt-20">
         <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
         <div className="mt-4">
           {activeTab === 'available' && <AvailableMatches />}
           {activeTab === 'approved' && <ApprovedMatches customerId={customer.id} />}
-          {activeTab === 'myMatches' && <MyMatches customerId={customer.id} />}
+          {activeTab === 'myMatches' && <MyMatches customerId={customer?.id} />}
         </div>
       </div>
     </div>

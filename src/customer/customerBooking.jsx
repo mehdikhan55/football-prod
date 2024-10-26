@@ -8,6 +8,7 @@ import { BiHistory } from "react-icons/bi";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useUser } from "../context/userContext";
+import { formatDate } from "../utils/formatDate";
 
 const URL = import.meta.env.VITE_BACKEND_URL
 
@@ -257,12 +258,12 @@ useEffect(() => {
                 </div>
                 <div className="flex justify-end items-center mt-2">
                   <p>
-                    {booking.bookingDate} {booking.bookingTime}
+                    {formatDate(booking.bookingDate)} {booking.bookingTime}
                   </p>
                 </div>
                 <p>
                   <span className="font-bold">Duration:</span>{" "}
-                  {booking.bookingDuration} minutes
+                  {booking.bookingDuration} hours
                 </p>
 
                 <p>
@@ -314,7 +315,7 @@ useEffect(() => {
                   required
                 />
                 <label htmlFor="bookingDuration" className="text-white">
-                  Booking Duration (minutes)
+                  Booking Duration (hours)
                 </label>
                 <input
                   type="number"
@@ -349,15 +350,17 @@ useEffect(() => {
                 <label htmlFor="bookingPaymentMethod" className="text-white">
                   Payment Method
                 </label>
-                <input
-                  type="text"
-                  placeholder="Payment Method"
+                <select 
                   value={paymentMethod}
                   onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="p-3 rounded-md input-bordered disabled:opacity-50 bg-white"
-                  min="0"
+                  className="input input-bordered"
                   required
-                />
+                >
+                  <option value="">Select Payment Method</option>
+                  <option value="easypaisa">Easypaisa</option>
+                  <option value="cash">Cash</option>
+                  <option value="bankTransfer">Bank Transfer</option>
+                </select>
                 <select
                   value={ground}
                   onChange={(e) => setGround(e.target.value)}

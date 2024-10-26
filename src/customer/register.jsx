@@ -4,7 +4,6 @@ import logo from "../assets/logoWhite.png";
 import registebg from "../assets/register.png";
 import { BsGoogle } from "react-icons/bs";
 
-const teams = ["Arsenal", "Aston Villa", "Brentford"];
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -13,7 +12,6 @@ const Register = () => {
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [dob, setDob] = useState("");
-  const [team, setTeam] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -35,7 +33,6 @@ const Register = () => {
         address,
         phone,
         dob,
-        team,
       });
       if (response.error) {
         setError(response.error.response.data.message);
@@ -123,19 +120,6 @@ const Register = () => {
                 className="rounded-md p-3 border border-gray-300  w-full opacity-70"
               />
             </div>
-            <select
-              value={team}
-              onChange={(e) => setTeam(e.target.value)}
-              className="rounded-md p-3 border border-gray-300 text-black w-full opacity-70"
-            >
-              <option value="">Select Team</option>
-              <option value="No Team">No Team</option>
-              {teams.map((team, index) => (
-                <option className="text-black" key={index} value={team}>
-                  {team}
-                </option>
-              ))}
-            </select>
             <div className="flex items-center justify-center">
               <button
                 className={`btn btn-primary bg-[#EF4444] border-none hover:bg-[#a63030] hover:scale-105 mt-5 w-96 max-md:w-full max-sm:w-full text-white rounded-full ${loading ? "cursor-not-allowed" : ""

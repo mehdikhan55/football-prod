@@ -1,27 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import MatchCard from './MatchCard';
+import MatchCard from './matchCard';
+import { useUser } from '../../context/userContext';
+import MyMatchesMatchCard from './myMatchesMatchCard';
+
+const URL = import.meta.env.VITE_BACKEND_URL;
 
 const MyMatches = ({ customerId }) => {
   const [myMatches, setMyMatches] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const {customer} = useUser();
+
+  const fetchMyMatches = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await axios.get(`${URL}/customer/match-requests/my-matches/${customer._id}`,{
+        headers: {
+          Authorization: `${localStorage.getItem('token')}`,
+      },
+      });
+      console.log('response', response); 
+      setMyMatches(response.data.myMatches);
+    } catch (error) {
+      setError(error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchMyMatches = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await axios.get(`/customer/match-requests/my-matches/${customerId}`);
-        setMyMatches(response.data.myMatches);
-      } catch (error) {
-        setError(error.response?.data?.message || error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (customer){
     fetchMyMatches();
+  }
   }, [customerId]);
+
+
+  if(!customer){  
+    return (
+      <div className="flex justify-center items-center h-96">
+        <p className="text-white">Please login to view your matches!</p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -43,7 +65,7 @@ const MyMatches = ({ customerId }) => {
             </div>
           )}
           {myMatches ? ( myMatches.map((match) => (
-            <MatchCard key={match._id} match={match} />
+            <MyMatchesMatchCard fetchMyMatches={fetchMyMatches} key={match._id} match={match} />
           )))
           : (
             <div className="flex justify-center items-center h-96">

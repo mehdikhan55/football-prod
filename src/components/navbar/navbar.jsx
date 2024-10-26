@@ -66,7 +66,7 @@ const Navbar = () => {
               <div
                 onClick={() => {
                   localStorage.removeItem("teamToken");
-                  window.location.href = "/teams";
+                  window.location.href = "/customer/login";
                 }}
                 className="text-white cursor-pointer"
               >
@@ -101,7 +101,7 @@ const Navbar = () => {
               <div
                 onClick={() => {
                   localStorage.removeItem("teamToken");
-                  window.location.href = "/teams";
+                  window.location.href = "/customer/login";
                 }}
                 className="text-white cursor-pointer"
               >
@@ -205,7 +205,7 @@ const Navbar = () => {
               <div
                 onClick={() => {
                   localStorage.removeItem("teamToken");
-                  window.location.href = "/";
+                  window.location.href = "/customer/login";
                 }}
                 className="text-white cursor-pointer"
               >
@@ -240,7 +240,7 @@ const Navbar = () => {
               <div
                 onClick={() => {
                   localStorage.removeItem("teamToken");
-                  window.location.href = "/teams";
+                  window.location.href = "/customer/login";
                 }}
                 className="text-white cursor-pointer"
               >

@@ -28,7 +28,7 @@ const CustomerTeams = () => {
             <p className="text-center font-bold">You are not logged in...</p>
             <p className="text-center">Take actions</p>
             <div className="flex items-center justify-center gap-2">
-              <Link to={"/teams/login"}>
+              <Link to={"/customer/login"}>
                 <button className="btn btn-secondary py-0 mt-1 hover:bg-primary hover:text-black">
                   Login As Team
                 </button>

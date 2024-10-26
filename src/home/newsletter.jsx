@@ -14,7 +14,7 @@ const Newsletter = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await axios.post(`${URL}/admin/emails`, {
+      const response = await axios.post(`${URL}/email`, {
         email,
       },
         {

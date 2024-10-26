@@ -81,16 +81,7 @@ const Users = () => {
     }
   };
 
-  const [teamFilter, setTeamFilter] = useState("all");
 
-  const filterUsers = (team) => {
-    setTeamFilter(team);
-    if (team === "all") {
-      fetchUsers(); // Fetch all users
-    } else {
-      setUsers((prevUsers) => prevUsers.filter((user) => user.team === team));
-    }
-  };
 
   const [nameSearch, setNameSearch] = useState("");
 
@@ -136,22 +127,7 @@ const Users = () => {
               className="p-2 border border-gray-300 rounded-md input w-96"
             />
 
-            <div className="flex items-center space-x-4">
-              <label htmlFor="teamFilter" className="text-lg font-semibold">
-                Filter by team:
-              </label>
-              <select
-                value={teamFilter}
-                onChange={(e) => filterUsers(e.target.value)}
-                id="teamFilter"
-                className="p-2 border border-gray-300 rounded-md"
-              >
-                <option value="all">All</option>
-                <option value="Team Alpha">Team Alpha</option>
-                <option value="Team Beta">Team Beta</option>
-                <option value="Team Gamma">Team Gamma</option>
-              </select>
-            </div>
+          
           </div>
           {error && (
             <div role="alert" className="alert alert-error leading-tight flex justify-between  py-1 w-full mx-auto">
@@ -178,9 +154,6 @@ const Users = () => {
                   Phone
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Team
-                </th>
-                <th scope="col" className="px-6 py-3">
                   Status
                 </th>
                 <th scope="col" className="px-6 py-3">
@@ -203,7 +176,6 @@ const Users = () => {
                   <td className="px-6 py-4">{user.email}</td>
                   <td className="px-6 py-4">{user.address}</td>
                   <td className="px-6 py-4">{user.phone}</td>
-                  <td className="px-6 py-4">{user.team}</td>
                   <td className="px-6 py-4">
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-medium ${user.status === "active"
@@ -282,9 +254,6 @@ const UserInfoModal = ({ user, modalId }) => {
           <p>
             <strong>Address:</strong>{" "}
             <span className="ml-4">{user.address}</span>
-          </p>
-          <p>
-            <strong>Team:</strong> <span className="ml-4">{user.team}</span>
           </p>
           <p>
             <strong>Date of Birth:</strong>{" "}
