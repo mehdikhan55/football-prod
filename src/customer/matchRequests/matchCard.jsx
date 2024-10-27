@@ -27,16 +27,10 @@ const MatchCard = ({ match, onInterest }) => {
   };
 
   return (
-    <div className="border rounded-lg p-4 mb-4 text-white shadow-md relative">
-      <div className="absolute">
+    <div className="border rounded-lg p-4 mb-4 text-white shadow-md ">
+      <div className="">
         {alreadyInterested && (
           <span className="top-1 ring-1 bg-green-500 text-white px-2 py-1 rounded">Interest Sent</span>
-        )}
-        {approved && (
-          <span className="top-1 ring-1 bg-green-500 text-white px-2 py-1 rounded-xl">approved</span>
-        )}
-        {rejected && (
-          <span className="top-1 ring-1 bg-red-500 text-white px-2 py-1 rounded">Rejected</span>
         )}
       </div>
       <h3 className="text-lg font-semibold">{match.bookingId.ground.name}</h3>
@@ -44,7 +38,7 @@ const MatchCard = ({ match, onInterest }) => {
       <p>Date: {new Date(match.bookingId.bookingDate).toLocaleDateString()}</p>
       <p>Time: {match.bookingId.bookingTime}</p>
       <p>Players Needed: {match.playersRequired}</p>
-      {onInterest && (
+      {(onInterest && !approved && !rejected) && (
         <button
           onClick={handleInterest}
           disabled={alreadyInterested}
@@ -55,6 +49,16 @@ const MatchCard = ({ match, onInterest }) => {
           Express Interest
         </button>
       )}
+      {approved && (
+        <button
+          className={`mt-2 bg-green-500 text-white py-1 px-3 rounded`}
+        >
+          Approved
+        </button>
+      )}
+      {rejected && (
+          <span className="top-1 ring-1 bg-red-500 text-white px-2 py-1 rounded">Rejected</span>
+        )}
     </div>
   );
 };
