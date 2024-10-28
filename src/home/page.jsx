@@ -42,9 +42,9 @@ const Home = () => {
             levels.
           </p>
           <div className="mt-4 flex">
-            <button className="bg-red-500 px-4 py-2 rounded-md btn border-0">
-              <Link to="/customer/booking">Book Now</Link>
-            </button>
+            <Link to="/customer/booking"  className="bg-red-500 px-4 py-2 rounded-md btn border-0">
+              <div>Book Now</div>
+            </Link>
             <button className="bg-gray-500 px-4 py-2 rounded-md btn ml-4 border-0">
               Learn More
             </button>
@@ -68,9 +68,9 @@ const Home = () => {
           get started.
         </p>
         <div className="flex justify-center mt-4">
-          <button className="bg-red-500 px-4 py-2 rounded-md btn hover:bg-red-700 border-none w-96 max-sm:w-1/2">
-          <Link to="/customer/booking">Book Now</Link>
-          </button>
+          <Link to="/customer/booking" className="bg-red-500 px-4 py-2 rounded-md btn hover:bg-red-700 border-none w-96 max-sm:w-1/2">
+          <div >Book Now</div>
+          </Link>
         </div>
       </div>
       <ProfileSection/>

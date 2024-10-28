@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import MatchCard from './matchCard';
 import { useUser } from '../../context/userContext';
 import MyMatchesMatchCard from './myMatchesMatchCard';
 
