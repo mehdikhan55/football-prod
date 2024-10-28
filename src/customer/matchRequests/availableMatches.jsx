@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import MatchCard from './MatchCard';
+import MatchCard from './matchCard';
 import { useUser } from '../../context/userContext';
+import toast from 'react-hot-toast';
 
 const URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -9,14 +10,16 @@ const AvailableMatches = () => {
   const [availableMatches, setAvailableMatches] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [comments, setComments] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const {customer} = useUser();
+  const { customer } = useUser();
 
   const fetchAvailableMatches = async () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await axios.get(`${URL}/customer/match-requests/available-match-requests`,{
+      const response = await axios.get(`${URL}/customer/match-requests/available-match-requests`, {
         headers: {
           Authorization: `${localStorage.getItem('token')}`,
         },
@@ -36,24 +39,27 @@ const AvailableMatches = () => {
 
   const handleInterest = async (matchId) => {
     try {
-     setLoading(true);
+      setLoading(true);
       setError(null);
       const response = await axios.patch(`${URL}/customer/match-requests/interested/${matchId}`, {
-        playerId: customer._id
-      },{
+        playerId: customer._id,
+        comments: comments
+      }, {
         headers: {
           Authorization: `${localStorage.getItem('token')}`,
         },
       });
       const data = response.data;
-      if(response.status > 400){
+      if (response.status > 400) {
         throw new Error(data.message);
       }
       await fetchAvailableMatches();
-      alert('Interest sent successfully!');
+      toast.success('Interest sent successfully!');
+      setComments('');
+      setIsDialogOpen(false);
     } catch (error) {
       setError(error.response?.data?.message || error.message);
-    }finally {
+    } finally {
       setLoading(false);
     }
 
@@ -79,7 +85,16 @@ const AvailableMatches = () => {
             </div>
           )}
           {availableMatches.map((match) => (
-            <MatchCard key={match._id} match={match} onInterest={() => handleInterest(match._id)} />
+            <MatchCard
+              key={match._id}
+              match={match}
+              loading={loading}
+              isDialogOpen={isDialogOpen}
+              comments={comments}
+              setComments={setComments}
+              setIsDialogOpen={setIsDialogOpen}
+              onInterest={() => handleInterest(match._id)}
+            />
           ))}
         </>
       )}

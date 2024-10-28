@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useUser } from '../../context/userContext';
 
-const MatchCard = ({ match, onInterest }) => {
+const MatchCard = ({ match, onInterest, loading, setIsDialogOpen, isDialogOpen, comments, setComments}) => {
   const [alreadyInterested, setAlreadyInterested] = useState(false);
   const [approved, setApproved] = useState(false);
   const [rejected, setRejected] = useState(false);
@@ -26,6 +26,11 @@ const MatchCard = ({ match, onInterest }) => {
     }
   };
 
+
+  const handleDialogToggle = () => {
+    setIsDialogOpen(!isDialogOpen);
+  }
+
   return (
     <div className="border rounded-lg p-4 mb-4 text-white shadow-md ">
       <div className="">
@@ -34,17 +39,16 @@ const MatchCard = ({ match, onInterest }) => {
         )}
       </div>
       <h3 className="text-lg font-semibold">{match.bookingId.ground.name}</h3>
-      <p>Request Maker: {match.matchMaker.username}</p>      
+      <p>Request Maker: {match.matchMaker.username}</p>
       <p>Date: {new Date(match.bookingId.bookingDate).toLocaleDateString()}</p>
       <p>Time: {match.bookingId.bookingTime}</p>
       <p>Players Needed: {match.playersRequired}</p>
       {(onInterest && !approved && !rejected) && (
         <button
-          onClick={handleInterest}
+          onClick={() => setIsDialogOpen(true)}
           disabled={alreadyInterested}
-          className={`mt-2 ${
-            alreadyInterested ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-400'
-          } text-white py-1 px-3 rounded`}
+          className={`mt-2 ${alreadyInterested ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-400'
+            } text-white py-1 px-3 rounded`}
         >
           Express Interest
         </button>
@@ -57,9 +61,48 @@ const MatchCard = ({ match, onInterest }) => {
         </button>
       )}
       {rejected && (
-          <span className="top-1 ring-1 bg-red-500 text-white px-2 py-1 rounded">Rejected</span>
-        )}
+        <span className="top-1 ring-1 bg-red-500 text-white px-2 py-1 rounded">Rejected</span>
+      )}
+      {isDialogOpen && (
+        <div className="modal modal-open ">
+          <div className="modal-box bg-gray-500">
+            <h1 className="text-2xl font-bold mb-4">Express Your Interest</h1>
+            <form
+              onSubmit={handleInterest}
+              className="flex flex-col gap-4 text-black"
+            >
+              <label htmlFor="bookingDuration" className="text-white">
+
+              </label>
+              <textarea
+                placeholder='Any comments'
+                value={comments}
+                onChange={(e) => setComments(e.target.value)}
+                className="input-bordered p-2 rounded-lg"
+                rows={3}
+              />
+
+              <button
+                type="submit"
+                className={`btn btn-primary ${loading ? "loading" : ""}`}
+                disabled={loading}
+              >
+                {loading ? "Creating Booking..." : "Create Booking"}
+              </button>
+            </form>
+            <div className="modal-action">
+              <button
+                onClick={handleDialogToggle}
+                className="btn btn-secondary"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
+
   );
 };
 

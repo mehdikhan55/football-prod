@@ -66,19 +66,20 @@ const MyMatchesMatchCard = ({ match, onInterest, fetchMyMatches }) => {
             <p>Ground: {match.bookingId.ground.name}</p>
 
             {interestedPlayers.map(player => (
-                <div key={player.player._id} className="flex justify-between items-center my-2 bg-gray-600 py-1 px-2 rounded-xl opacity-80">
-                    <span>{player.player.username} - {player.requestStatus}</span>
-                    <div>
-                        {player.requestStatus === 'pending' && (
-                            <>
-                                <button disabled={loading} onClick={() => handleStatusChange(player.player._id, 'approved')} className="bg-green-500 text-white py-1 px-2 rounded mr-1">
-                                    Accept
-                                </button>
-                                <button disabled={loading} onClick={() => handleStatusChange(player.player._id, 'rejected')} className="bg-red-500 text-white py-1 px-2 rounded">
-                                    Reject
-                                </button>
-                            </>
-                        )}
+                <div className="flex flex-col bg-gray-700 py-2 px-2 mb-1 text-white  rounded-xl">
+                    <div key={player.player._id} className="flex justify-between items-center opacity-80">
+                        <span>{player.player.username} - {player.requestStatus}</span>
+                        <div>
+                            {player.requestStatus === 'pending' && (
+                                <>
+                                    <button disabled={loading} onClick={() => handleStatusChange(player.player._id, 'approved')} className="bg-green-500 text-white py-1 px-2 rounded mr-1">
+                                        Accept
+                                    </button>
+                                    <button disabled={loading} onClick={() => handleStatusChange(player.player._id, 'rejected')} className="bg-red-500 text-white py-1 px-2 rounded">
+                                        Reject
+                                    </button>
+                                </>
+                            )}
                             {/* {player.requestStatus === 'approved' && (
                                 <>
                                     <button disabled={loading} onClick={() => handleStatusChange(player.player._id, 'rejected')} className="bg-red-500 text-white py-1 px-2 rounded mr-1">
@@ -95,7 +96,14 @@ const MyMatchesMatchCard = ({ match, onInterest, fetchMyMatches }) => {
                                 </>
                             )} */}
 
+                        </div>
                     </div>
+                    {player.comments && (
+                        <>
+                            <p>Comments:</p>
+                            <p className='border border-gray-100 px-1 py-2 rounded-md'>{player.comments}</p>
+                        </>
+                    )}
                 </div>
             ))}
 
