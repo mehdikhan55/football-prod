@@ -12,7 +12,6 @@ const MyMatchesMatchCard = ({ match, onInterest, fetchMyMatches }) => {
     const { customer } = useUser();
 
     useEffect(() => {
-        console.log('match is ', match);
         if (match && customer) {
             const interestedPlayersList = match.interestedPlayers;
             setInterestedPlayers(interestedPlayersList);
@@ -31,13 +30,11 @@ const MyMatchesMatchCard = ({ match, onInterest, fetchMyMatches }) => {
         try {
             setLoading(true);
             setError(null);
-            console.log('reqeust to change status', playerId, action);
             const response = await axios.patch(`${URL}/customer/match-requests/${match._id}/interested/${playerId}`, { action }, {
                 headers: {
                     Authorization: localStorage.getItem('token'),
                 },
             });
-            console.log('response of status change', response);
             const data = response.data;
             if (response.status > 400) {
                 throw new Error(data.message);
@@ -56,64 +53,53 @@ const MyMatchesMatchCard = ({ match, onInterest, fetchMyMatches }) => {
     };
 
     return (
-        <div className="border rounded-lg p-4 mb-4 text-white shadow-md relative">
-            <h3 className="text-lg font-semibold">{match.bookingId.ground.name}</h3>
-            <p>Request Maker: {match.matchMaker.username}</p>
-            <p>Date: {new Date(match.bookingId.bookingDate).toLocaleDateString()}</p>
-            <p>Time: {match.bookingId.bookingTime}</p>
-            <p>Players Needed: {match.playersRequired}</p>
+        <div className="bg-gray-800 border border-gray-700 rounded-lg p-6 mb-6 shadow-lg transition duration-300 hover:shadow-xl">
+            <h3 className="text-xl font-semibold text-gray-100 mb-2">{match.bookingId.ground.name}</h3>
+            <p className="text-gray-400">Request Maker: <span className="text-gray-200">{match.matchMaker.username}</span></p>
+            <p className="text-gray-400">Date: <span className="text-gray-200">{new Date(match.bookingId.bookingDate).toLocaleDateString()}</span></p>
+            <p className="text-gray-400">Time: <span className="text-gray-200">{match.bookingId.bookingTime}</span></p>
+            <p className="text-gray-400">Players Needed: <span className="text-gray-200">{match.playersRequired}</span></p>
 
-            <p>Ground: {match.bookingId.ground.name}</p>
-
-            {interestedPlayers.map(player => (
-                <div className="flex flex-col bg-gray-700 py-2 px-2 mb-1 text-white  rounded-xl">
-                    <div key={player.player._id} className="flex justify-between items-center opacity-80">
-                        <span>{player.player.username} - {player.requestStatus}</span>
-                        <div>
-                            {player.requestStatus === 'pending' && (
-                                <>
-                                    <button disabled={loading} onClick={() => handleStatusChange(player.player._id, 'approved')} className="bg-green-500 text-white py-1 px-2 rounded mr-1">
-                                        Accept
-                                    </button>
-                                    <button disabled={loading} onClick={() => handleStatusChange(player.player._id, 'rejected')} className="bg-red-500 text-white py-1 px-2 rounded">
-                                        Reject
-                                    </button>
-                                </>
-                            )}
-                            {/* {player.requestStatus === 'approved' && (
-                                <>
-                                    <button disabled={loading} onClick={() => handleStatusChange(player.player._id, 'rejected')} className="bg-red-500 text-white py-1 px-2 rounded mr-1">
-                                        Reject
-                                    </button>
-                                </>
-
-                            )}
-                            {player.requestStatus === 'rejected' && (
-                                <>
-                                    <button disabled={loading} onClick={() => handleStatusChange(player.player._id, 'approved')} className="bg-green-500 text-white py-1 px-2 rounded mr-1">
-                                        Approve
-                                    </button>
-                                </>
-                            )} */}
-
+            <div className="mt-4">
+                {interestedPlayers.map(player => (
+                    <div key={player.player._id} className="flex flex-col bg-gray-700 py-3 px-4 mb-2 rounded-lg shadow-inner">
+                        <div className="flex justify-between items-center text-gray-200">
+                            <span>{player.player.username} - {player.requestStatus}</span>
+                            <div className="flex space-x-2">
+                                {player.requestStatus === 'pending' && (
+                                    <>
+                                        <button
+                                            onClick={() => handleStatusChange(player.player._id, 'approved')}
+                                            disabled={loading}
+                                            className="bg-green-600 hover:bg-green-700 text-white py-1 px-3 rounded focus:outline-none transition duration-150"
+                                        >
+                                            Accept
+                                        </button>
+                                        <button
+                                            onClick={() => handleStatusChange(player.player._id, 'rejected')}
+                                            disabled={loading}
+                                            className="bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded focus:outline-none transition duration-150"
+                                        >
+                                            Reject
+                                        </button>
+                                    </>
+                                )}
+                            </div>
                         </div>
+                        {player.comments && (
+                            <p className="mt-2 text-sm text-gray-300 italic">Comments: {player.comments}</p>
+                        )}
                     </div>
-                    {player.comments && (
-                        <>
-                            <p>Comments:</p>
-                            <p className='border border-gray-100 px-1 py-2 rounded-md'>{player.comments}</p>
-                        </>
-                    )}
-                </div>
-            ))}
+                ))}
+            </div>
 
             {onInterest && (
                 <button
                     onClick={handleInterest}
                     disabled={alreadyInterested}
-                    className={`mt-2 ${alreadyInterested ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-400'} text-white py-1 px-3 rounded`}
+                    className={`mt-4 w-full ${alreadyInterested ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'} text-white py-2 rounded-lg transition duration-200`}
                 >
-                    Express Interest
+                    {alreadyInterested ? 'Interest Expressed' : 'Express Interest'}
                 </button>
             )}
         </div>

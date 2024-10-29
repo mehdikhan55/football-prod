@@ -32,10 +32,12 @@ const MatchCard = ({ match, onInterest, loading, setIsDialogOpen, isDialogOpen, 
   }
 
   return (
-    <div className="border rounded-lg p-4 mb-4 text-white shadow-md ">
+    <div className="bg-gray-800 border relative border-gray-700 rounded-lg p-6 mb-6 shadow-lg transition duration-300 hover:shadow-xl">
       <div className="">
         {alreadyInterested && (
-          <span className="top-1 ring-1 bg-green-500 text-white px-2 py-1 rounded">Interest Sent</span>
+          <div className="flex items-center justify-end absolute top-1 right-1">
+          <span className="top-1 ring-1  bg-green-500 text-white px-2 py-1 rounded">Interest Sent</span>
+          </div>
         )}
       </div>
       <h3 className="text-lg font-semibold">{match.bookingId.ground.name}</h3>
@@ -87,7 +89,7 @@ const MatchCard = ({ match, onInterest, loading, setIsDialogOpen, isDialogOpen, 
                 className={`btn btn-primary ${loading ? "loading" : ""}`}
                 disabled={loading}
               >
-                {loading ? "Creating Booking..." : "Create Booking"}
+                {loading ? "Expressing Interest..." : "Express Interest"}
               </button>
             </form>
             <div className="modal-action">

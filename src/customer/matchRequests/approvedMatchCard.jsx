@@ -27,15 +27,17 @@ const ApprovedMatchCard = ({ match, onInterest }) => {
   };
 
   return (
-    <div className="border rounded-lg p-4 mb-4 text-white shadow-md relative">
-      <h3 className="text-lg font-semibold">{match.bookingId.ground.name}</h3>
-      <p>Request Maker: {match.matchMaker.username}</p>      
-      <p>Date: {new Date(match.bookingId.bookingDate).toLocaleDateString()}</p>
-      <p>Time: {match.bookingId.bookingTime}</p>
-      <p>Players Needed: {match.playersRequired}</p>
-      <div className="mt-3">
+    <div className="p-6 bg-gray-800 text-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+      <h3 className="text-xl font-semibold mb-2">{match.bookingId.ground.name}</h3>
+      <p className="text-sm mb-1"><span className="font-semibold">Request Maker:</span> {match.matchMaker.username}</p>
+      <p className="text-sm mb-1"><span className="font-semibold">Date:</span> {new Date(match.bookingId.bookingDate).toLocaleDateString()}</p>
+      <p className="text-sm mb-1"><span className="font-semibold">Time:</span> {match.bookingId.bookingTime}</p>
+      <p className="text-sm mb-1"><span className="font-semibold">Players Needed:</span> {match.playersRequired}</p>
+      <div className="flex items-center justify-end mt-4">
         {approved && (
-          <span className="top-1 ring-1 bg-green-500 text-white px-2 py-1 rounded">approved</span>
+          <span className="text-white font-semibold text-sm rounded-lg bg-green-500 py-1 px-3">
+            Approved
+          </span>
         )}
       </div>
     </div>

@@ -66,7 +66,7 @@ const AvailableMatches = () => {
   };
 
   return (
-    <div>
+    <div className="max-w-5xl mx-auto p-6">
       {loading ? (
         <div className="flex justify-center items-center h-96">
           <div className="animate-spin rounded-full h-24 w-24 border-t-2 border-b-2 border-gray-200"></div>
@@ -76,7 +76,7 @@ const AvailableMatches = () => {
           {error && (
             <div
               role="alert"
-              className="alert alert-error leading-tight flex justify-between py-1 w-[84%] mx-auto mb-2"
+              className="alert alert-error leading-tight flex justify-between py-1 w-full mx-auto mb-2"
             >
               <span>{error}</span>
               <button className="btn btn-sm  border-none" onClick={() => setError(null)}>
