@@ -44,7 +44,7 @@ const AuthServices = {
   },
   registerCustomer: async (data) => {
     try {
-      const { username, password, email, address, phone, dob, team } = data;
+      const { username, password, email, address, phone, dob } = data;
       const response = await axios.post(`${URL}/auth/customer/register`, 
         {
           username,
@@ -53,7 +53,6 @@ const AuthServices = {
           address,
           phone,
           dob,
-          team,
         }
       );
       return handleResponse(response);
