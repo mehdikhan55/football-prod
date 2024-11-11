@@ -20,7 +20,7 @@ const Register = () => {
     setError(null);
     e.preventDefault();
     console.log('registering')
-    if (username === "" || password === "" || email === "" || address === "" || phone === "" || dob === "" || team === "") {
+    if (username === "" || password === "" || email === "" || address === "" || phone === "" || dob === "" ) {
       setError("Please fill in all fields");
       setLoading(false);
       return;
@@ -34,6 +34,7 @@ const Register = () => {
         phone,
         dob,
       });
+      console.log('response', response)
       if (response.error) {
         setError(response.error.response.data.message);
       } else {
