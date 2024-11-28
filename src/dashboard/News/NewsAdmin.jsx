@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AddNews from "./AddNews"; 
-import ViewNews from "./viewNews"; 
+import ViewNews from "./ViewNews"; 
 
 const NewsAdmin = () => {
   const [activeTab, setActiveTab] = useState("View News");
