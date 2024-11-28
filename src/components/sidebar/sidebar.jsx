@@ -6,7 +6,7 @@ import { CiCalendar, CiUser, CiMoneyBill, CiMail } from "react-icons/ci";
 import { AiOutlineTeam } from "react-icons/ai";
 import logo from "../../assets/logo.png";
 import { BiMenu } from "react-icons/bi";
-import { FaFutbol } from "react-icons/fa";
+import { FaFutbol, FaNewspaper } from "react-icons/fa";
 import { GrDashboard } from "react-icons/gr";
 import { BiLogOut } from "react-icons/bi";
 
@@ -166,6 +166,19 @@ const AdminSiderbar = () => {
               >
                 <FaFutbol className="w-5 h-5 transition duration-75" />
                 <span className="ms-3">Leagues</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/admin/dashboard/news"
+                className={({ isActive }) =>
+                  isActive
+                    ? "flex items-center p-2 bg-gray-700 text-white rounded-lg dark:text-white group"
+                    : "flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                }
+              >
+                <FaNewspaper className="w-5 h-5 transition duration-75" />
+                <span className="ms-3">News</span>
               </NavLink>
             </li>
             <li>

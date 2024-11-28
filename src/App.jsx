@@ -30,6 +30,7 @@ import TeamLogin from "./customer/teams/teamAuth/teamLogin";
 import TeamRegister from "./customer/teams/teamAuth/teamRegister";
 import TeamsBooking from "./customer/teams/teamBooking";
 import CustomerMatchRequests from "./customer/matchRequests/customerMatchRequests";
+import NewsAdmin from "./dashboard/News/NewsAdmin";
 
 const App = () => {
   const { fetchingCustomer, errorFetchingCustomer } = useUser();
@@ -64,6 +65,7 @@ const App = () => {
           <Route path="admin/dashboard/teams" element={<Teams />} />
           <Route path="admin/dashboard/challenges" element={<Challenges />} />
           <Route path="admin/dashboard/leagues" element={<AdminLeagues />} />
+          <Route path="admin/dashboard/news" element={<NewsAdmin/>} />
           <Route path="admin/dashboard/leagues/:id" element={<AdminLeagueDetails />} />
 
           {/* Customer Routes */}
