@@ -20,6 +20,7 @@ import GeneralBooking from "./calendar";
 import LeaveReview from "./leavereview";
 import Newsletter from "./newsletter";
 import Footer from "./footer";
+import NewsBox from "./NewsBox";
 
 const Home = () => {
   // State for managing the current slide
@@ -100,6 +101,7 @@ const Home = () => {
 
       {/* Other Sections */}
       <GeneralBooking />
+      <NewsBox />
       <Newsletter />
       <LeaveReview />
       <Footer />
