@@ -323,6 +323,7 @@ useEffect(() => {
                   onChange={(e) => setBookingDuration(Number(e.target.value))}
                   className="input input-bordered"
                   min="1"
+                  step="0.1"
                   required
                 />
                 <label htmlFor="playersRequired" className="text-white">

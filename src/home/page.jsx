@@ -21,6 +21,7 @@ import LeaveReview from "./leavereview";
 import Newsletter from "./newsletter";
 import Footer from "./footer";
 import NewsBox from "./NewsBox";
+import AllLeagues from "../customer/leagues/AllLeagues";
 
 const Home = () => {
   // State for managing the current slide
@@ -101,6 +102,7 @@ const Home = () => {
 
       {/* Other Sections */}
       <GeneralBooking />
+      <AllLeagues/>
       <NewsBox />
       <Newsletter />
       <LeaveReview />
