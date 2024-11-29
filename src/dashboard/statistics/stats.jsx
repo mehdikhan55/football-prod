@@ -14,7 +14,7 @@ const URL = import.meta.env.VITE_BACKEND_URL;
 const Card = ({ icon, title, value, color }) => {
   return (
     <div
-      className="relative flex w-full p-5 rounded-lg shadow-md gap-5 h-36 justify-between card"
+      className="relative flex w-full p-5 rounded-lg shadow-md gap-5 min-h-36 justify-between card"
       style={{ background: color }}
     >
       <div

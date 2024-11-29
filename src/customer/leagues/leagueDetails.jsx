@@ -195,7 +195,7 @@ const LeagueDetails = () => {
                   <tr key={idx}>
                     <td>{idx + 1}</td>
                     <td>{team.team.teamName}</td>
-                    <td>{team.points}</td>
+                    <td>{team.points || 0}</td>
                     <td>{team.matchesPlayed}</td>
                   </tr>
                 ))}

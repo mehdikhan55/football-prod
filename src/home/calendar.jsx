@@ -13,10 +13,14 @@ const GeneralBooking = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [grounds, setGrounds] = useState([]);
+  const [selectedGround, setSelectedGround] = useState(null);
 
   const [formattedEvents, setFormattedEvents] = useState([]);
   const formattedBookings = (data) => {
-    const events = data.bookings.map((booking) => {
+    //filter data based on selected ground
+    const processedData = selectedGround ? data.bookings.filter((booking) => booking.ground._id === selectedGround) : data.bookings;
+    const events = processedData.map((booking) => {
 
       const formattedDate = moment(booking.bookingDate).format("YYYY-MM-DD");
       console.log('formatted date: ', formattedDate);
@@ -46,9 +50,36 @@ const GeneralBooking = () => {
   };
 
 
+  const fetchGrounds = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await axios.get(`${URL}/all-grounds`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${localStorage.getItem('token')}`,
+        },
+      });
+      const data = response.data;
+      console.log('kajshr',response.data)
+      if (response.status >= 400) {
+        console.log('response', response);
+        console.log('data', data);
+        console.log('error', error);
+        throw new Error(data.message);
+      }
+      setGrounds(data.grounds);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   const fetchFormattedBookings = async () => {
     try {
+      await fetchGrounds();
       setLoading(true);
       setError(null);
       const response = await axios.get(`${URL}/bookings`);
@@ -57,7 +88,6 @@ const GeneralBooking = () => {
       if (response.status >= 400) {
         throw new Error(data.message);
       }
-
       const formattedEvents = formattedBookings(data);
       setEvents(formattedEvents);
       console.log('data of bookings: ', data);
@@ -71,23 +101,39 @@ const GeneralBooking = () => {
 
   useEffect(() => {
     fetchFormattedBookings();
-  }, []);
+  }, [selectedGround]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
     <div>
-      <Navbar />
-      <div className="p-20 max-sm:p-5 max-sm:pt-20 bg-gray-800 text-white">
-        <Calendar
-          localizer={localizer}
-          events={formattedEvents}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: 500, marginTop: "20px" }}
-          className="bg-gray-100 text-black w-full md:w-3/4 lg:w-full mx-auto p-10 max-sm:p-0 rounded-xl shadow-lg"
-        />
+      {/* <Navbar /> */}
+      {/* Dropdown to select ground */}
+      <div className="flex pt-5 items-center justify-center">
+        <select
+          className="w-1/2 p-2 mt-2 rounded-lg text-black"
+          onChange={(e) => setSelectedGround(e.target.value)}
+        >
+          <option value="">Select Ground</option>
+          {grounds.map((ground) => (
+            <option key={ground._id} value={ground._id}>
+              {ground.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="p-20 pt-2 max-sm:p-5 max-sm:pt-20 bg-gray-800 text-white">
+       {loading ? <div>Loading...</div> : (
+         <Calendar
+         localizer={localizer}
+         events={formattedEvents}
+         startAccessor="start"
+         endAccessor="end"
+         style={{ height: 500, marginTop: "20px" }}
+         className="bg-gray-100 text-black w-full md:w-3/4 lg:w-full mx-auto p-10 max-sm:p-0 rounded-xl shadow-lg"
+       />
+       )}
       </div>
     </div>
   );
