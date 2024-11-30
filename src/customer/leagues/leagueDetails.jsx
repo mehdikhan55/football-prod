@@ -296,7 +296,7 @@ const LeagueDetails = () => {
                 </div>
                 <div className="flex justify-between items-center mb-4 max-sm:flex-col">
                   <p className="">
-                    <strong>Winner:</strong> {match.winner.teamName || "Draw"}
+                    <strong>Winner:</strong> {match.winner?.teamName || "Draw"}
                   </p>
                   <p className="">
                     <strong>Score:</strong> {match.score?.teamA} -{" "}
