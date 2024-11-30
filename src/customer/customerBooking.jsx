@@ -27,7 +27,7 @@ const BookingHistory = [
     id: 1,
     bookingDate: "2021-09-01",
     bookingTime: "10:00",
-    bookingDuration: 1,
+    bookingDuration: 1.5,
     bookingPrice: 100,
     bookingStatus: "pending",
     paymentMethod: "cash",
@@ -77,7 +77,7 @@ const CustomerBooking = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [bookingDate, setBookingDate] = useState("");
   const [bookingTime, setBookingTime] = useState("");
-  const [bookingDuration, setBookingDuration] = useState(1);
+  const [bookingDuration, setBookingDuration] = useState(1.5);
   const [bookingPrice, setBookingPrice] = useState(0);
   const [bookingStatus, setBookingStatus] = useState("pending");
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -323,8 +323,7 @@ useEffect(() => {
                   onChange={(e) => setBookingDuration(Number(e.target.value))}
                   className="input input-bordered"
                   min="1"
-                 
-                  
+                  step="0.1"                  
                   required
                 />
                 <label htmlFor="playersRequired" className="text-white">

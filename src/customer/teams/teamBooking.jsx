@@ -77,7 +77,7 @@ const TeamsBooking = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [bookingDate, setBookingDate] = useState("");
     const [bookingTime, setBookingTime] = useState("");
-    const [bookingDuration, setBookingDuration] = useState(1);
+    const [bookingDuration, setBookingDuration] = useState(1.5);
     const [bookingPrice, setBookingPrice] = useState(0);
     const [bookingStatus, setBookingStatus] = useState("pending");
     const [paymentMethod, setPaymentMethod] = useState("");
