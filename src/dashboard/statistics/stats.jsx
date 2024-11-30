@@ -120,7 +120,7 @@ const MainDashboard = () => {
                 icon={<AiOutlineCheck size={50} className="w-10 rounded-full text-white" />}
                 title="Confirmed Bookings"
                 value={statistics.totalNumberOfConfirmedBookings || 0}
-                color="#f7c744"
+                color="#5b5b5b"
               />
               <Card
                 icon={<FaRegClipboard size={50} className="w-10 rounded-full text-white" />}
