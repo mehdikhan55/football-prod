@@ -274,9 +274,9 @@ const TeamsBooking = () => {
                                 <p>
                                     <span className="font-bold">Ground:</span> {booking.ground.name}
                                 </p>
-                                <div className="flex justify-between items-center">
-                                    <p>PKR {booking.bookingPrice}/-</p>
-                                </div>
+                                {/* <div className="flex justify-between items-center">
+                                    <p> {booking.bookingPrice}/-</p>
+                                </div> */}
                                 <p
                                     className={`rounded-full px-4 text-black font-bold text-sm mt-3 text-center py-2 ${booking.bookingStatus === "pending"
                                         ? "bg-yellow-500"
