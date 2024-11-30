@@ -123,7 +123,7 @@ const DisplayReview = () => {
                                                             <div className="flex items-center">
                                                                 <div className="ml-4">
                                                                     <p className="text-sm font-medium text-gray-900">
-                                                                        {review.by.name || 'Anonymous'}
+                                                                        {review.by.username || 'Anonymous'}
                                                                     </p>
                                                                     <p className="text-sm text-gray-500">
                                                                         {new Date(review.createdAt).toLocaleDateString()}
