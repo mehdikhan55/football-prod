@@ -43,7 +43,7 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
     e.preventDefault();
     setLoading(true);
 
-    
+
 
     const updatedMatches = matches.map((match) => ({
       _id: match._id || undefined, // Include _id for existing matches, omit for new ones
@@ -122,7 +122,6 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
   };
 
   const getTeamById = (teamId) => {
-    console.log("teamId ye ha", teamId);
     const team = teamsData.find((team) => team._id === teamId);
     return team ? team.teamName : "Unknown Team";
   };
@@ -211,7 +210,7 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
                         required
                       >
                         <option value="">Select Team A</option>
-                        {selectedTeamsData.filter((tm)=> match.teamB ? tm._id!==(typeof match.teamB === 'string' ? match.teamB : match.teamB._id) : tm).map((team) => (
+                        {selectedTeamsData.filter((tm) => match.teamB ? tm._id !== (typeof match.teamB === 'string' ? match.teamB : match.teamB._id) : tm).map((team) => (
                           <option key={team._id} value={team._id}>
                             {team.teamName}
                           </option>
@@ -231,7 +230,7 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
                         className="rounded-md p-3 border border-gray-300"
                       >
                         <option value="">Select Team B</option>
-                        {selectedTeamsData.filter((tm)=> match.teamA ? tm._id!==(typeof match.teamA === 'string' ? match.teamA : match.teamA._id) : tm).map((team) => (
+                        {selectedTeamsData.filter((tm) => match.teamA ? tm._id !== (typeof match.teamA === 'string' ? match.teamA : match.teamA._id) : tm).map((team) => (
                           <option key={team._id} value={team._id}>
                             {team.teamName}
                           </option>
@@ -292,8 +291,8 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
                             <option value="">Select Player</option>
                             {availablePlayers.filter(
                               (player) =>
-                                player.teamId === ( (typeof match.teamA ==='string') ? match.teamA : match.teamA._id) ||
-                                player.teamId === ( (typeof match.teamB ==='string') ? match.teamB : match.teamB._id)
+                                player.teamId === ((typeof match.teamA === 'string') ? match.teamA : match.teamA._id) ||
+                                player.teamId === ((typeof match.teamB === 'string') ? match.teamB : match.teamB._id)
                             ).map((player) => (
                               <option
                                 key={player.playerName}
@@ -308,7 +307,7 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
                             required
                             type="text"
                             placeholder="Team Name"
-                            value={scorer.team ? (((scorer.team === (typeof match.teamA ==='string' ? match.teamA : match.teamA._id))||(scorer.team === (typeof match.teamB ==='string' ? match.teamB : match.teamB._id))) ? getTeamById(scorer.team) : removeScorer(
+                            value={scorer.team ? (((scorer.team === (typeof match.teamA === 'string' ? match.teamA : match.teamA._id)) || (scorer.team === (typeof match.teamB === 'string' ? match.teamB : match.teamB._id))) ? getTeamById(scorer.team) : removeScorer(
                               index, scorerIndex
                             )) : ""}
                             readOnly
@@ -352,17 +351,22 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
                     onChange={(e) => {
                       const newMatches = [...matches];
                       newMatches[index].winner = e.target.value === "Draw" ? null : e.target.value;
+                      console.log('value setted:', e.target.value);
                       setMatches(newMatches);
                     }}
                     className="rounded-md p-3 border border-gray-300"
                   >
                     <option value="">Select Winner</option>
                     {/* // Add the team names that are playing this match as options */}
-                    <option value={match.teamA._id}>{(typeof match.teamA)==='string' ?
-                    getTeamById(match.teamA):match.teamA.teamName}</option>
-                    <option value={match.teamB._id}>{(typeof match.teamB)==='string' ?
-                    getTeamById(match.teamB):match.teamB.teamName}</option>
-                    <option selected={!match.winner} value={null}>Draw</option>
+                    <option value={(typeof match.teamA ==='string') ? match.teamA : match.teamA._id}>
+                      {(typeof match.teamA) === 'string' ?
+                        getTeamById(match.teamA) : match.teamA.teamName}
+                    </option>
+                    <option value={(typeof match.teamB ==='string') ? match.teamB : match.teamB._id}>
+                      {(typeof match.teamB) === 'string' ?
+                        getTeamById(match.teamB) : match.teamB.teamName}
+                    </option>
+                    <option selected={!match.winner} value="Draw">Draw</option>
                   </select>
 
                   <label className="text-gray-500">Match Date</label>

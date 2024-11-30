@@ -13,6 +13,8 @@ const LeagueDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [league, setLeague] = useState(null);
+  const [showMatches, setShowMatches] = useState(false);
+
 
   const { currTeam } = useTeam();
 
@@ -275,47 +277,62 @@ const LeagueDetails = () => {
             </div>
           </div>
 
+          
+          <div className="text-center">
+          <button
+            onClick={() => setShowMatches(!showMatches)}
+            className="btn "
+          >
+            {showMatches ? "Hide Matches" : "Show Matches"}
+          </button>
+          </div>
+
+
           <h2 className="text-3xl font-semibold mb-4 text-gray-300 max-sm:text-xl">
             Matches
           </h2>
           <div className="grid grid-cols-2 gap-6 max-sm:grid-cols-1 border border-gray-600 rounded-lg">
-            {league?.matches?.map((match, idx) => (
-              <div
-                key={idx}
-                className=" p-5 rounded-lg shadow-lg max-sm:text-sm"
-              >
-                <div className="flex justify-between items-center mb-4 max-sm:flex-col">
-                  <p className="">
-                    <strong>Match:</strong> {match.teamA?.teamName} vs{" "}
-                    {match.teamB?.teamName}
-                  </p>
-                  <p className="">
-                    <strong>Date:</strong>{" "}
-                    {new Date(match.date).toLocaleDateString()}
-                  </p>
-                </div>
-                <div className="flex justify-between items-center mb-4 max-sm:flex-col">
-                  <p className="">
-                    <strong>Winner:</strong> {match.winner?.teamName || "Draw"}
-                  </p>
-                  <p className="">
-                    <strong>Score:</strong> {match.score?.teamA} -{" "}
-                    {match.score?.teamB}
-                  </p>
-                </div>
-                <div>
-                  <strong>Scorers:</strong>
-                  <ul className="mt-2 ml-4 list-disc">
-                    {match.scorers.map((scorer, i) => (
-                      <li key={i} className="text-sm">
-                        {scorer.player} ({scorer.team?.teamName}) -{" "}
-                        {scorer?.score}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            ))}
+            {showMatches && (
+              <>
+                {league?.matches?.map((match, idx) => (
+                  <div
+                    key={idx}
+                    className=" p-5 rounded-lg shadow-lg max-sm:text-sm border-2  border-gray-100"
+                  >
+                    <div className="flex justify-between items-center mb-4 max-sm:flex-col">
+                      <p className="">
+                        <strong>Match:</strong> {match.teamA?.teamName} vs{" "}
+                        {match.teamB?.teamName}
+                      </p>
+                      <p className="">
+                        <strong>Date:</strong>{" "}
+                        {new Date(match.date).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div className="flex justify-between items-center mb-4 max-sm:flex-col">
+                      <p className="">
+                        <strong>Winner:</strong> {match.winner?.teamName || "Draw"}
+                      </p>
+                      <p className="">
+                        <strong>Score:</strong> {match.score?.teamA} -{" "}
+                        {match.score?.teamB}
+                      </p>
+                    </div>
+                    <div>
+                      <strong>Scorers:</strong>
+                      <ul className="mt-2 ml-4 list-disc">
+                        {match.scorers.map((scorer, i) => (
+                          <li key={i} className="text-sm">
+                            {scorer.player} ({scorer.team?.teamName}) -{" "}
+                            {scorer?.score}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         </div>
       )}
