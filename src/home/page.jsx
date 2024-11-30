@@ -5,10 +5,9 @@ import { Link } from "react-router-dom";
 
 // Import images for the slideshow
 import wallpaperfb from "../assets/wallpaperfb.jpg";
-import image1 from "../assets/image1.jpg";
-import image2 from "../assets/image2.jpg";
-import image3 from "../assets/image3.jpg";
-import image4 from "../assets/image4.jpg";
+import image1 from "../assets/image1.png";
+import image2 from "../assets/image2.png";
+import image3 from "../assets/image3.png";
 
 import dcalogo from "../assets/logos/dca-logo.png";
 import dca from "../assets/logos/dca.png";
@@ -25,6 +24,7 @@ import AllLeagues from "../customer/leagues/AllLeagues";
 import { useUser } from "../context/userContext";
 import HomeAvailableMatches from "../customer/matchRequests/homeAvailableMatches";
 import { useTeam } from "../context/teamContext";
+import DisplayReview from "./DisplayReview";
 
 const Home = () => {
   // State for managing the current slide
@@ -33,7 +33,7 @@ const Home = () => {
   const { currTeam } = useTeam();
 
   // Array of images for the slideshow
-  const slides = [wallpaperfb, image1, image2, image3, image4];
+  const slides = [wallpaperfb, image1, image2, image3];
 
   // Effect to change the slide every 5 seconds
   useEffect(() => {
@@ -111,6 +111,7 @@ const Home = () => {
       <AllLeagues />
       <NewsBox />
       <Newsletter />
+      <DisplayReview/>
       <LeaveReview />
       <Footer />
     </div>

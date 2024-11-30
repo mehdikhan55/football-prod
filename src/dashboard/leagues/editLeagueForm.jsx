@@ -351,7 +351,7 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
                     value={match.winner}
                     onChange={(e) => {
                       const newMatches = [...matches];
-                      newMatches[index].winner = e.target.value;
+                      newMatches[index].winner = e.target.value === "Draw" ? null : e.target.value;
                       setMatches(newMatches);
                     }}
                     className="rounded-md p-3 border border-gray-300"
@@ -362,6 +362,7 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
                     getTeamById(match.teamA):match.teamA.teamName}</option>
                     <option value={match.teamB._id}>{(typeof match.teamB)==='string' ?
                     getTeamById(match.teamB):match.teamB.teamName}</option>
+                    <option selected={!match.winner} value={null}>Draw</option>
                   </select>
 
                   <label className="text-gray-500">Match Date</label>

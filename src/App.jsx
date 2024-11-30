@@ -31,6 +31,7 @@ import TeamRegister from "./customer/teams/teamAuth/teamRegister";
 import TeamsBooking from "./customer/teams/teamBooking";
 import CustomerMatchRequests from "./customer/matchRequests/customerMatchRequests";
 import NewsAdmin from "./dashboard/News/NewsAdmin";
+import ContactFormsAdmin from "./home/contact-forms/ContactFormsAdmin";
 
 const App = () => {
   const { fetchingCustomer, errorFetchingCustomer } = useUser();
@@ -61,7 +62,8 @@ const App = () => {
           <Route path="admin/dashboard/ground" element={<Ground />} />
           <Route path="admin/dashboard/booking" element={<Booking />} />
           <Route path="admin/dashboard/users" element={<Users />} />
-          <Route path="admin/dashboard/emails" element={<Emails />} />
+          <Route path="admin/dashboard/newsletter-subscriptions" element={<Emails />} />
+          <Route path="admin/dashboard/contact-forms" element={<ContactFormsAdmin />} />
           <Route path="admin/dashboard/teams" element={<Teams />} />
           <Route path="admin/dashboard/challenges" element={<Challenges />} />
           <Route path="admin/dashboard/leagues" element={<AdminLeagues />} />

@@ -44,6 +44,17 @@ const AllLeagues = () => {
         navigate(`/customer/leagues/${id}`);
     };
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
     return (
         <div className="bg-gray-900 text-white ">
             <Navbar />
@@ -83,10 +94,10 @@ const AllLeagues = () => {
                                             >
                                                 <h2 className="text-2xl font-semibold mb-4">{league.leagueName}</h2>
                                                 <p className="text-sm mb-2">
-                                                    <strong>Start Date:</strong> {league.startDate}
+                                                    <strong>Start Date:</strong> {formatDate(league.startDate)}
                                                 </p>
                                                 <p className="text-sm mb-2">
-                                                    <strong>End Date:</strong> {league.endDate}
+                                                    <strong>End Date:</strong> {formatDate(league.startDate)}
                                                 </p>
                                                 <p className="text-sm">
                                                     <strong>Teams Participating:</strong> {league.teams.length}

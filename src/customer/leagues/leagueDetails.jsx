@@ -36,7 +36,7 @@ const LeagueDetails = () => {
       }
       setLeague(data.league);
     } catch (error) {
-      setError(error.response?.data?.message || "Some Error Occurred"); 
+      setError(error.response?.data?.message || "Some Error Occurred");
     } finally {
       setLoading(false);
     }
@@ -49,48 +49,59 @@ const LeagueDetails = () => {
   const [pointsTable, setPointsTable] = useState({});
 
   const calculatePointsTable = () => {
-    //get the count of winner for each team
     const pointsTable = {};
+
+    // Initialize stats for each team
+    league?.teams.forEach((team) => {
+      pointsTable[team._id] = {
+        points: 0,
+        matchesPlayed: 0,
+        wins: 0,
+        draws: 0,
+        losses: 0,
+      };
+    });
+
+    // Iterate over matches and calculate stats
     league?.matches.forEach((match) => {
-      if (match.winner) {
-        if (pointsTable[match.winner._id]) {
-          pointsTable[match.winner._id] += 3;
+      const { teamA, teamB, winner } = match;
+
+      if (teamA && teamB) {
+        pointsTable[teamA._id].matchesPlayed++;
+        pointsTable[teamB._id].matchesPlayed++;
+
+        if (winner) {
+          pointsTable[winner._id].wins++;
+          pointsTable[winner._id].points += 3;
+          // Update losses based on the winner
+          if (winner._id === teamA._id) {
+            pointsTable[teamB._id].losses++; // teamB loses
+          } else {
+            pointsTable[teamA._id].losses++; // teamA loses
+          }
+
+          console.log('pointsTable', pointsTable)
         } else {
-          pointsTable[match.winner._id] = 3;
+          // Match is a draw
+          pointsTable[teamA._id].draws++;
+          pointsTable[teamB._id].draws++;
+          pointsTable[teamA._id].points += 1;
+          pointsTable[teamB._id].points += 1;
         }
       }
     });
 
-    //get the count of matches played by each team
-    league?.teams.forEach((team) => {
-      const matchesPlayed = league?.matches.filter(
-        (match) =>
-          match.teamA?._id === team._id || match.teamB?._id === team._id
-      ).length;
-      pointsTable[team._id] = [pointsTable[team._id], matchesPlayed];
-    });
+    // Convert the points table to an array and sort by points
+    const sortedPointsTable = Object.entries(pointsTable)
+      .map(([teamId, stats]) => ({
+        team: league.teams.find((t) => t._id === teamId),
+        ...stats,
+      }))
+      .sort((a, b) => b.points - a.points || b.wins - a.wins);
 
-    //sort the points table
-    const sortedPointsTable = Object.entries(pointsTable).sort(
-      (a, b) => b[1] - a[1]
-    );
-
-    //get the teams
-    const teams = league?.teams;
-
-    //get the points table
-
-    const pointsTableData = sortedPointsTable.map((team) => {
-      const teamData = teams.find((t) => t._id === team[0]);
-      return {
-        team: teamData,
-        points: team[1][0],
-        matchesPlayed: team[1][1],
-      };
-    });
-
-    setPointsTable(pointsTableData);
+    setPointsTable(sortedPointsTable);
   };
+
 
   const getTopScorerAndTotalGoals = () => {
     const scorers = [];
@@ -103,14 +114,14 @@ const LeagueDetails = () => {
         if (scorerIndex !== -1) {
           scorers[scorerIndex].score += scorer.score;
         } else {
-          scorers.push({ player: scorer.player, score: scorer.score });
+          scorers.push({ player: scorer.player, score: scorer.score, team: scorer.team.teamName });
         }
         totalGoals += scorer.score;
       });
     });
     //sort the scorers
     scorers.sort((a, b) => b.score - a.score);
-
+    console.log('scorer', scorers)
     setTopScorers(scorers);
     setTotalGoals(totalGoals);
   };
@@ -123,7 +134,7 @@ const LeagueDetails = () => {
   return (
     <div
       className="min-h-screen bg-gray-900 text-white p-20 pt-5 max-sm:p-4"  >
-      <Navbar/>
+      <Navbar />
       {loading ? (
         <div className="flex justify-center items-center h-screen">
           <div className="animate-spin rounded-full h-24 w-24 border-t-2 border-b-2 border-gray-900"></div>
@@ -186,8 +197,21 @@ const LeagueDetails = () => {
                 <tr>
                   <th className="text-left">Rank</th>
                   <th className="text-left">Team</th>
-                  <th className="text-left">Points</th>
+                  <th className="text-left">GP</th>
+                  {/* wins */}
+                  <th className="text-left">W</th>
+                  {/* draws */}
+                  <th className="text-left">D</th>
+                  {/* losses */}
+                  <th className="text-left">L</th>
+
+                  {/* leave the following three 0 */}
+                  <th className="text-left">GF</th>
+                  <th className="text-left">GA</th>
+                  <th className="text-left">GD</th>
+
                   <th className="text-left">Matches</th>
+                  <th className="text-left">Points</th>
                 </tr>
               </thead>
               <tbody>
@@ -195,8 +219,15 @@ const LeagueDetails = () => {
                   <tr key={idx}>
                     <td>{idx + 1}</td>
                     <td>{team.team.teamName}</td>
-                    <td>{team.points || 0}</td>
+                    <td>0</td>
+                    <td>{team.wins}</td>
+                    <td>{team.draws}</td>
+                    <td>{team.losses}</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
                     <td>{team.matchesPlayed}</td>
+                    <td>{team.points || 0}</td>
                   </tr>
                 ))}
               </tbody>
@@ -215,14 +246,31 @@ const LeagueDetails = () => {
               </div>
 
               <div>
-                <strong>Top Scorers:</strong>
-                <ul className="mt-2 ml-4 list-disc">
-                  {topScorers.map((scorer, i) => (
-                    <li key={i} className="text-sm">
-                      {scorer.player} - {scorer.score}
-                    </li>
-                  ))}
-                </ul>
+
+                <h2 className="text-3xl font-semibold mb-4 text-gray-300 max-sm:text-xl">
+                  Top Scorers
+                </h2>
+                <div className="max-sm:text-sm md:table mb-10">
+                  <table className="w-full">
+                    <thead>
+                      <tr>
+                        <th className="text-left">Scorer</th>
+                        <th className="text-left">Team</th>
+                        <th className="text-left">Score</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {topScorers.map((scorer, i) => (
+                        <tr key={i}>
+                          <td>{scorer.player}</td>
+                          <td>{scorer.team}</td>
+                          <td>{scorer.score}</td>
+                        </tr>
+                      ))
+                      }
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>

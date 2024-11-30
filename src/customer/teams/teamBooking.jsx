@@ -137,12 +137,12 @@ const TeamsBooking = () => {
             handleDialogToggle();
         } catch (error) {
             console.log('error:', error);
-            if(error.response){
+            if (error.response) {
                 setError(error.response.data.message || "Error creating booking");
                 toast.error(error.response.data.message || "Error creating booking");
-            }else{
+            } else {
                 setError("Error creating booking");
-                toast.error( "Error creating booking");
+                toast.error("Error creating booking");
             }
         } finally {
             setLoading(false);
@@ -183,7 +183,7 @@ const TeamsBooking = () => {
         }
     };
 
-   
+
 
     const fetchBookings = async () => {
         try {
@@ -324,8 +324,9 @@ const TeamsBooking = () => {
                                     className="input input-bordered"
                                     min="1"
                                     required
+                                    step="0.1"
                                 />
-                                <label htmlFor="bookingPrice" className="text-white">
+                                {/* <label htmlFor="bookingPrice" className="text-white">
                                     Booking Price
                                 </label>
                                 <input
@@ -336,19 +337,21 @@ const TeamsBooking = () => {
                                     disabled
                                     min="0"
                                     required
-                                />
+                                /> */}
                                 <label htmlFor="bookingPaymentMethod" className="text-white">
                                     Payment Method
                                 </label>
-                                <input
-                                    type="text"
-                                    placeholder="Payment Method"
+                                <select
                                     value={paymentMethod}
                                     onChange={(e) => setPaymentMethod(e.target.value)}
-                                    className="p-3 rounded-md input-bordered disabled:opacity-50 bg-white"
-                                    min="0"
+                                    className="input input-bordered"
                                     required
-                                />
+                                >
+                                    <option value="">Select Payment Method</option>
+                                    <option value="easypaisa">Easypaisa</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="bankTransfer">Bank Transfer</option>
+                                </select>
                                 <select
                                     value={ground}
                                     onChange={(e) => setGround(e.target.value)}

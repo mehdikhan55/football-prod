@@ -131,15 +131,28 @@ const AdminSiderbar = () => {
             </li>
             <li>
               <NavLink
-                to="/admin/dashboard/emails"
+                to="/admin/dashboard/newsletter-subscriptions"
                 className={({ isActive }) =>
                   isActive
                     ? "flex items-center p-2 bg-gray-700 text-white rounded-lg dark:text-white group"
                     : "flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                 }
               >
-                <CiMail className="w-5 h-5 transition duration-75" />
-                <span className="ms-3">View Emails</span>
+                <FaNewspaper className="w-5 h-5 transition duration-75" />
+                <span className="ms-3">Newsletter Subscriptions</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/admin/dashboard/contact-forms"
+                className={({ isActive }) =>
+                  isActive
+                    ? "flex items-center p-2 bg-gray-700 text-white rounded-lg dark:text-white group"
+                    : "flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                }
+              >
+                <FaNewspaper className="w-5 h-5 transition duration-75" />
+                <span className="ms-3">Contact Forms</span>
               </NavLink>
             </li>
             <li>

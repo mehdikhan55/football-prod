@@ -323,7 +323,8 @@ useEffect(() => {
                   onChange={(e) => setBookingDuration(Number(e.target.value))}
                   className="input input-bordered"
                   min="1"
-                  step="0.1"
+                 
+                  
                   required
                 />
                 <label htmlFor="playersRequired" className="text-white">
@@ -336,7 +337,7 @@ useEffect(() => {
                   className="p-3 rounded-md input-bordered disabled:opacity-50 bg-white"
                   min="0"
                 />
-                <label htmlFor="bookingPrice" className="text-white">
+                {/* <label htmlFor="bookingPrice" className="text-white">
                   Booking Price
                 </label>
                 <input
@@ -347,7 +348,7 @@ useEffect(() => {
                   disabled
                   min="0"
                   required
-                />
+                /> */}
                 <label htmlFor="bookingPaymentMethod" className="text-white">
                   Payment Method
                 </label>
