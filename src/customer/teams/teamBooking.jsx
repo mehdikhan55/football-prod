@@ -165,7 +165,7 @@ const TeamsBooking = () => {
         try {
             setLoading(true);
             setError(null);
-            const response = await axios.get(`${URL}/customer/grounds`, {
+            const response = await axios.get(`${URL}/all-grounds`, {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `${localStorage.getItem('token')}`,
