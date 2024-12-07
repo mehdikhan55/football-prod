@@ -25,6 +25,7 @@ import { useUser } from "../context/userContext";
 import HomeAvailableMatches from "../customer/matchRequests/homeAvailableMatches";
 import { useTeam } from "../context/teamContext";
 import DisplayReview from "./DisplayReview";
+import LogoCarousel from "./carousel";
 
 const Home = () => {
   // State for managing the current slide
@@ -71,21 +72,23 @@ const Home = () => {
             levels.
           </p>
           <div className="mt-4 flex">
-            <Link to={(!customer && !currTeam) ? "/customer/login" : "/customer/booking"} className="bg-red-500 px-4 py-2 rounded-md btn border-0">
+            <Link
+              to={
+                !customer && !currTeam ? "/customer/login" : "/customer/booking"
+              }
+              className="bg-red-500 px-4 py-2 rounded-md btn border-0"
+            >
               <div>Book Now</div>
             </Link>
             <button className="bg-gray-500 px-4 py-2 rounded-md btn ml-4 border-0">
               Learn More
             </button>
           </div>
-          <div className="flex flex-wrap gap-4 mt-4">
-            <img src={dcalogo} alt="dca" className="h-16" />
-            <img src={dca} alt="dca" className="h-16" />
-            <img src={dfa} alt="dca" className="h-16" />
-            <img src={totalfootball} alt="dca" className="h-16" />
-            <img src={totalpremier} alt="dca" className="h-16" />
-          </div>
         </div>
+      </div>
+
+      <div className="p-20 bg-gray-900 max-sm:p-10">
+        <LogoCarousel />
       </div>
 
       {/* Booking Section */}
@@ -99,7 +102,12 @@ const Home = () => {
           get started.
         </p>
         <div className="flex justify-center mt-4">
-          <Link to={(!customer && !currTeam) ? "/customer/login" : "/customer/booking"} className="bg-red-500 px-4 py-2 rounded-md btn hover:bg-red-700 border-none w-96 max-sm:w-1/2">
+          <Link
+            to={
+              !customer && !currTeam ? "/customer/login" : "/customer/booking"
+            }
+            className="bg-red-500 px-4 py-2 rounded-md btn hover:bg-red-700 border-none w-96 max-sm:w-1/2"
+          >
             <div>Book Now</div>
           </Link>
         </div>
@@ -111,7 +119,7 @@ const Home = () => {
       <AllLeagues />
       <NewsBox />
       <Newsletter />
-      <DisplayReview/>
+      <DisplayReview />
       <LeaveReview />
       <Footer />
     </div>

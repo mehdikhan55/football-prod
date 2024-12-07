@@ -32,6 +32,7 @@ import TeamsBooking from "./customer/teams/teamBooking";
 import CustomerMatchRequests from "./customer/matchRequests/customerMatchRequests";
 import NewsAdmin from "./dashboard/News/NewsAdmin";
 import ContactFormsAdmin from "./home/contact-forms/ContactFormsAdmin";
+import DreamInvestment from "./invest/page";
 
 const App = () => {
   const { fetchingCustomer, errorFetchingCustomer } = useUser();
@@ -54,6 +55,9 @@ const App = () => {
           {/* Main Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/contact" element={<ContactUs />} />
+          
+          {/* Investment Routes */}
+          <Route path="/invest" element={<DreamInvestment />} />
 
           {/* Admin Routes */}
           <Route path="admin" element={<Navigate to="/admin/dashboard" />} />

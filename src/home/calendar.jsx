@@ -19,17 +19,20 @@ const GeneralBooking = () => {
   const [formattedEvents, setFormattedEvents] = useState([]);
   const formattedBookings = (data) => {
     //filter data based on selected ground
-    const processedData = selectedGround ? data.bookings.filter((booking) => booking.ground._id === selectedGround) : data.bookings;
+    const processedData = selectedGround
+      ? data.bookings.filter((booking) => booking.ground._id === selectedGround)
+      : data.bookings;
     const events = processedData.map((booking) => {
-
       const formattedDate = moment(booking.bookingDate).format("YYYY-MM-DD");
-      console.log('formatted date: ', formattedDate);
+      console.log("formatted date: ", formattedDate);
 
       // Split bookingTime into hours and minutes
-      const [hours, minutes] = booking.bookingTime.split(':').map(Number);
+      const [hours, minutes] = booking.bookingTime.split(":").map(Number);
 
       // Create start time
-      const startDateTime = new Date(`${formattedDate}T${booking.bookingTime}:00`)
+      const startDateTime = new Date(
+        `${formattedDate}T${booking.bookingTime}:00`
+      );
 
       // Correctly calculate end time by adding the booking duration to hours
       let endDateTime = new Date(startDateTime);
@@ -41,14 +44,11 @@ const GeneralBooking = () => {
         date: booking.bookingDate,
         start: startDateTime,
         end: endDateTime,
-
       };
     });
     setFormattedEvents(events);
-    console.log('formatted events: ', events);
-
+    console.log("formatted events: ", events);
   };
-
 
   const fetchGrounds = async () => {
     try {
@@ -56,16 +56,16 @@ const GeneralBooking = () => {
       setError(null);
       const response = await axios.get(`${URL}/all-grounds`, {
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `${localStorage.getItem('token')}`,
+          "Content-Type": "application/json",
+          Authorization: `${localStorage.getItem("token")}`,
         },
       });
       const data = response.data;
-      console.log('kajshr',response.data)
+      console.log("kajshr", response.data);
       if (response.status >= 400) {
-        console.log('response', response);
-        console.log('data', data);
-        console.log('error', error);
+        console.log("response", response);
+        console.log("data", data);
+        console.log("error", error);
         throw new Error(data.message);
       }
       setGrounds(data.grounds);
@@ -75,7 +75,6 @@ const GeneralBooking = () => {
       setLoading(false);
     }
   };
-
 
   const fetchFormattedBookings = async () => {
     try {
@@ -88,10 +87,18 @@ const GeneralBooking = () => {
       if (response.status >= 400) {
         throw new Error(data.message);
       }
-      const formattedEvents = formattedBookings(data);
+      //remove the bookings before today
+      const today = new Date();
+      const formattedToday = moment(today).format("YYYY-MM-DD");
+      console.log("formatted today: ", formattedToday);
+      const filteredData = data.bookings.filter((booking) => {
+        const formattedDate = moment(booking.bookingDate).format("YYYY-MM-DD");
+        return formattedDate >= formattedToday;
+      });
+      const formattedEvents = formattedBookings({ bookings: filteredData });
       setEvents(formattedEvents);
-      console.log('data of bookings: ', data);
-      console.log('formatted bookings: ', formattedEvents);
+      console.log("data of bookings: ", data);
+      console.log("formatted bookings: ", formattedEvents);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -124,16 +131,18 @@ const GeneralBooking = () => {
         </select>
       </div>
       <div className="p-20 pt-2 max-sm:p-5 max-sm:pt-20 bg-gray-800 text-white">
-       {loading ? <div>Loading...</div> : (
-         <Calendar
-         localizer={localizer}
-         events={formattedEvents}
-         startAccessor="start"
-         endAccessor="end"
-         style={{ height: 500, marginTop: "20px" }}
-         className="bg-gray-100 text-black w-full md:w-3/4 lg:w-full mx-auto p-10 max-sm:p-0 rounded-xl shadow-lg"
-       />
-       )}
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          <Calendar
+            localizer={localizer}
+            events={formattedEvents}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: 500, marginTop: "20px" }}
+            className="bg-gray-100 text-black w-full md:w-3/4 lg:w-full mx-auto p-10 max-sm:p-0 rounded-xl shadow-lg"
+          />
+        )}
       </div>
     </div>
   );

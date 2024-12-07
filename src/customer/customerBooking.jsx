@@ -1,4 +1,4 @@
-import React, { useState,  useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/navbar/navbar";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import { useUser } from "../context/userContext";
 import { formatDate } from "../utils/formatDate";
 
-const URL = import.meta.env.VITE_BACKEND_URL
+const URL = import.meta.env.VITE_BACKEND_URL;
 
 const localizer = momentLocalizer(moment);
 
@@ -99,9 +99,8 @@ const CustomerBooking = () => {
     setIsDialogOpen(!isDialogOpen);
   };
 
-
   useEffect(() => {
-    console.log('customer:', customer);
+    console.log("customer:", customer);
     fetchBookings();
   }, []);
 
@@ -123,20 +122,24 @@ const CustomerBooking = () => {
         ground,
         playersRequired,
       };
-      console.log('new booking:', newBooking);
+      console.log("new booking:", newBooking);
 
-      const response = await axios.post(`${URL}/customer/bookings`, newBooking, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `${localStorage.getItem('token')}`
+      const response = await axios.post(
+        `${URL}/customer/bookings`,
+        newBooking,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${localStorage.getItem("token")}`,
+          },
         }
-      });
+      );
       const data = response.data;
       console.log("response", response);
       if (response.status >= 400) {
         throw new Error(data.message);
       }
-      toast.success('Booking added successfully');
+      toast.success("Booking added successfully");
       resetForm();
       handleDialogToggle();
     } catch (error) {
@@ -162,61 +165,61 @@ const CustomerBooking = () => {
 
   const fetchGrounds = async () => {
     try {
-        setLoading(true);
-        setError(null);
-        const response = await axios.get(`${URL}/customer/grounds`, {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `${localStorage.getItem('token')}`,
-            },
-        });
-        const data = response.data;
-        console.log('response of fetchGrounds:', response);
-        if (response.status >= 400) {
-            throw new Error(data.message);
-        }
+      setLoading(true);
+      setError(null);
+      const response = await axios.get(`${URL}/customer/grounds`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      });
+      const data = response.data;
+      console.log("response of fetchGrounds:", response);
+      if (response.status >= 400) {
+        throw new Error(data.message);
+      }
 
-        setGrounds(data.grounds);
+      setGrounds(data.grounds);
     } catch (error) {
-        setError(error);
+      setError(error);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
-
-
+  };
 
   const fetchBookings = async () => {
     try {
-        setLoading(true);
-        setError(null);
-        const response = await axios.get(`${URL}/customer/bookings`, {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `${localStorage.getItem('token')}`,
-            },
-        });
-        const data = response.data;
-        console.log('response of fetchBookings:', response);
-        if (response.status >= 400) {
-            throw new Error(data.message);
-        }
-        const specificBookings = data.bookings.filter(booking => {
+      setLoading(true);
+      setError(null);
+      const response = await axios.get(`${URL}/customer/bookings`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      });
+      const data = response.data;
+      console.log("response of fetchBookings:", response);
+      if (response.status >= 400) {
+        throw new Error(data.message);
+      }
+      const specificBookings = data.bookings
+        .filter((booking) => {
           return booking.customer != null;
-      }).filter(booking => booking.customer._id === customer._id);
+        })
+        .filter((booking) => booking.customer._id === customer._id);
       setBookingHistoryData(specificBookings);
-      console.log('specific bookings:', specificBookings);
-        setBookingHistoryData(specificBookings);
+      console.log("specific bookings:", specificBookings);
+      setBookingHistoryData(specificBookings);
     } catch (error) {
-        setError(error);
+      setError(error);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
+  };
 
-useEffect(() => {
+  useEffect(() => {
     fetchGrounds();
-}, []);
+  }, []);
 
   return (
     <div>
@@ -272,18 +275,20 @@ useEffect(() => {
                 </p>
 
                 <p>
-                  <span className="font-bold">Ground:</span> {booking.ground.name}
+                  <span className="font-bold">Ground:</span>{" "}
+                  {booking.ground.name}
                 </p>
                 {/* <div className="flex justify-between items-center">
                   <p>PKR {booking.bookingPrice}/-</p>
                 </div> */}
                 <p
-                  className={`rounded-full px-4 text-black font-bold text-sm mt-3 text-center py-2 ${booking.bookingStatus === "pending"
+                  className={`rounded-full px-4 text-black font-bold text-sm mt-3 text-center py-2 ${
+                    booking.bookingStatus === "pending"
                       ? "bg-yellow-500"
                       : booking.bookingStatus === "approved"
-                        ? "bg-green-500"
-                        : "bg-red-500"
-                    }`}
+                      ? "bg-green-500"
+                      : "bg-red-500"
+                  }`}
                 >
                   {booking.bookingStatus}
                 </p>
@@ -323,7 +328,7 @@ useEffect(() => {
                   onChange={(e) => setBookingDuration(Number(e.target.value))}
                   className="input input-bordered"
                   min="1"
-                  step="0.1"                  
+                  step="0.1"
                   required
                 />
                 <label htmlFor="playersRequired" className="text-white">
@@ -351,7 +356,7 @@ useEffect(() => {
                 <label htmlFor="bookingPaymentMethod" className="text-white">
                   Payment Method
                 </label>
-                <select 
+                <select
                   value={paymentMethod}
                   onChange={(e) => setPaymentMethod(e.target.value)}
                   className="input input-bordered"
@@ -362,6 +367,44 @@ useEffect(() => {
                   <option value="cash">Cash</option>
                   <option value="bankTransfer">Bank Transfer</option>
                 </select>
+
+                {paymentMethod === "easypaisa" && (
+                  <p className="text-white font-bold">
+                    NOTE: Please send the payment to 03215259146!
+                  </p>
+                )}
+
+                {paymentMethod === "bankTransfer" && (
+                  <p className="text-white">
+                    NOTE: Please send the payment to
+                    <br />
+                    IBAN: PK23MEZN0008170105726343
+                    <br />
+                    Account no: 0105726343
+                    <br />
+                    Account title: DREAM VALLEY ENTERPRISES (SMC-PRIVATE) Ltd
+                    <br />
+                    Bank name: Meezan Bank
+                    <br />
+                    <br />
+                    OR
+                    <br />
+                    <br />
+                    IBAN: PK20BAHL0182098100075001
+                    <br />
+                    Account no: 01820981000750018
+                    <br />
+                    Account title: DANYAL MUMTAZ
+                    <br />
+                    Bank name: Bank Al Habib
+                  </p>
+                )}
+
+                {paymentMethod === "cash" && (
+                  <p className="text-white font-bold">
+                    NOTE: Please bring the cash with you!
+                  </p>
+                )}
                 <select
                   value={ground}
                   onChange={(e) => setGround(e.target.value)}
