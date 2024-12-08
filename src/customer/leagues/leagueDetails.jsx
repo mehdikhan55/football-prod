@@ -37,6 +37,7 @@ const LeagueDetails = () => {
         throw new Error(data.message);
       }
       setLeague(data.league);
+      console.log('league', data.league)
     } catch (error) {
       setError(error.response?.data?.message || "Some Error Occurred");
     } finally {
@@ -61,16 +62,25 @@ const LeagueDetails = () => {
         wins: 0,
         draws: 0,
         losses: 0,
+        goalsFor: 0,      // GF
+        goalsAgainst: 0,  // GA
+        goalDiff: 0       // GD
       };
     });
 
     // Iterate over matches and calculate stats
     league?.matches.forEach((match) => {
-      const { teamA, teamB, winner } = match;
+      const { teamA, teamB, winner, score } = match;
 
-      if (teamA && teamB) {
+      if (teamA && teamB && score) {
         pointsTable[teamA._id].matchesPlayed++;
         pointsTable[teamB._id].matchesPlayed++;
+
+        // Update goals for and against
+        pointsTable[teamA._id].goalsFor += score.teamA;
+        pointsTable[teamA._id].goalsAgainst += score.teamB;
+        pointsTable[teamB._id].goalsFor += score.teamB;
+        pointsTable[teamB._id].goalsAgainst += score.teamA;
 
         if (winner) {
           pointsTable[winner._id].wins++;
@@ -81,8 +91,6 @@ const LeagueDetails = () => {
           } else {
             pointsTable[teamA._id].losses++; // teamA loses
           }
-
-          console.log('pointsTable', pointsTable)
         } else {
           // Match is a draw
           pointsTable[teamA._id].draws++;
@@ -93,13 +101,23 @@ const LeagueDetails = () => {
       }
     });
 
-    // Convert the points table to an array and sort by points
+    // Calculate goal difference and create sorted table
+    Object.keys(pointsTable).forEach((teamId) => {
+      const team = pointsTable[teamId];
+      team.goalDiff = team.goalsFor - team.goalsAgainst;
+    });
+
+    // Convert the points table to an array and sort by points, then goal difference
     const sortedPointsTable = Object.entries(pointsTable)
       .map(([teamId, stats]) => ({
         team: league.teams.find((t) => t._id === teamId),
         ...stats,
       }))
-      .sort((a, b) => b.points - a.points || b.wins - a.wins);
+      .sort((a, b) =>
+        b.points - a.points || // First sort by points
+        b.goalDiff - a.goalDiff || // Then by goal difference
+        b.goalsFor - a.goalsFor // Then by goals scored
+      );
 
     setPointsTable(sortedPointsTable);
   };
@@ -212,7 +230,6 @@ const LeagueDetails = () => {
                   <th className="text-left">GA</th>
                   <th className="text-left">GD</th>
 
-                  <th className="text-left">Matches</th>
                   <th className="text-left">Points</th>
                 </tr>
               </thead>
@@ -221,14 +238,13 @@ const LeagueDetails = () => {
                   <tr key={idx}>
                     <td>{idx + 1}</td>
                     <td>{team.team.teamName}</td>
-                    <td>0</td>
+                    <td>{team.matchesPlayed}</td>
                     <td>{team.wins}</td>
                     <td>{team.draws}</td>
                     <td>{team.losses}</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>{team.matchesPlayed}</td>
+                    <td>{team.goalsFor}</td>        {/* Replace 0 with goalsFor */}
+                    <td>{team.goalsAgainst}</td>    {/* Replace 0 with goalsAgainst */}
+                    <td>{Math.abs(team.goalDiff)}</td> {/* Replace 0 with goalDiff */}
                     <td>{team.points || 0}</td>
                   </tr>
                 ))}
@@ -277,14 +293,14 @@ const LeagueDetails = () => {
             </div>
           </div>
 
-          
+
           <div className="text-center">
-          <button
-            onClick={() => setShowMatches(!showMatches)}
-            className="btn "
-          >
-            {showMatches ? "Hide Matches" : "Show Matches"}
-          </button>
+            <button
+              onClick={() => setShowMatches(!showMatches)}
+              className="btn "
+            >
+              {showMatches ? "Hide Matches" : "Show Matches"}
+            </button>
           </div>
 
 
