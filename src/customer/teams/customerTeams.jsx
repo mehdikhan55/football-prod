@@ -3,6 +3,7 @@ import Navbar from "../../components/navbar/navbar";
 import ViewCustomerTeams from "./viewCustomerTeams";
 import { useTeam } from "../../context/teamContext";
 import { Link } from "react-router-dom";
+import TeamTabs from "./TeamTabs";
 
 const CustomerTeams = () => {
   const { currTeam } = useTeam();
@@ -11,17 +12,18 @@ const CustomerTeams = () => {
     <div className="bg-gray-900 text-white min-h-screen">
       <Navbar />
       <div className="p-10 max-sm:p-5 mt-10">
-        <h1 className="text-4xl font-bold text-center text-red-500 mb-10">
+        <h1 className="text-4xl font-bold text-center text-red-500 mb-5">
           Football Teams
         </h1>
         {currTeam ? (
           <div className="flex flex-col">
-            <p className="text-center mb-10">
+            <p className="text-center mb-5">
               <strong>Logged In: </strong>
               {currTeam.teamName}
             </p>
 
-            <ViewCustomerTeams />
+            {/* <ViewCustomerTeams /> */}
+            <TeamTabs/>
           </div>
         ) : (
           <div className="flex flex-col">

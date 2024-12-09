@@ -81,6 +81,7 @@ const TeamsBooking = () => {
     const [bookingPrice, setBookingPrice] = useState(0);
     const [bookingStatus, setBookingStatus] = useState("pending");
     const [paymentMethod, setPaymentMethod] = useState("");
+    const [teamRequired, setTeamRequired] = useState(false)
     const [paymentStatus, setPaymentStatus] = useState("pending");
     const [paymentDate, setPaymentDate] = useState("");
     const [ground, setGround] = useState("");
@@ -115,6 +116,7 @@ const TeamsBooking = () => {
                 bookingStatus,
                 paymentMethod,
                 paymentStatus,
+                teamRequired,
                 paymentDate: paymentDate ? new Date(paymentDate) : null,
                 ground,
             };
@@ -157,6 +159,7 @@ const TeamsBooking = () => {
         setBookingStatus("pending");
         setPaymentMethod("");
         setPaymentStatus("pending");
+        setTeamRequired(false);
         setPaymentDate("");
         setGround("");
     };
@@ -325,6 +328,15 @@ const TeamsBooking = () => {
                                     min="1"
                                     required
                                     step="0.1"
+                                />
+                                <label htmlFor="teamRequired" className="text-white">
+                                    Team Required?
+                                </label>
+                                <input
+                                    type="checkbox"
+                                    checked={teamRequired}
+                                    onChange={(e) => setTeamRequired(e.target.checked)}
+                                    className="p-3 rounded-md input-bordered disabled:opacity-50 self-start bg-white w-6 h-6 accent-[#9ce37d] cursor-pointer"
                                 />
                                 {/* <label htmlFor="bookingPrice" className="text-white">
                                     Booking Price

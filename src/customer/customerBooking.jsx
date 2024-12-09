@@ -117,6 +117,7 @@ const CustomerBooking = () => {
         bookingPrice,
         bookingStatus,
         paymentMethod,
+        teamRequired:false,
         paymentStatus,
         paymentDate: paymentDate ? new Date(paymentDate) : null,
         ground,
