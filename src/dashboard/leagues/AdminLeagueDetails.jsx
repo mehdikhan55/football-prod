@@ -236,7 +236,7 @@ const AdminLeagueDetails = () => {
               <tbody>
                 {pointsTable.map((team, idx) => (
                   <tr key={idx}>
-                   <td>{idx + 1}</td>
+                    <td>{idx + 1}</td>
                     <td>{team.team.teamName}</td>
                     <td>{team.matchesPlayed}</td>
                     <td>{team.wins}</td>
@@ -319,10 +319,16 @@ const AdminLeagueDetails = () => {
                         <strong>Match:</strong> {match.teamA?.teamName} vs{" "}
                         {match.teamB?.teamName}
                       </p>
-                      <p className="">
-                        <strong>Date:</strong>{" "}
-                        {new Date(match.date).toLocaleDateString()}
-                      </p>
+                      <div className="flex flex-col">
+                        <p className="">
+                          <strong>Date:</strong>{" "}
+                          {new Date(match.date).toLocaleDateString()}
+                        </p>
+                        <p>
+                          <strong>Time:</strong>{" "}
+                          {match.time || "Not Available"}
+                        </p>
+                      </div>
                     </div>
                     <div className="flex justify-between items-center mb-4 max-sm:flex-col">
                       <p className="">
@@ -347,7 +353,7 @@ const AdminLeagueDetails = () => {
                   </div>
                 ))}
               </>
-            )}  
+            )}
           </div>
         </div>
       )}

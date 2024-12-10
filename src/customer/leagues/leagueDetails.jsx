@@ -315,15 +315,21 @@ const LeagueDetails = () => {
                     key={idx}
                     className=" p-5 rounded-lg shadow-lg max-sm:text-sm border-2  border-gray-100"
                   >
-                    <div className="flex justify-between items-center mb-4 max-sm:flex-col">
+                    <div className="flex justify-between mb-4 max-sm:flex-col">
                       <p className="">
                         <strong>Match:</strong> {match.teamA?.teamName} vs{" "}
                         {match.teamB?.teamName}
                       </p>
+                      <div className="flex flex-col">
                       <p className="">
                         <strong>Date:</strong>{" "}
                         {new Date(match.date).toLocaleDateString()}
                       </p>
+                      <p>
+                      <strong>Time:</strong>{" "}
+                      {match.time || "Not Available"}
+                      </p>
+                      </div>
                     </div>
                     <div className="flex justify-between items-center mb-4 max-sm:flex-col">
                       <p className="">

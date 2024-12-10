@@ -257,7 +257,7 @@ const TeamsBooking = () => {
                             >
                                 <div className="flex justify-between items-center">
                                     <h1 className="text-xl font-bold">
-                                    Booking ID: {commonService.handleCode(booking._id)}
+                                        Booking ID: {commonService.handleCode(booking._id)}
                                     </h1>
                                     <BiHistory className="text-white text-3xl" />
                                 </div>
@@ -366,6 +366,44 @@ const TeamsBooking = () => {
                                     <option value="cash">Cash</option>
                                     <option value="bankTransfer">Bank Transfer</option>
                                 </select>
+                                {paymentMethod === "easypaisa" && (
+                                    <p className="text-white font-bold">
+                                        NOTE: Please send the payment to 03215259146!
+                                    </p>
+                                )}
+
+                                {paymentMethod === "bankTransfer" && (
+                                    <p className="text-white">
+                                        NOTE: Please send the payment to
+                                        <br />
+                                        IBAN: PK23MEZN0008170105726343
+                                        <br />
+                                        Account no: 0105726343
+                                        <br />
+                                        Account title: DREAM VALLEY ENTERPRISES (SMC-PRIVATE) Ltd
+                                        <br />
+                                        Bank name: Meezan Bank
+                                        <br />
+                                        <br />
+                                        OR
+                                        <br />
+                                        <br />
+                                        IBAN: PK20BAHL0182098100075001
+                                        <br />
+                                        Account no: 01820981000750018
+                                        <br />
+                                        Account title: DANYAL MUMTAZ
+                                        <br />
+                                        Bank name: Bank Al Habib
+                                    </p>
+                                )}
+
+                                {paymentMethod === "cash" && (
+                                    <p className="text-white font-bold">
+                                        NOTE: Please bring the cash with you!
+                                    </p>
+                                )}
+
                                 <select
                                     value={ground}
                                     onChange={(e) => setGround(e.target.value)}

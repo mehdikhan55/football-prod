@@ -22,7 +22,10 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
       setEndDate(inputDateFormat(leagueData.endDate));
       setSelectedTeams(leagueData.teams.map((team) => team._id));
       setSelectedTeamsData(leagueData.teams);
-      setMatches(leagueData.matches);
+      setMatches(leagueData.matches.map(match => ({
+        ...match,
+        time: match.time || "", // Added time field handling
+      })));
       setAvailablePlayers(() => {
         const players = [];
         leagueData.teams.forEach((leagueTeam) => {
@@ -52,6 +55,7 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
       score: match.score,
       scorers: match.scorers,
       date: match.date,
+      time: match.time,
       winner: match.winner,
     }));
 
@@ -76,6 +80,7 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
         score: { teamA: 0, teamB: 0 },
         scorers: [],
         date: "",
+        time: "",
         winner: "",
       },
     ]);
@@ -358,11 +363,11 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
                   >
                     <option value="">Select Winner</option>
                     {/* // Add the team names that are playing this match as options */}
-                    <option value={(typeof match.teamA ==='string') ? match.teamA : match.teamA._id}>
+                    <option value={(typeof match.teamA === 'string') ? match.teamA : match.teamA._id}>
                       {(typeof match.teamA) === 'string' ?
                         getTeamById(match.teamA) : match.teamA.teamName}
                     </option>
-                    <option value={(typeof match.teamB ==='string') ? match.teamB : match.teamB._id}>
+                    <option value={(typeof match.teamB === 'string') ? match.teamB : match.teamB._id}>
                       {(typeof match.teamB) === 'string' ?
                         getTeamById(match.teamB) : match.teamB.teamName}
                     </option>
@@ -377,6 +382,17 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
                     onChange={(e) => {
                       const newMatches = [...matches];
                       newMatches[index].date = e.target.value;
+                      setMatches(newMatches);
+                    }}
+                    className="rounded-md p-3 border border-gray-300"
+                  />
+                  <label className="text-gray-500">Match Time</label>
+                  <input
+                    type="time"
+                    value={match.time || ""}
+                    onChange={(e) => {
+                      const newMatches = [...matches];
+                      newMatches[index].time = e.target.value;
                       setMatches(newMatches);
                     }}
                     className="rounded-md p-3 border border-gray-300"
