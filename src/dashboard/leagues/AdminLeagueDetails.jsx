@@ -314,7 +314,7 @@ const AdminLeagueDetails = () => {
                     key={idx}
                     className=" p-5 rounded-lg shadow-lg max-sm:text-sm"
                   >
-                    <div className="flex justify-between items-center mb-4 max-sm:flex-col">
+                    <div className="flex justify-between mb-4 max-sm:flex-col">
                       <p className="">
                         <strong>Match:</strong> {match.teamA?.teamName} vs{" "}
                         {match.teamB?.teamName}
