@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/navbar/navbar";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
@@ -15,39 +14,36 @@ const GeneralBooking = () => {
   const [error, setError] = useState(null);
   const [grounds, setGrounds] = useState([]);
   const [selectedGround, setSelectedGround] = useState(null);
-
   const [formattedEvents, setFormattedEvents] = useState([]);
+
   const formattedBookings = (data) => {
-    //filter data based on selected ground
     const processedData = selectedGround
       ? data.bookings.filter((booking) => booking.ground._id === selectedGround)
       : data.bookings;
+
     const events = processedData.map((booking) => {
       const formattedDate = moment(booking.bookingDate).format("YYYY-MM-DD");
-      console.log("formatted date: ", formattedDate);
-
-      // Split bookingTime into hours and minutes
-      const [hours, minutes] = booking.bookingTime.split(":").map(Number);
-
+      
       // Create start time
-      const startDateTime = new Date(
-        `${formattedDate}T${booking.bookingTime}:00`
-      );
-
-      // Correctly calculate end time by adding the booking duration to hours
+      const startDateTime = new Date(`${formattedDate}T${booking.bookingTime}:00`);
+      
+      // Calculate end time by adding hours and minutes separately
       let endDateTime = new Date(startDateTime);
-      endDateTime.setHours(hours + booking.bookingDuration); // Add duration to hours
-      endDateTime = new Date(endDateTime);
+      const durationHours = Math.floor(booking.bookingDuration);
+      const durationMinutes = (booking.bookingDuration % 1) * 60;
+      
+      endDateTime.setHours(endDateTime.getHours() + durationHours);
+      endDateTime.setMinutes(endDateTime.getMinutes() + durationMinutes);
 
       return {
-        title: booking.title || "Booking", // You can set a default title
+        title: booking.title || "Booking",
         date: booking.bookingDate,
         start: startDateTime,
         end: endDateTime,
       };
     });
+    
     setFormattedEvents(events);
-    console.log("formatted events: ", events);
   };
 
   const fetchGrounds = async () => {
@@ -61,11 +57,7 @@ const GeneralBooking = () => {
         },
       });
       const data = response.data;
-      console.log("kajshr", response.data);
       if (response.status >= 400) {
-        console.log("response", response);
-        console.log("data", data);
-        console.log("error", error);
         throw new Error(data.message);
       }
       setGrounds(data.grounds);
@@ -87,18 +79,15 @@ const GeneralBooking = () => {
       if (response.status >= 400) {
         throw new Error(data.message);
       }
-      //remove the bookings before today
+      
       const today = new Date();
       const formattedToday = moment(today).format("YYYY-MM-DD");
-      console.log("formatted today: ", formattedToday);
       const filteredData = data.bookings.filter((booking) => {
         const formattedDate = moment(booking.bookingDate).format("YYYY-MM-DD");
         return formattedDate >= formattedToday;
       });
-      const formattedEvents = formattedBookings({ bookings: filteredData });
-      setEvents(formattedEvents);
-      console.log("data of bookings: ", data);
-      console.log("formatted bookings: ", formattedEvents);
+      
+      formattedBookings({ bookings: filteredData });
     } catch (error) {
       setError(error.message);
     } finally {
@@ -115,8 +104,6 @@ const GeneralBooking = () => {
 
   return (
     <div>
-      {/* <Navbar /> */}
-      {/* Dropdown to select ground */}
       <div className="flex pt-5 items-center justify-center">
         <select
           className="w-1/2 p-2 mt-2 rounded-lg text-black"
