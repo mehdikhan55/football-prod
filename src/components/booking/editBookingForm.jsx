@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { inputDateFormat } from '../../utils/inputDateFormat';
 
-const EditBookingForm = ({ bookingData, onSubmit, customersData , groundsData}) => {
+const EditBookingForm = ({ bookingData, onSubmit, customersData, groundsData }) => {
   const [customer, setCustomer] = useState(bookingData.customer._id || "");
   const [bookingDate, setBookingDate] = useState(bookingData.bookingDate || "");
   const [bookingTime, setBookingTime] = useState(bookingData.bookingTime || "");
-  const [bookingDuration, setBookingDuration] = useState(bookingData.bookingDuration || 1);
+  const [bookingDuration, setBookingDuration] = useState(bookingData.bookingDuration || 1.5);
   const [bookingPrice, setBookingPrice] = useState(bookingData.bookingPrice || 0);
   const [bookingStatus, setBookingStatus] = useState(bookingData.bookingStatus || "pending");
   const [paymentMethod, setPaymentMethod] = useState(bookingData.paymentMethod || "");
@@ -125,9 +125,10 @@ const EditBookingForm = ({ bookingData, onSubmit, customersData , groundsData}) 
           <input
             type="number"
             value={bookingDuration}
-            onChange={(e) => setBookingDuration(Number(e.target.value))}
+            onChange={(e) => setBookingDuration(parseFloat(e.target.value))}
             className="rounded-md p-3 border border-gray-300"
             min="1"
+            step="0.1"
             required
           />
         </div>
@@ -138,7 +139,8 @@ const EditBookingForm = ({ bookingData, onSubmit, customersData , groundsData}) 
           <label className="text-gray-500">Booking Price</label>
           <input
             type="number"
-            value={bookingPrice}
+            value={bookingPrice || ''}
+            placeholder='0'
             onChange={(e) => setBookingPrice(Number(e.target.value))}
             className="rounded-md p-3 border border-gray-300"
             min="0"
@@ -147,14 +149,17 @@ const EditBookingForm = ({ bookingData, onSubmit, customersData , groundsData}) 
         </div>
         <div className="flex flex-col gap-2 w-1/2">
           <label className="text-gray-500">Payment Method</label>
-          <input
-            type="text"
+          <select
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
-            placeholder="Enter Payment Method"
             className="rounded-md p-3 border border-gray-300"
             required
-          />
+          >
+            <option value="">Select Payment Method</option>
+            <option value="easypaisa">Easypaisa</option>
+            <option value="cash">Cash</option>
+            <option value="bankTransfer">Bank Transfer</option>
+          </select>
         </div>
       </div>
 
@@ -184,19 +189,19 @@ const EditBookingForm = ({ bookingData, onSubmit, customersData , groundsData}) 
       <div className="flex gap-2">
         <div className="flex flex-col gap-2 w-1/2">
           <label className="text-gray-500">Ground</label>
-         <select 
-          value={ground}
-          onChange={(e) => setGround(e.target.value)}
-          className="rounded-md p-3 border border-gray-300"
-          required
+          <select
+            value={ground}
+            onChange={(e) => setGround(e.target.value)}
+            className="rounded-md p-3 border border-gray-300"
+            required
           >
-          <option value="">Select Ground</option>
-          {groundsData.map((groundInc) => (
-            <option key={groundInc?._id} value={groundInc?._id}>
-              {groundInc.name}
-            </option>
-          ))}
-        </select>
+            <option value="">Select Ground</option>
+            {groundsData.map((groundInc) => (
+              <option key={groundInc?._id} value={groundInc?._id}>
+                {groundInc.name}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 

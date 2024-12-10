@@ -230,7 +230,7 @@ const EditGroundForm = ({ groundData, onSubmit }) => {
           className={`btn btn-primary mt-5 w-full max-sm:w-full text-white rounded-full ${loading ? "cursor-not-allowed" : ""
             }`}
           type="submit"
-        >s
+        >
 
 
           {loading && <span className="loading loading-spinner"></span>}

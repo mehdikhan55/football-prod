@@ -74,7 +74,7 @@ const BookingCard = ({ booking, onEdit, onCancel, onConfirm, onPending, onComple
 
         <div className="flex justify-between">
           <strong>Price:</strong>
-          <span>${booking.bookingPrice.toFixed(2)}</span>
+          <span>PKR {booking.bookingPrice.toFixed(2)}</span>
         </div>
 
         <div className="flex justify-between">

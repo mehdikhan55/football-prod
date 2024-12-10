@@ -9,6 +9,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useUser } from "../../context/userContext";
 import { useTeam } from "../../context/teamContext";
+import { formatDate, formatDate2 } from "../../utils/formatDate";
+import commonService from "../../services/commonService";
 
 const URL = import.meta.env.VITE_BACKEND_URL
 
@@ -255,13 +257,13 @@ const TeamsBooking = () => {
                             >
                                 <div className="flex justify-between items-center">
                                     <h1 className="text-xl font-bold">
-                                        Booking ID: {booking._id}
+                                    Booking ID: {commonService.handleCode(booking._id)}
                                     </h1>
                                     <BiHistory className="text-white text-3xl" />
                                 </div>
                                 <div className="flex justify-end items-center mt-2">
                                     <p>
-                                        {booking.bookingDate} {booking.bookingTime}
+                                        {formatDate2(booking.bookingDate)} {booking.bookingTime}
                                     </p>
                                 </div>
                                 <p>

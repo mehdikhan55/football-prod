@@ -34,6 +34,9 @@ const Navbar = () => {
               <a href="/contact" className="text-white">
                 Contact
               </a>
+              <a href="/invest" className="text-white">
+                Profile
+              </a>
               <div
                 onClick={() => {
                   localStorage.removeItem("token");
@@ -62,6 +65,9 @@ const Navbar = () => {
               </a>
               <a href="/contact" className="text-white">
                 Contact
+              </a>
+              <a href="/invest" className="text-white">
+              Profile
               </a>
               <div
                 onClick={() => {
@@ -98,6 +104,9 @@ const Navbar = () => {
               <a href="/contact" className="text-white">
                 Contact
               </a>
+              <a href="/invest" className="text-white">
+              Profile
+              </a>
               <div
                 onClick={() => {
                   localStorage.removeItem("teamToken");
@@ -118,6 +127,9 @@ const Navbar = () => {
 
           {!customer && !currTeam && (
             <>
+              <a href="/invest" className="text-white">
+              Profile
+              </a>
               <a href="/customer/login" className="text-white">
                 Login
               </a>
@@ -176,6 +188,9 @@ const Navbar = () => {
               <a href="/contact" className="text-white">
                 Contact
               </a>
+              <a href="/invest" className="text-white">
+              Profile
+              </a>
               <div
                 onClick={() => {
                   localStorage.removeItem("token");
@@ -201,6 +216,9 @@ const Navbar = () => {
               </a>
               <a href="/contact" className="text-white">
                 Contact
+              </a>
+              <a href="/invest" className="text-white">
+              Profile
               </a>
               <div
                 onClick={() => {
@@ -237,6 +255,9 @@ const Navbar = () => {
               <a href="/contact" className="text-white">
                 Contact
               </a>
+              <a href="/invest" className="text-white">
+              Profile
+              </a>
               <div
                 onClick={() => {
                   localStorage.removeItem("teamToken");
@@ -257,6 +278,9 @@ const Navbar = () => {
 
           {!customer && !currTeam && (
             <>
+              <a href="/invest" className="text-white">
+              Profile
+              </a>
               <a href="/customer/login" className="text-white">
                 Login
               </a>

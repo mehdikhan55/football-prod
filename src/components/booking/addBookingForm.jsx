@@ -5,8 +5,8 @@ const AddBookingForm = ({ onSubmit, customersData, groundsData }) => {
   const [bookingDate, setBookingDate] = useState("");
   const [bookingStartTime, setbookingStartTime] = useState("");
   const [bookingEndTime, setbookingEndTime] = useState("");
-  const [bookingTime , setBookingTime] = useState("");
-  const [bookingDuration, setBookingDuration] = useState(1);
+  const [bookingTime, setBookingTime] = useState("");
+  const [bookingDuration, setBookingDuration] = useState(1.5);
   const [bookingPrice, setBookingPrice] = useState(0);
   const [bookingStatus, setBookingStatus] = useState("pending");
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -34,7 +34,7 @@ const AddBookingForm = ({ onSubmit, customersData, groundsData }) => {
         paymentDate: paymentDate ? new Date(paymentDate) : null,
         ground,
       };
-      console.log("new booking:",newBooking);
+      console.log("new booking:", newBooking);
       await onSubmit(newBooking);
 
       resetForm();
@@ -52,7 +52,7 @@ const AddBookingForm = ({ onSubmit, customersData, groundsData }) => {
     setbookingStartTime("");
     setbookingEndTime("");
     setBookingTime("");
-    setBookingDuration(1);
+    setBookingDuration(1.5);
     setBookingPrice(0);
     setBookingStatus("pending");
     setPaymentMethod("");
@@ -129,6 +129,20 @@ const AddBookingForm = ({ onSubmit, customersData, groundsData }) => {
             required
           />
         </div>
+        <div className="flex flex-col gap-2 w-1/2">
+          <label htmlFor="bookingDuration" className="text-gray-500">
+            Booking Duration (hours)
+          </label>
+          <input
+            type="number"
+            value={bookingDuration}
+            onChange={(e) => setBookingDuration(parseFloat(e.target.value))}
+            className="rounded-md p-3 border border-gray-300"
+            min="1"
+            step="0.1"
+            required
+          />
+        </div>
       </div>
 
       <div className="flex gap-2">
@@ -136,7 +150,8 @@ const AddBookingForm = ({ onSubmit, customersData, groundsData }) => {
           <label className="text-gray-500">Booking Price</label>
           <input
             type="number"
-            value={bookingPrice}
+            value={bookingPrice || ''}
+            placeholder="0"
             onChange={(e) => setBookingPrice(Number(e.target.value))}
             className="rounded-md p-3 border border-gray-300"
             min="0"
@@ -145,14 +160,17 @@ const AddBookingForm = ({ onSubmit, customersData, groundsData }) => {
         </div>
         <div className="flex flex-col gap-2 w-1/2">
           <label className="text-gray-500">Payment Method</label>
-          <input
-            type="text"
+          <select
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
-            placeholder="Enter Payment Method"
             className="rounded-md p-3 border border-gray-300"
             required
-          />
+          >
+            <option value="">Select Payment Method</option>
+            <option value="easypaisa">Easypaisa</option>
+            <option value="cash">Cash</option>
+            <option value="bankTransfer">Bank Transfer</option>
+          </select>
         </div>
       </div>
 
@@ -203,9 +221,8 @@ const AddBookingForm = ({ onSubmit, customersData, groundsData }) => {
       {error && <p className="text-red-500">{error}</p>}
 
       <button
-        className={`btn btn-primary mt-5 w-full text-white rounded-full ${
-          loading ? "cursor-not-allowed" : ""
-        }`}
+        className={`btn btn-primary mt-5 w-full text-white rounded-full ${loading ? "cursor-not-allowed" : ""
+          }`}
         type="submit"
         disabled={loading}
       >
