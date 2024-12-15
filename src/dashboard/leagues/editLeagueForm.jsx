@@ -14,7 +14,7 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
   const [availablePlayers, setAvailablePlayers] = useState([]);
 
   useEffect(() => {
-    console.log("leagueData", leagueData);
+    // console.log("leagueData", leagueData);
     setLoading(true);
     if (leagueData) {
       setLeagueName(leagueData.leagueName);
@@ -38,6 +38,7 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
             players.push({ teamId: leagueTeam._id, playerName: player });
           });
         });
+        // console.log("hello players: ",players)
         return players;
       });
     }
@@ -75,7 +76,7 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
       teams: selectedTeams,
       matches: updatedMatches,
     };
-    console.log('the updated league with assists:', updatedLeague);
+    // console.log('the updated league with assists:', updatedLeague);
     onSubmit(updatedLeague);
     setLoading(false);
   };
@@ -151,9 +152,9 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
       const players = teamPlayers.map((player) => ({
         teamId,
         playerName: player,
-      }));
+      })); 
       return [...prev, ...players];
-    });
+    }); 
   };
 
   const getTeamById = (teamId) => {
@@ -312,7 +313,7 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
 
                               // Find the corresponding teamId based on the selected player
                               const foundPlayer = availablePlayers.find(
-                                (player) => player.playerName === selectedPlayer
+                                (player) => player.playerName === selectedPlayer && (player.teamId === ((typeof match.teamA === 'string') ? match.teamA : match.teamA._id) || player.teamId === ((typeof match.teamB === 'string') ? match.teamB : match.teamB._id))
                               );
                               const teamId = foundPlayer ? foundPlayer.teamId : ""; // Get the teamId or an empty string
 
@@ -395,7 +396,7 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
 
                               // Find the corresponding teamId based on the selected player
                               const foundPlayer = availablePlayers.find(
-                                (player) => player.playerName === selectedPlayer
+                                (player) => player.playerName === selectedPlayer && (player.teamId === ((typeof match.teamA === 'string') ? match.teamA : match.teamA._id) || player.teamId === ((typeof match.teamB === 'string') ? match.teamB : match.teamB._id))
                               );
                               const teamId = foundPlayer ? foundPlayer.teamId : ""; // Get the teamId or an empty string
 
@@ -473,7 +474,7 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
                     onChange={(e) => {
                       const newMatches = [...matches];
                       newMatches[index].winner = e.target.value === "Draw" ? null : e.target.value;
-                      console.log('value setted:', e.target.value);
+                      // console.log('value setted:', e.target.value);
                       setMatches(newMatches);
                     }}
                     className="rounded-md p-3 border border-gray-300"
