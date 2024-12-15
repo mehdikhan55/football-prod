@@ -25,6 +25,8 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
       setMatches(leagueData.matches.map(match => ({
         ...match,
         time: match.time || "", // Added time field handling
+        assists: match.assists || [], // Added assists field handling
+        cleanSheets: match.cleanSheets || { teamA: false, teamB: false, goalKeeperA: "", goalKeeperB: "" } // Added cleanSheets field handling
       })));
       setAvailablePlayers(() => {
         const players = [];
@@ -54,6 +56,13 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
       teamB: match.teamB,
       score: match.score,
       scorers: match.scorers,
+      assists: match.assists,
+      cleanSheets: {
+        teamA: match.score.teamB === 0,  // Set based on opponent's score
+        teamB: match.score.teamA === 0,  // Set based on opponent's score
+        goalKeeperA: match.score.teamB === 0 ? match.cleanSheets.goalKeeperA : "",  // Only include goalkeeper if clean sheet
+        goalKeeperB: match.score.teamA === 0 ? match.cleanSheets.goalKeeperB : ""   // Only include goalkeeper if clean sheet
+      },
       date: match.date,
       time: match.time,
       winner: match.winner,
@@ -66,7 +75,7 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
       teams: selectedTeams,
       matches: updatedMatches,
     };
-    console.log(updatedLeague);
+    console.log('the updated league with assists:', updatedLeague);
     onSubmit(updatedLeague);
     setLoading(false);
   };
@@ -79,6 +88,13 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
         teamB: "",
         score: { teamA: 0, teamB: 0 },
         scorers: [],
+        assists: [],
+        cleanSheets: {
+          teamA: false,
+          teamB: false,
+          goalKeeperA: "",
+          goalKeeperB: ""
+        },
         date: "",
         time: "",
         winner: "",
@@ -100,6 +116,20 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
   const removeScorer = (matchIndex, scorerIndex) => {
     const newMatches = [...matches];
     newMatches[matchIndex].scorers = newMatches[matchIndex].scorers.filter(
+      (_, i) => i !== scorerIndex
+    );
+    setMatches(newMatches);
+  };
+
+  const addAssist = (matchIndex) => {
+    const newMatches = [...matches];
+    newMatches[matchIndex].assists.push({ player: "", team: "" });
+    setMatches(newMatches);
+  };
+
+  const removeAssist = (matchIndex, scorerIndex) => {
+    const newMatches = [...matches];
+    newMatches[matchIndex].assists = newMatches[matchIndex].assists.filter(
       (_, i) => i !== scorerIndex
     );
     setMatches(newMatches);
@@ -200,7 +230,7 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
                   key={index}
                   className="flex flex-col gap-4 border p-4 rounded-md border-gray-300"
                 >
-                  <label className="text-gray-500">Match {index + 1}</label>
+                  <label className="text-gray-500 font-bold">Match {index + 1}</label>
                   <div className="flex gap-4">
                     <div className="flex flex-col w-1/2">
                       <label className="text-gray-500">Team A</label>
@@ -267,6 +297,7 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
                       />
                     </div>
 
+                    {/* Scorers */}
                     <div className="flex flex-col w-full">
                       <label className="text-gray-500">Scorers</label>
                       {match.scorers.map((scorer, scorerIndex) => (
@@ -348,6 +379,92 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
                         + Add Scorer
                       </button>
                     </div>
+
+                    {/* Assists */}
+                    <div className="flex flex-col w-full">
+                      <label className="text-gray-500">Assists</label>
+                      {match.assists.map((scorer, scorerIndex) => (
+                        <div key={scorerIndex} className="flex gap-2">
+                          <select
+                            required
+                            type="text"
+                            placeholder="Player Name"
+                            value={scorer.player}
+                            onChange={(e) => {
+                              const selectedPlayer = e.target.value;
+
+                              // Find the corresponding teamId based on the selected player
+                              const foundPlayer = availablePlayers.find(
+                                (player) => player.playerName === selectedPlayer
+                              );
+                              const teamId = foundPlayer ? foundPlayer.teamId : ""; // Get the teamId or an empty string
+
+                              const newMatches = [...matches];
+                              newMatches[index].assists[scorerIndex].player =
+                                selectedPlayer;
+                              newMatches[index].assists[scorerIndex].team = teamId; // Set the teamId
+                              setMatches(newMatches);
+                            }}
+                            className="rounded-md p-3 border border-gray-300 w-2/3"
+                          >
+                            <option value="">Select Player</option>
+                            {availablePlayers.filter(
+                              (player) =>
+                                player.teamId === ((typeof match.teamA === 'string') ? match.teamA : match.teamA._id) ||
+                                player.teamId === ((typeof match.teamB === 'string') ? match.teamB : match.teamB._id)
+                            ).map((player) => (
+                              <option
+                                key={player.playerName}
+                                value={player.playerName}
+                                selected={player.playerName === scorer.player}
+                              >
+                                {player.playerName}
+                              </option>
+                            ))}
+                          </select>
+                          <input
+                            required
+                            type="text"
+                            placeholder="Team Name"
+                            value={scorer.team ? (((scorer.team === (typeof match.teamA === 'string' ? match.teamA : match.teamA._id)) || (scorer.team === (typeof match.teamB === 'string' ? match.teamB : match.teamB._id))) ? getTeamById(scorer.team) : removeAssist(
+                              index, scorerIndex
+                            )) : ""}
+                            readOnly
+                            className="rounded-md p-3 border border-gray-300 w-1/3"
+                          />
+                          <input
+                            required
+                            type="number"
+                            placeholder="Assist"
+                            value={scorer?.score || 0}
+                            className="rounded-md p-3 border border-gray-300 w-1/3"
+                            onChange={(e) => {
+                              const newMatches = [...matches];
+                              newMatches[index].assists[scorerIndex].score =
+                                e.target.value;
+                              setMatches(newMatches);
+                            }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removeAssist(index, scorerIndex)}
+                            className="btn btn-secondary"
+                          >
+                            Remove Assist
+                          </button>
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => addAssist(index)}
+                        className="mt-2 bg-secondary text-white rounded-md py-1"
+                      >
+                        + Add Assist
+                      </button>
+                    </div>
+
+                    {/* Winner */}
+
                   </div>
                   <label className="text-gray-500">Winner</label>
                   <select
@@ -373,6 +490,84 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
                     </option>
                     <option selected={!match.winner} value="Draw">Draw</option>
                   </select>
+
+                  {/* goal keepers for clean sheets */}
+                  {/* Clean Sheet Goalkeepers - Show only when either team has a score of 0 */}
+                  {(match.score.teamA === 0 || match.score.teamB === 0) && (
+                    <div className="flex gap-4 mt-4">
+                      {/* Team A Goalkeeper */}
+                      {match.score.teamB === 0 && (
+                        <div className="flex flex-col w-1/2">
+                          <label className="text-gray-500">Team A Goalkeeper (Clean Sheet)</label>
+                          <select
+                            required
+                            value={match.cleanSheets?.goalKeeperA || ""}
+                            onChange={(e) => {
+                              const newMatches = [...matches];
+                              if (!newMatches[index].cleanSheets) {
+                                newMatches[index].cleanSheets = {
+                                  teamA: match.score.teamB === 0,
+                                  teamB: match.score.teamA === 0,
+                                  goalKeeperA: "",
+                                  goalKeeperB: ""
+                                };
+                              }
+                              newMatches[index].cleanSheets.goalKeeperA = e.target.value;
+                              setMatches(newMatches);
+                            }}
+                            className="rounded-md p-3 border border-gray-300"
+                          >
+                            <option value="">Select Goalkeeper</option>
+                            {availablePlayers
+                              .filter(player =>
+                                player.teamId === (typeof match.teamA === 'string' ? match.teamA : match.teamA._id)
+                              )
+                              .map((player) => (
+                                <option key={player.playerName} value={player.playerName}>
+                                  {player.playerName}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                      )}
+
+                      {/* Team B Goalkeeper */}
+                      {match.score.teamA === 0 && (
+                        <div className="flex flex-col w-1/2">
+                          <label className="text-gray-500">Team B Goalkeeper (Clean Sheet)</label>
+                          <select
+                            required
+                            value={match.cleanSheets?.goalKeeperB || ""}
+                            onChange={(e) => {
+                              const newMatches = [...matches];
+                              if (!newMatches[index].cleanSheets) {
+                                newMatches[index].cleanSheets = {
+                                  teamA: match.score.teamB === 0,
+                                  teamB: match.score.teamA === 0,
+                                  goalKeeperA: "",
+                                  goalKeeperB: ""
+                                };
+                              }
+                              newMatches[index].cleanSheets.goalKeeperB = e.target.value;
+                              setMatches(newMatches);
+                            }}
+                            className="rounded-md p-3 border border-gray-300"
+                          >
+                            <option value="">Select Goalkeeper</option>
+                            {availablePlayers
+                              .filter(player =>
+                                player.teamId === (typeof match.teamB === 'string' ? match.teamB : match.teamB._id)
+                              )
+                              .map((player) => (
+                                <option key={player.playerName} value={player.playerName}>
+                                  {player.playerName}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   <label className="text-gray-500">Match Date</label>
                   <input
@@ -406,6 +601,8 @@ const EditLeagueForm = ({ leagueData, onSubmit, teamsData }) => {
                   </button>
                 </div>
               ))}
+
+
 
               <button
                 type="button"

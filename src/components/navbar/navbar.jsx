@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import logoWhite from "../../assets/logoWhite.png";
+import tflogo from "../../assets/TF-Logo.png";
 import { useUser } from "../../context/userContext";
 import { useTeam } from "../../context/teamContext";
 
@@ -12,8 +13,9 @@ const Navbar = () => {
   return (
     <div className="bg-gray-900 fixed top-0 w-full z-50">
       <div className="flex justify-between items-center p-4">
-        <div>
+        <div className="flex gap-3">
           <img src={logoWhite} alt="logo" className="w-10 h-10" />
+          <img src={tflogo} alt="logo" className="w-10 h-10" />
         </div>
         <div className="hidden md:flex gap-4 items-center">
           <a href="/" className="text-white">

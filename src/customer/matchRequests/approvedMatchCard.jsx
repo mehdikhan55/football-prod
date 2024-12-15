@@ -40,6 +40,7 @@ const ApprovedMatchCard = ({ match, onInterest }) => {
           </span>
         )}
       </div>
+      <p className='text-gray-200 mt-2 text-center'><span className='font-semibold'>Note:</span> IF NOT COME YOUR ACCOUNT WILL BE BLOCKED</p>
     </div>
   );
 };

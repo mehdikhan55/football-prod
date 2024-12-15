@@ -14,11 +14,16 @@ const LeagueDetails = () => {
   const [error, setError] = useState(null);
   const [league, setLeague] = useState(null);
   const [showMatches, setShowMatches] = useState(false);
+  const [acitveTableTab, setActiveTableTab] = useState('topScorers');
 
 
   const { currTeam } = useTeam();
 
   const [topScorers, setTopScorers] = useState([]);
+
+  const [topAssists, setTopAssists] = useState([]);
+
+  const [topCleanSheets, setTopCleanSheets] = useState([]);
 
   const [totalGoals, setTotalGoals] = useState(0);
 
@@ -146,10 +151,100 @@ const LeagueDetails = () => {
     setTotalGoals(totalGoals);
   };
 
+  const getTopAssists = () => {
+    const scorers = [];
+    let totalGoals = 0;
+    league?.matches.forEach((match) => {
+      match.assists && match.assists.forEach((scorer) => {
+        const scorerIndex = scorers.findIndex(
+          (s) => s.player === scorer.player
+        );
+        if (scorerIndex !== -1) {
+          scorers[scorerIndex].score += scorer.score;
+        } else {
+          scorers.push({ player: scorer.player, score: scorer.score, team: scorer.team.teamName });
+        }
+      });
+    });
+    //sort the scorers
+    scorers.sort((a, b) => b.score - a.score);
+    console.log('scorer', scorers)
+    setTopAssists(scorers);
+  };
+
+
+  // Modify your getTopCleanSheets function
+  const getTopCleanSheets = () => {
+    const cleanSheetStats = {};
+
+    league?.matches.forEach((match) => {
+      if (match.cleanSheets) {
+        // Process Team A clean sheet
+        if (match.cleanSheets.teamA && match.cleanSheets.goalKeeperA) {
+          const teamId = match.teamA._id;
+          const teamName = match.teamA.teamName;
+          const goalkeeper = match.cleanSheets.goalKeeperA;
+
+          if (!cleanSheetStats[teamId]) {
+            cleanSheetStats[teamId] = {
+              teamName,
+              goalkeepers: {},
+              totalCleanSheets: 0
+            };
+          }
+
+          if (!cleanSheetStats[teamId].goalkeepers[goalkeeper]) {
+            cleanSheetStats[teamId].goalkeepers[goalkeeper] = 0;
+          }
+          cleanSheetStats[teamId].goalkeepers[goalkeeper]++;
+          cleanSheetStats[teamId].totalCleanSheets++;
+        }
+
+        // Process Team B clean sheet
+        if (match.cleanSheets.teamB && match.cleanSheets.goalKeeperB) {
+          const teamId = match.teamB._id;
+          const teamName = match.teamB.teamName;
+          const goalkeeper = match.cleanSheets.goalKeeperB;
+
+          if (!cleanSheetStats[teamId]) {
+            cleanSheetStats[teamId] = {
+              teamName,
+              goalkeepers: {},
+              totalCleanSheets: 0
+            };
+          }
+
+          if (!cleanSheetStats[teamId].goalkeepers[goalkeeper]) {
+            cleanSheetStats[teamId].goalkeepers[goalkeeper] = 0;
+          }
+          cleanSheetStats[teamId].goalkeepers[goalkeeper]++;
+          cleanSheetStats[teamId].totalCleanSheets++;
+        }
+      }
+    });
+
+    // Convert to array and sort by total clean sheets
+    const sortedStats = Object.values(cleanSheetStats)
+      .sort((a, b) => b.totalCleanSheets - a.totalCleanSheets);
+
+    setTopCleanSheets(sortedStats);
+  };
+
+
   useEffect(() => {
     calculatePointsTable();
     getTopScorerAndTotalGoals();
+    getTopAssists();
+    getTopCleanSheets();
   }, [league]);
+
+
+  const tableTabs = [
+    { id: 'topScorers', label: 'Top Scorers' },
+    { id: 'topAssists', label: 'Top Assists' },
+    { id: 'cleanSheets', label: 'Clean Sheets' },
+  ];
+
 
   return (
     <div
@@ -235,16 +330,27 @@ const LeagueDetails = () => {
               </thead>
               <tbody>
                 {pointsTable.map((team, idx) => (
-                  <tr key={idx}>
+                  <tr
+                    key={idx}
+                    className={`
+        ${pointsTable.length >= 6
+                        ? (idx < 4
+                          ? 'bg-green-800 bg-opacity-50'
+                          : (idx >= pointsTable.length - 2
+                            ? 'bg-red-800 bg-opacity-50'
+                            : ''))
+                        : ''}
+      `}
+                  >
                     <td>{idx + 1}</td>
                     <td>{team.team.teamName}</td>
                     <td>{team.matchesPlayed}</td>
                     <td>{team.wins}</td>
                     <td>{team.draws}</td>
                     <td>{team.losses}</td>
-                    <td>{team.goalsFor}</td>        {/* Replace 0 with goalsFor */}
-                    <td>{team.goalsAgainst}</td>    {/* Replace 0 with goalsAgainst */}
-                    <td>{Math.abs(team.goalDiff)}</td> {/* Replace 0 with goalDiff */}
+                    <td>{team.goalsFor}</td>
+                    <td>{team.goalsAgainst}</td>
+                    <td>{Math.abs(team.goalDiff)}</td>
                     <td>{team.points || 0}</td>
                   </tr>
                 ))}
@@ -265,30 +371,129 @@ const LeagueDetails = () => {
 
               <div>
 
-                <h2 className="text-3xl font-semibold mb-4 text-gray-300 max-sm:text-xl">
-                  Top Scorers
-                </h2>
-                <div className="max-sm:text-sm md:table mb-10">
-                  <table className="w-full">
-                    <thead>
-                      <tr>
-                        <th className="text-left">Scorer</th>
-                        <th className="text-left">Team</th>
-                        <th className="text-left">Score</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {topScorers.map((scorer, i) => (
-                        <tr key={i}>
-                          <td>{scorer.player}</td>
-                          <td>{scorer.team}</td>
-                          <td>{scorer.score}</td>
-                        </tr>
-                      ))
-                      }
-                    </tbody>
-                  </table>
+
+                <div className="flex justify-center space-x-4">
+                  {tableTabs.map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTableTab(tab.id)}
+                      className={`px-6 py-2 rounded-lg transition-colors duration-300 
+            ${acitveTableTab === tab.id ? 'bg-gray-100 text-black' : 'bg-gray-700 text-gray-300'} 
+            hover:bg-gray-100 hover:text-black focus:outline-none`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
                 </div>
+
+                {acitveTableTab === 'topScorers' && (
+                  <>
+                    {/* top scorers */}
+                    <div className="">
+                      <h2 className="text-3xl font-semibold mb-4 text-gray-300 max-sm:text-xl">
+                        Top Scorers
+                      </h2>
+                      <div className="max-sm:text-sm md:table mb-10">
+                        <table className="w-full">
+                          <thead>
+                            <tr>
+                              <th className="text-left">Sr No.</th>
+                              <th className="text-left">Scorer</th>
+                              <th className="text-left">Team</th>
+                              <th className="text-left">Score</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {topScorers.map((scorer, i) => (
+                              <tr key={i}>
+                                <td>{i + 1}</td>
+                                <td>{scorer.player}</td>
+                                <td>{scorer.team}</td>
+                                <td>{scorer.score}</td>
+                              </tr>
+                            ))
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {acitveTableTab === 'topAssists' && (
+                  <>
+                    {/* top assists */}
+                    <div className="">
+                      <h2 className="text-3xl font-semibold mb-4 text-gray-300 max-sm:text-xl">
+                        Top Assists
+                      </h2>
+                      <div className="max-sm:text-sm md:table mb-10">
+                        <table className="w-full">
+                          <thead>
+                            <tr>
+                              <th className="text-left">Sr No.</th>
+                              <th className="text-left">Scorer</th>
+                              <th className="text-left">Team</th>
+                              <th className="text-left">Assists</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {topAssists.map((scorer, i) => (
+                              <tr key={i}>
+                                <td>{i + 1}</td>
+                                <td>{scorer.player}</td>
+                                <td>{scorer.team}</td>
+                                <td>{scorer.score}</td>
+                              </tr>
+                            ))
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {acitveTableTab === 'cleanSheets' && (
+                  <>
+                    {acitveTableTab === 'cleanSheets' && (
+                      <div className="">
+                        <h2 className="text-3xl font-semibold mb-4 text-gray-300 max-sm:text-xl">
+                          Clean Sheets
+                        </h2>
+                        <div className="max-sm:text-sm md:table mb-10">
+                          <table className="w-full">
+                            <thead>
+                              <tr>
+                                <th className="text-left">Sr No.</th>
+                                <th className="text-left">Team</th>
+                                <th className="text-left">Goal Keeper(s)</th>
+                                <th className="text-left">Clean Sheets</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {topCleanSheets.map((stat, i) => (
+                                <tr key={i}>
+                                  <td>{i + 1}</td>
+                                  <td>{stat.teamName}</td>
+                                  <td>
+                                    {Object.entries(stat.goalkeepers)
+                                      .map(([name, count]) => `${name} (${count})`)
+                                      .join(', ')}
+                                  </td>
+                                  <td>{stat.totalCleanSheets}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
+
+
+
               </div>
             </div>
           </div>
@@ -321,14 +526,14 @@ const LeagueDetails = () => {
                         {match.teamB?.teamName}
                       </p>
                       <div className="flex flex-col">
-                      <p className="">
-                        <strong>Date:</strong>{" "}
-                        {new Date(match.date).toLocaleDateString()}
-                      </p>
-                      <p>
-                      <strong>Time:</strong>{" "}
-                      {match.time || "Not Available"}
-                      </p>
+                        <p className="">
+                          <strong>Date:</strong>{" "}
+                          {new Date(match.date).toLocaleDateString()}
+                        </p>
+                        <p>
+                          <strong>Time:</strong>{" "}
+                          {match.time || "Not Available"}
+                        </p>
                       </div>
                     </div>
                     <div className="flex justify-between items-center mb-4 max-sm:flex-col">
@@ -340,9 +545,14 @@ const LeagueDetails = () => {
                         {match.score?.teamB}
                       </p>
                     </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 mt-2">
                     <div>
                       <strong>Scorers:</strong>
-                      <ul className="mt-2 ml-4 list-disc">
+                     {
+                      match.scorers.length > 0 ? (
+                        <>
+                         <ul className="mt-2 ml-4 list-disc">
                         {match.scorers.map((scorer, i) => (
                           <li key={i} className="text-sm">
                             {scorer.player} ({scorer.team?.teamName}) -{" "}
@@ -350,7 +560,34 @@ const LeagueDetails = () => {
                           </li>
                         ))}
                       </ul>
+                        </>
+                      ):(
+                        <p className="text-sm italic">No Scorers</p>
+                      )
+                     }
                     </div>
+                    <div className="">
+                      <strong>Assists:</strong>
+                     {
+                      match.scorers.length > 0 ? (
+                        <>
+                         <ul className="mt-2 ml-4 list-disc">
+                        {match.assists.map((scorer, i) => (
+                          <li key={i} className="text-sm">
+                            {scorer.player} ({scorer.team?.teamName}) -{" "}
+                            {scorer?.score}
+                          </li>
+                        ))}
+                      </ul>
+                        </>
+                      ):(
+                        <p className="text-sm italic">No Assists</p>
+                      )
+                     }
+                    </div>
+                    </div>
+
+                    
                   </div>
                 ))}
               </>
