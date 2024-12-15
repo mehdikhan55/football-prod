@@ -176,7 +176,7 @@ const LoginCustomer = () => {
                     onChange={(e) => setRole(e.target.value)}
                   />
                   <label htmlFor="customer" className="text-white">
-                    Customer
+                    Player
                   </label>
                 </div>
 
@@ -268,7 +268,7 @@ const LoginCustomer = () => {
                       onChange={(e) => setRole(e.target.value)}
                     />
                     <label htmlFor="customer" className="text-white">
-                      Customer
+                      Player
                     </label>
                   </div>
 

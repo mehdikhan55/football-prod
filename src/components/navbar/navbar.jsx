@@ -37,7 +37,7 @@ const Navbar = () => {
                 Contact
               </a>
               <a href="/invest" className="text-white">
-                Profile
+                What We Offer
               </a>
               <div
                 onClick={() => {
@@ -69,7 +69,7 @@ const Navbar = () => {
                 Contact
               </a>
               <a href="/invest" className="text-white">
-              Profile
+              What We Offer
               </a>
               <div
                 onClick={() => {
@@ -107,7 +107,7 @@ const Navbar = () => {
                 Contact
               </a>
               <a href="/invest" className="text-white">
-              Profile
+              What We Offer
               </a>
               <div
                 onClick={() => {
@@ -130,7 +130,7 @@ const Navbar = () => {
           {!customer && !currTeam && (
             <>
               <a href="/invest" className="text-white">
-              Profile
+              What We Offer
               </a>
               <a href="/customer/login" className="text-white">
                 Login
@@ -191,7 +191,7 @@ const Navbar = () => {
                 Contact
               </a>
               <a href="/invest" className="text-white">
-              Profile
+              What We Offer
               </a>
               <div
                 onClick={() => {
@@ -220,7 +220,7 @@ const Navbar = () => {
                 Contact
               </a>
               <a href="/invest" className="text-white">
-              Profile
+              What We Offer
               </a>
               <div
                 onClick={() => {
@@ -258,7 +258,7 @@ const Navbar = () => {
                 Contact
               </a>
               <a href="/invest" className="text-white">
-              Profile
+              What We Offer
               </a>
               <div
                 onClick={() => {
@@ -281,7 +281,7 @@ const Navbar = () => {
           {!customer && !currTeam && (
             <>
               <a href="/invest" className="text-white">
-              Profile
+              What We Offer
               </a>
               <a href="/customer/login" className="text-white">
                 Login

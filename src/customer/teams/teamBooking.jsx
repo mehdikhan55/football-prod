@@ -201,16 +201,17 @@ const TeamsBooking = () => {
                 },
             });
             const data = response.data;
+            console.log('data:', data);
             console.log('response of fetchBookings:', response);
             if (response.status >= 400) {
                 throw new Error(data.message);
             }
-            console.log('currTeam:', currTeam);
-            console.log('no')
+            console.log('currTeam is:', currTeam);
             const specificBookings = data.bookings.filter(booking => {
                 return booking.team != null;
             }).filter(booking => booking.team._id === currTeam._id);
             setBookingHistoryData(specificBookings);
+            console.log("specific bookings:", specificBookings);
         } catch (error) {
             setError(error);
         } finally {
@@ -268,7 +269,7 @@ const TeamsBooking = () => {
                                 </div>
                                 <p>
                                     <span className="font-bold">Duration:</span>{" "}
-                                    {booking.bookingDuration} minutes
+                                    {booking.bookingDuration} hours
                                 </p>
 
                                 <p>

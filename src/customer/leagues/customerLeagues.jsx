@@ -10,6 +10,7 @@ const CustomerLeagues = () => {
     const [leagues, setLeagues] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [visibleLeaguesCount, setVisibleLeaguesCount] = useState(4); // Default to showing 4 leagues
     const navigate = useNavigate();
     const { currTeam } = useTeam();
 
@@ -48,6 +49,10 @@ const CustomerLeagues = () => {
         navigate(`/customer/leagues/${id}`);
     };
 
+    const handleShowMoreLeagues = () => {
+        setVisibleLeaguesCount((prevCount) => (prevCount === 4 ? leagues.length : 4)); // Toggle between 4 and all leagues
+    };
+
     return (
         <div className="bg-gray-900 text-white min-h-screen">
             <Navbar />
@@ -57,7 +62,6 @@ const CustomerLeagues = () => {
                     <div className="flex justify-center items-center h-96">
                         <div className="animate-spin rounded-full h-24 w-24 border-t-2 border-b-2 border-gray-200"></div>
                     </div>
-
                 ) : (
                     <>
                         {error && (
@@ -79,7 +83,7 @@ const CustomerLeagues = () => {
                                 :
                                 (
                                     <>
-                                        {leagues.map((league, index) => (
+                                        {leagues.slice(0, visibleLeaguesCount).map((league, index) => (
                                             <div
                                                 key={index}
                                                 className="bg-gray-800 hover:bg-gray-700 transition-all duration-300 p-6 rounded-lg shadow-lg cursor-pointer"
@@ -100,10 +104,17 @@ const CustomerLeagues = () => {
                                     </>
                                 )}
                         </div>
+                        {leagues.length > 4 && (
+                            <button 
+                                onClick={handleShowMoreLeagues}
+                                className="text-red-500 font-semibold hover:bg-red-500 hover:text-white border-red-500 border-2 p-2 rounded-lg mt-4"
+                            >
+                                {visibleLeaguesCount === 4 ? 'Show More' : 'Show Less'}
+                            </button>
+                        )}
                     </>
                 )}
             </div>
-
         </div>
     );
 };

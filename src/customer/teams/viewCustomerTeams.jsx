@@ -17,8 +17,11 @@ const ViewCustomerTeams = () => {
   const [activeChallenges, setActiveChallenges] = useState(null);
 
   const { currTeam } = useTeam();
-
   const [grounds, setGrounds] = useState([]);
+
+  // New state to control how many teams and challenges are visible
+  const [visibleTeamCount, setVisibleTeamCount] = useState(4);
+  const [visibleChallengeCount, setVisibleChallengeCount] = useState(4);
 
   const fetchTeams = async () => {
     try {
@@ -31,12 +34,12 @@ const ViewCustomerTeams = () => {
       }
       setTeams(data.teams);
     } catch (error) {
-      console.log(error);
       setError(error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     setSelfId(currTeam._id);
   }, [currTeam]);
@@ -48,7 +51,7 @@ const ViewCustomerTeams = () => {
       if (response.status >= 400) {
         throw new Error(data.message);
       }
-      setGrounds(data.grounds); // Assuming the response structure includes grounds
+      setGrounds(data.grounds); 
     } catch (error) {
       setError(error.response?.data?.message || error.message);
     }
@@ -77,64 +80,16 @@ const ViewCustomerTeams = () => {
       setError(null);
       const response = await ChallengeServices.getChallengesForTeam();
       const data = response.data;
-      console.log('response is:', response);
-      console.log('data is:', data);
       if (response.status >= 400) {
         throw new Error(data.message);
       }
       setActiveChallenges(data.challengesToGet);
-      console.log('active challenges:', activeChallenges);
     } catch (error) {
-      console.log('error is:', error);
       setError(error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }
   };
-
-  const handleChallengeAccept = async (challengeId) => {
-    try {
-      console.log('challengeId:', challengeId);
-      setLoading(true);
-      setError(null);
-      const response = await axios.patch(`${URL}/challenge/accept/${challengeId}`, {
-        status: 'accepted',
-      });
-      const data = response.data;
-      if (response.status >= 400) {
-        throw new Error(data.message);
-      }
-      alert('Challenge accepted');
-      fetchActiveChallenges();
-    } catch (error) {
-      console.log('error in accepting challenge:', error);
-      setError(error.response?.data?.message || error.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  const handleChallengeReject = async (challengeId) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await axios.patch(`${URL}/challenge/reject/${challengeId}`, {
-        status: 'rejected',
-      });
-      const data = response.data;
-      if (response.status >= 400) {
-        throw new Error(data.message);
-      }
-      alert('Challenge rejected');
-      fetchActiveChallenges();
-    } catch (error) {
-      console.log('error in rejecting challenge:', error);
-      setError(error.response?.data?.message || error.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
 
   useEffect(() => {
     fetchTeams();
@@ -142,6 +97,22 @@ const ViewCustomerTeams = () => {
     fetchChallenges();
     fetchActiveChallenges();
   }, []);
+
+  const handleShowMoreTeams = () => {
+    if (visibleTeamCount === 4) {
+      setVisibleTeamCount(teams.length); // Show all teams
+    } else {
+      setVisibleTeamCount(4); // Show only the first 4 teams
+    }
+  };
+
+  const handleShowMoreChallenges = () => {
+    if (visibleChallengeCount === 4) {
+      setVisibleChallengeCount(activeChallenges.length); // Show all challenges
+    } else {
+      setVisibleChallengeCount(4); // Show only the first 4 challenges
+    }
+  };
 
   return (
     <div>
@@ -167,97 +138,112 @@ const ViewCustomerTeams = () => {
               </div>
             </div>
           )}
+          
+          {/* Display teams */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {teams.map((team, index) => (
-              <>
-                {team._id !== selfId && (
-                  <CustomerTeamCard
-                    key={index}
-                    team={team}
-                    grounds={grounds}
-                    challenges={challenges}
-                    selfId={selfId}
-                  />
-                )}
-              </>
+            {teams.slice(0, visibleTeamCount).map((team, index) => (
+              <CustomerTeamCard
+                key={index}
+                team={team}
+                grounds={grounds}
+                challenges={challenges}
+                selfId={selfId}
+              />
             ))}
           </div>
+          
+          {teams.length > 4 && (
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={handleShowMoreTeams}
+                className="text-red-500 font-semibold hover:bg-red-500 hover:text-white border-red-500 border-2 p-2 rounded-lg"
+              >
+                {visibleTeamCount === 4 ? 'Show More' : 'Show Less'}
+              </button>
+            </div>
+          )}
+
+          <h2 className="text-2xl font-semibold text-center mt-10">
+            Challenges request sent to you
+          </h2>
+          
+          {/* Display challenges */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {activeChallenges?.slice(0, visibleChallengeCount).map((challenge, index) => (
+              <div
+                key={index}
+                className="bg-gray-800 hover:bg-gray-700 transition-all duration-300 p-6 rounded-lg shadow-lg relative"
+              >
+                <div className="absolute top-1 right-2 p-1 rounded-full">
+                  {challenge.status === "pending" && (
+                    <span className="text-red-500">Pending</span>
+                  )}
+                  {challenge.status === "accepted" && (
+                    <span className="text-green-500">Accepted</span>
+                  )}
+                  {challenge.status === "rejected" && (
+                    <span className="text-gray-500">Rejected</span>
+                  )}
+                </div>
+
+                <h2 className="text-2xl font-semibold mb-4">
+                  {challenge.challengerTeam.teamName}
+                </h2>
+                <p className="text-sm mb-4">
+                  <strong>Players:</strong>
+                  <ul className="list-disc list-inside">
+                    {challenge.challengerTeam.players.map((player, index) => (
+                      <li key={index}>{player}</li>
+                    ))}
+                  </ul>
+                </p>
+                <p className="text-sm mb-4">
+                  <strong>Ground:</strong> {challenge.ground.name}
+                </p>
+                <p className="text-sm mb-4">
+                  <strong>Date:</strong> {challenge.date}
+                </p>
+                <p className="text-sm mb-4">
+                  <strong>Time:</strong> {challenge.time}
+                </p>
+                <div className="flex items-center justify-center">
+                  {challenge.status === 'pending' && (
+                    <>
+                      <button onClick={() => handleChallengeAccept(challenge._id)} className="flex items-center mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                        Accept
+                      </button>
+                      <button onClick={() => handleChallengeReject(challenge._id)} className="flex items-center mt-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition">
+                        Reject
+                      </button>
+                    </>
+                  )}
+                  {challenge.status === 'accepted' && (
+                    <button className="flex items-center mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition">
+                      Accepted
+                    </button>
+                  )}
+                  {challenge.status === 'rejected' && (
+                    <button className="flex items-center mt-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition">
+                      Rejected
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {activeChallenges?.length > 4 && (
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={handleShowMoreChallenges}
+                className="text-red-500 font-semibold hover:bg-red-500 hover:text-white border-red-500 border-2 p-2 rounded-lg"
+              >
+                {visibleChallengeCount === 4 ? 'Show More' : 'Show Less'}
+              </button>
+            </div>
+          )}
         </>
       )}
-      <h2 className="text-2xl font-semibold text-center mt-10">
-        Challenges request sent to you
-      </h2>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {activeChallenges?.map((challenge, index) => (
-          <div
-            key={index}
-            className="bg-gray-800 hover:bg-gray-700 transition-all duration-300 p-6 rounded-lg shadow-lg relative"
-          >
-            <div className="absolute top-1 right-2 p-1 rounded-full">
-              {challenge.status === "pending" && (
-                <span className="text-red-500">Pending</span>
-              )}
-              {challenge.status === "accepted" && (
-                <span className="text-green-500">Accepted</span>
-              )}
-              {challenge.status === "rejected" && (
-                <span className="text-gray-500">Rejected</span>
-              )}
-            </div>
-
-            <h2 className="text-2xl font-semibold mb-4">
-              {challenge.challengerTeam.teamName}
-            </h2>
-            <p className="text-sm mb-4">
-              <strong>Players:</strong>
-              <ul className="list-disc list-inside">
-                {challenge.challengerTeam.players.map((player, index) => (
-                  <li key={index}>{player}</li>
-                ))}
-              </ul>
-            </p>
-            <p className="text-sm mb-4">
-              <strong>Ground:</strong> {challenge.ground.name}
-            </p>
-            <p className="text-sm mb-4">
-              <strong>Date:</strong> {challenge.date}
-            </p>
-            <p className="text-sm mb-4">
-              <strong>Time:</strong> {challenge.time}
-            </p>
-            <div className="flex items-center justify-center">
-              {
-                challenge.status === 'pending' && (
-                  <>
-                    <button onClick={()=>handleChallengeAccept(challenge._id)} className="flex items-center mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">
-                      Accept
-                    </button>
-                    <button onClick={()=>handleChallengeReject(challenge._id)} className="flex items-center mt-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition">
-                      Reject
-                    </button>
-                  </>
-                )
-              }
-              {
-                challenge.status === 'accepted' && (
-                  <button className="flex items-center mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition">
-                    Accepted
-                  </button>
-                )
-              } 
-              {
-                challenge.status === 'rejected' && (
-                  <button className="flex items-center mt-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition">
-                    Rejected
-                  </button>
-                )
-              }
-
-            </div>
-          </div>
-        ))}
-      </div>
-      '
     </div>
   );
 };

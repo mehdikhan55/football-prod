@@ -43,6 +43,7 @@ const NewsBox = () => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(4); // State for controlling visible news items
 
   // Fetch the news from the backend
   const fetchNews = async () => {
@@ -65,6 +66,14 @@ const NewsBox = () => {
     fetchNews();  // Fetch news when the component mounts
   }, []);
 
+  const handleShowMore = () => {
+    if (visibleCount === 4) {
+      setVisibleCount(news.length); // Show all items if it's currently limited
+    } else {
+      setVisibleCount(4); // Show only the first 4 items
+    }
+  };
+
   return (
     <section className="bg-transparent py-8 px-4 mx-auto max-w-screen-xl">
       <div className="mx-auto max-w-screen-lg sm:text-center">
@@ -86,15 +95,22 @@ const NewsBox = () => {
             <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-gray-900"></div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
-            {news.length > 0 ? (
-              // Display the first 4 news items in a grid layout
-              news.slice(0, 4).map((item) => (
+          <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+              {news.slice(0, visibleCount).map((item) => (
                 <NewsCard key={item._id} item={item} />
-              ))
-            ) : (
-              <div className="flex justify-center items-center h-40">
-                <p className="text-gray-500 text-lg">No news available at the moment</p>
+              ))}
+            </div>
+            
+            {/* Show More / Show Less Button */}
+            {news.length > 4 && (
+              <div className="flex justify-center mt-6">
+                <button
+                  onClick={handleShowMore}
+                  className="text-blue-500 font-semibold hover:bg-blue-500 hover:text-white border-blue-500 border-2 p-2 rounded-lg"
+                >
+                  {visibleCount === 4 ? 'Show More' : 'Show Less'}
+                </button>
               </div>
             )}
           </div>
