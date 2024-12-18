@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AuthServices from "../services/AuthServices";
 import TeamServices from "../services/TeamServices";
 import logo from "../assets/logoWhite.png";
+import tfLogo from "../assets/TF-Logo-White.png"
 import registebg from "../assets/register.png";
 import { BsGoogle } from "react-icons/bs";
 import { Navigate } from "react-router-dom";
@@ -93,15 +94,16 @@ const LoginCustomer = () => {
     >
       <div className="flex flex-col items-center justify-center h-screen gap-4 max-sm:w-full max-md:w-2/3 max-sm:p-4">
         <div className="bg-gray-700 shadow-lg p-10 rounded-3xl w-1/3 bg-opacity-40 max-sm:w-full max-md:w-full max-sm:p-3">
-          <div className="flex justify-between items-center mb-3 max-sm:text-center">
-            <div>
+          <div className="flex justify-center items-center mb-3 max-sm:text-center">
+            {/* <div>
               <h1 className="text-3xl font-extrabold text-white">
                 DREAM <span className="text-[#EF4444]">ARENA</span>
               </h1>
               <p className="text-white text-center">
                 Login to book your favorite ground
               </p>
-            </div>
+            </div> */}
+            <img src={tfLogo} alt="logo" className="w-36 h-36" />
             <img src={logo} alt="logo" className="w-36 h-36" />
           </div>
           {role === "customer" ? (
